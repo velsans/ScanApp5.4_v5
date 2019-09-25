@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">GWW-5.4-V5</string>
+    <string name="ValidBarCodeMsg">Enter valid Barcode</string>
+    <string name="BarCodeLenghtMsg">SBB Label lenght should be 7</string>
+    <string name="OldTransferHead">Old TransferID</string>
+    <string name="OldTransferMsg">please enter Transfer ID</string>
+    <string name="OldTransferIDLenghtMsg">Transfer ID lenght should be more then 9</string>
+    <string name="NoValueFound">Please Contact Adminstrator</string>
+    <string name="Remove_Message">Are you sure you want to remove?</string>
+    <string name="action_Remove">Remove</string>
+    <string name="Internet_Conn">Internet connection</string>
+    <string name="Internet_ConnMsg">Please check your internet connection or try again later</string>
+    <string name="AppUpdateTitle">Update Available</string>
+
+    <string name="none_paired">None paired Devices</string>
+
+    <string name="TSC_Conn">Printer Connection...</string>
+    <string name="Printing">Printing...</string>
+    <string name="PrinterHead">Printer Status</string>
+
+    <string name="PrinterHDmsg">please check the printer either connected or not</string>
+
+    <string name="TransferHead">Inventory Transer</string>
+    <string name="TransferMessage">Please add atleast one item </string>
+    <string name="ReceivedHead">Inventory Received</string>
+    <string name="FellingRegisterHead">Felling Registration</string>
+    <string name="ExtenalDBHead">External DataBase Sync</string>
+
+    <string name="LoginHD">Login</string>
+    <string name="UserNameMsg">Please enter the UserName</string>
+    <string name="PassMsg">Please enter the Password</string>
+    <string name="oldloginMsg">Old User!!Login Successful!</string>
+    <string name="action_signout">SignOut</string>
+    <string name="action_export_db">DB-Export</string>
+    <string name="action_export_Xecel">Xecel-Export</string>
+    <string name="SignoutMsg">Are you sure you want to sign out?</string>
+    <string name="scan_init_failure_info">Scanner init failured , Please Retry!</string>
+    <!-- Toast messages -->
+    <string name="info_new_tag_found">New tag found</string>
+    <string name="info_no_external_storage">Error: External storage is not
+        readable/writable</string>
+    <string name="info_valid_dump_not_hex">Error: Some block(s) contain
+        invalid data (not hex)</string>
+    <string name="info_valid_dump_not_4_or_16_lines">Error: Some
+        sectors don\'thave 4 or 16 blocks (lines)</string>
+    <string name="info_valid_dump_not_16_bytes">Error: Some blocks
+        don\'t have 16 bytes (32 characters)</string>
+    <string name="info_valid_dump_sector_range">Error: Sector out of range
+        (&#60; 0 or &#62; 39)</string>
+    <string name="info_valid_dump_double_sector">Error: Multiple times the
+        same sector number</string>
+    <string name="info_valid_dump_empty_dump">Error: Empty dump</string>
+    <string name="info_not_hex_data">Error: Data must be in hexadecimal
+        (0-9 and A-F)</string>
+    <string name="info_not_16_byte">Error: Data must be 16 bytes
+        (32 characters) long</string>
+    <string name="info_copied_to_clipboard">Copied to clipboard</string>
+    <string name="info_file_to_big">Error: File is too big (out of memory)</string>
+</resources>

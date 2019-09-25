@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/as_scannerlayoutBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/as_sbblabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="SBB Label"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_woodspiceCode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="WoodSpeiceCode"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_lenght"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Lenght"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_volume"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Volume"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_F1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="F1"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_F2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="F2"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_T1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="T1"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_T2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="T2"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/as_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="ADD"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_white" />
+</LinearLayout>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/fellinglayoutBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/fellingRegidTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="FR ID "
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingRegNoTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="FR No"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingRegDateTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Reg Date"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingRegEndDateTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="End date"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingReg_countTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Count"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingReg_TotVolumeTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Volume"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/fellingReg_StatusTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.13"
+            android:gravity="center"
+            android:text="Status"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingReg_syncTimeTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sync Time"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/fellingReg_PrintBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.12"
+            android:src="@mipmap/printerlogo" />
+
+        <ImageView
+            android:id="@+id/fellingReg_syncBtN"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.12"
+            android:src="@mipmap/refresh" />
+
+        <ImageView
+            android:id="@+id/fellingReg_remove"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.12"
+            android:src="@mipmap/delete_items" />
+    </LinearLayout>
+
+</LinearLayout>

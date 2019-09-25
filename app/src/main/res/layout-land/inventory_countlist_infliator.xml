@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/countlayoutBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/count_listidTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="List ID "
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count_imeiTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="IMEI"
+            android:textColor="@color/color_black"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/count_locationIDTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Loc ID"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count_startTimeTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="StartTime"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count_endTimeTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="EndTime"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count_countTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Count"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count_VolumeTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Volume"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count_syncStatusTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="S Sta"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/count_syncTimeTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sync Time"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/count_syncBtN"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:src="@mipmap/refresh" />
+
+        <ImageView
+            android:id="@+id/count_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:src="@mipmap/delete_items"
+            android:textColor="@android:color/black"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

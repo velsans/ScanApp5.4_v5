@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <!-- Location Found -->
+    <item
+        android:id="@+id/spinner"
+        android:background="#ff00"
+        android:title="Location Spinner"
+        app:actionViewClass="android.widget.Spinner"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_exportXecel"
+        android:icon="@mipmap/excel"
+        android:title="@string/action_export_Xecel"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_export"
+        android:icon="@mipmap/database_export"
+        android:title="@string/action_export_db"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_refersh"
+        android:icon="@mipmap/refresh"
+        android:title="@string/action_signout"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@mipmap/logout"
+        android:title="@string/action_signout"
+        app:showAsAction="ifRoom" />
+</menu>

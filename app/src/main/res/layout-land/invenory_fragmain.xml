@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+            android:background="?attr/colorPrimary"
+            android:elevation="6dp"
+            android:visibility="gone">
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary_light"
+                app:tabBackground="@drawable/tab_color_selector"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/red"
+                app:tabIndicatorHeight="4dp"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/color_white"
+                app:tabTextAppearance="@style/MyCustomTabText"
+                app:tabTextColor="@color/color_black" />
+
+            <TextView
+                android:id="@+id/deviceIEMITxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3.5"
+                android:background="@color/color_white"
+                android:gravity="center"
+                android:text="Device Name and IMEI"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/inventory_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/progressbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
+    </LinearLayout>
+</FrameLayout>

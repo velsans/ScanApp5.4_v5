@@ -1,0 +1,15 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="textview_or_edittext_hight_normal">30dp</dimen>
+    <dimen name="textview_or_edittext_hight_large">40dp</dimen>
+    <dimen name="textview_or_edittext_hight_xlarge">50dp</dimen>
+    <dimen name="scanbuttonSize">100dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="largeTextsize">15sp</dimen>
+    <dimen name="xlargeTextsize">20sp</dimen>
+
+</resources>

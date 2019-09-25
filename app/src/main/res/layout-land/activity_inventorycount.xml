@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transperantBlack"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+            android:background="@color/colorPrimaryDark"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="INVENTORY COUNT"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/advancedsearchTXT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:src="@mipmap/advance_search" />
+
+            <ImageView
+                android:id="@+id/transfer_printTXT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:src="@mipmap/printerlogo"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/closeActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="5"
+                android:src="@mipmap/delete_cross" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/locationNameTXT"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.3"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:text="Location Name"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/refreshExternalDataBase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/theme_background"
+                    android:gravity="center"
+                    android:src="@mipmap/refresh"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/textStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="scan / enter barcode Manually"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="5dp"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/edittextColor"></EditText>
+
+                <!-- <Spinner
+                     android:id="@+id/spin_classification"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:layout_weight="1.7"
+                     android:backgroundTint="@color/color_white"
+                     android:overlapAnchor="false"
+                     android:popupBackground="@color/cyan"
+                     android:textAlignment="center"
+                     android:textColor="@color/color_black"
+                     android:textStyle="bold"  />-->
+
+                <ImageView
+                    android:id="@+id/countEnterIMG"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
+                    android:background="@color/colorAccent"
+                    android:gravity="center"
+                    android:src="@mipmap/login"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                android:background="@color/colorPrimary_light"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.3"
+                    android:background="@color/red"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:src="@mipmap/ic_delete_forever_white_24dp"
+                        android:textColor="@android:color/black"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.7"
+                    android:gravity="center"
+                    android:text="SBB Label"
+                    android:textColor="@color/color_white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.7"
+                    android:gravity="center"
+                    android:text="WoodSpecie Code"
+                    android:textColor="@color/color_white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Quality"
+                    android:textColor="@color/color_white"
+                    android:visibility="visible" />
+
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/inventorycount_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
+                    app:reverseLayout="true"
+                    app:stackFromEnd="true"></android.support.v7.widget.RecyclerView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_large"
+                    android:layout_gravity="bottom"
+                    android:background="@color/colorPrimary_light"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/deeporange"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="Total Count : "
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/TotalScannedCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/xlargeTextsize"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/deeporange"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="Total Volume : "
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/TotalScannedVolume"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="5dp"
+                        android:text="0"
+                        android:textColor="@color/color_white"
+                        android:textSize="@dimen/xlargeTextsize"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/NovalueFound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Value not found, please try diff barcode"
+                    android:textColor="@color/color_black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/countScanBTN"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="10dp"
+        android:src="@mipmap/scanner" />
+
+    <LinearLayout
+        android:id="@+id/advancesearchLAY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/advance_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/progressbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
+    </LinearLayout>
+</FrameLayout>
