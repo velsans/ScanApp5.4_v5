@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/transperantBlack"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/sbblabelVerificationLay"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/amber"
+        android:layout_marginTop="@dimen/textview_or_edittext_hight_xlarge"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/colorbtnsplash"
+            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="SbbLabel Details"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/color_white" />
+
+            <ImageView
+                android:id="@+id/closeActivity_check"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center"
+                android:src="@mipmap/delete_cross" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+
+                    <TextView
+                        android:id="@+id/sbblabel_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="SbbLabel"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/wsc_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="WSC"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/treeNo_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="TreeNo"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/ageoflog_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="AgeOfLog"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+
+                    <TextView
+                        android:id="@+id/noteF_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="NoteF"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/noteT_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="NoteT"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/noteL_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="NoteL"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="1dp"
+                    android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                    <TextView
+                        android:id="@+id/diameter_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="Diameter"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+
+                    <TextView
+                        android:id="@+id/footer1_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="Footer1"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/footer2_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/color_white"
+                        android:gravity="center"
+                        android:hint="Footer2"
+                        android:textColor="@color/color_black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/top1_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="Top1"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/top2_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="Top2"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/lenght_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="Length"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                    <TextView
+                        android:id="@+id/volume_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:background="@color/color_white"
+                        android:hint="Volume"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_black" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Save_check"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="1dp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:background="@color/colorPrimary_light"
+                android:text="Match"
+                android:textStyle="bold"
+                android:textColor="@color/color_white" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

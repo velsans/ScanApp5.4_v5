@@ -24,9 +24,7 @@ import com.google.gson.Gson;
 import com.zebra.R;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
-import com.zebra.main.activity.InventoryActivity;
-import com.zebra.main.activity.InventoryCountActivity;
-import com.zebra.main.model.FellingRegistration.FellingRegistrationSyncModel;
+import com.zebra.main.activity.Count.InventoryCountActivity;
 import com.zebra.main.model.InvCount.InventoryCountModel;
 import com.zebra.main.model.InvCount.InventoryCountSyncModel;
 import com.zebra.main.model.SyncStatusModel;
@@ -137,7 +135,7 @@ public class InventoryCountFragment extends Fragment {
             boolean ListIdFlag = mDBInternalHelper.insertInventoryCountListID(Common.IMEI, Common.ToLocationID, Common.StartDate, Common.EndDate, 0, Common.SyncStatus,
                     Common.SyncTime, 1, Common.CountUniqueID);
             if (ListIdFlag == true) {
-                Common.InventoryCountList = mDBInternalHelper.getInventoryCountIdList();
+                Common.InventoryCountList = mDBInternalHelper.getInventoryCountIdList(Common.Filter_InventoryCountDate.get(Common.InventCountDateSelectedIndex));
                 if (Common.InventoryCountList.size() > 0) {
                     Common.ListID = Integer.parseInt(mDBInternalHelper.getLastCountID());
                     String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
@@ -158,7 +156,7 @@ public class InventoryCountFragment extends Fragment {
     private void GetInventoryCountList() {
         try {
             Common.InventoryCountList.clear();
-            Common.InventoryCountList = mDBInternalHelper.getInventoryCountIdList();
+            Common.InventoryCountList = mDBInternalHelper.getInventoryCountIdList(Common.Filter_InventoryCountDate.get(Common.InventCountDateSelectedIndex));
             if (Common.InventoryCountList.size() > 0) {
                 invenCountadapter = new InventoryCountAdapter(Common.InventoryCountList, getActivity());
                 horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);

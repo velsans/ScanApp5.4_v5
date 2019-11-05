@@ -5,9 +5,6 @@ import android.util.Log;
 
 import com.zebra.R;
 import com.zebra.database.InternalDataBaseHelperClass;
-import com.zebra.main.activity.FellingRegistrationActivity;
-import com.zebra.main.activity.InventoryReceivedActivity;
-import com.zebra.main.model.ExternalDB.FellingRegisterModel;
 import com.zebra.main.model.FellingRegistration.FellingTreeDetailsModel;
 
 import java.util.ArrayList;
@@ -313,7 +310,7 @@ public class PrintSlipsClass {
 
                 SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
                 Log.e("ColumnSize1", ">>>>>>" + ColumnIndex);
-                SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getSbbLabel(), 13);
+                SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getBarCode(), 13);
                 WoodSpecieCode = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getWoodSpieceCode(), 10);
                 FsNumValue = "FNo: " + String.valueOf(Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId());
                 String Column1Str =
@@ -321,7 +318,8 @@ public class PrintSlipsClass {
                                 "BOX 21, " + NumberBoxStart + ",59," + NumberBoxEnd + ",3\n" +
                                 "TEXT 25, " + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
                                 "TEXT 20, " + FsNumber + ",\"0\",0,8,8," + "\"" + FsNumValue + "\"" + "\n" +
-                                "TEXT 87," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                 //"TEXT 87," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 69," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 122," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n" +
                                 "BAR 191," + BarEndStart + ",3, 75\n";
                 TransfertgBildr.append(Column1Str);
@@ -330,7 +328,7 @@ public class PrintSlipsClass {
                 if (ColumnIndex < Common.InventorytransferScannedResultList.size()) {
                     Log.e("ColumnSize2", ">>>>>>" + ColumnIndex);
                     SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
-                    SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getSbbLabel(), 13);
+                    SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getBarCode(), 13);
                     WoodSpecieCode = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getWoodSpieceCode(), 10);
                     FsNumValue = "FNo: " + String.valueOf(Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId());
                 } else {
@@ -343,7 +341,8 @@ public class PrintSlipsClass {
                         "BOX 199," + NumberBoxStart + ",237," + NumberBoxEnd + ",3\n" +
                                 "TEXT 203," + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
                                 "TEXT 198, " + FsNumber + ",\"0\",0,8,8," + "\"" + FsNumValue + "\"" + "\n" +
-                                "TEXT 265," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                //"TEXT 265," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 247," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 300," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n" +
                                 "BAR 368," + BarEndStart + ",3, 75\n";
                 TransfertgBildr.append(Column2Str);
@@ -351,7 +350,7 @@ public class PrintSlipsClass {
                 ColumnIndex = ColumnIndex + 1;
                 if (ColumnIndex < Common.InventorytransferScannedResultList.size()) {
                     SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
-                    SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getSbbLabel(), 13);
+                    SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getBarCode(), 13);
                     WoodSpecieCode = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getWoodSpieceCode(), 10);
                     FsNumValue = "FNo: " + String.valueOf(Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId());
                 } else {
@@ -364,7 +363,8 @@ public class PrintSlipsClass {
                         "BOX 377," + NumberBoxStart + ",414," + NumberBoxEnd + ",3\n" +
                                 "TEXT 381," + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
                                 "TEXT 376, " + FsNumber + ",\"0\",0,8,8," + "\"" + FsNumValue + "\"" + "\n" +
-                                "TEXT 442," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                //"TEXT 442," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 425," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 474," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n";
 
                 TransfertgBildr.append(Column3Str);
@@ -532,7 +532,7 @@ public class PrintSlipsClass {
             StringBuilder transferBarcodeDeatils = new StringBuilder();
             for (int TransferIndex = 0; TransferIndex < Common.InventorytransferScannedResultList.size(); TransferIndex++) {
                 transferBarcodeDeatils.append(Common.InventorytransferScannedResultList.get(TransferIndex).getQualitiy()
-                        + "-" + Common.InventorytransferScannedResultList.get(TransferIndex).getSbbLabel()
+                        + "-" + Common.InventorytransferScannedResultList.get(TransferIndex).getBarCode()
                         + "-" + Common.InventorytransferScannedResultList.get(TransferIndex).getFellingSectionId()
                         + "-" + Common.InventorytransferScannedResultList.get(TransferIndex).getTreeNumber() + "--");
             }

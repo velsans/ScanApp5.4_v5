@@ -4,9 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.zebra.main.model.Export.ExportDetailsModel;
+import com.zebra.main.model.Export.ExportInputDetailsModel;
+import com.zebra.main.model.Export.ExportModel;
 import com.zebra.main.model.FellingRegistration.FellingTreeDetailsModel;
 import com.zebra.main.model.LoginAuthenticationModel;
 import com.zebra.main.model.FellingRegistration.FellingRegisterInputListModel;
@@ -25,6 +29,8 @@ import com.zebra.utilities.AlertDialogManager;
 import com.zebra.utilities.Common;
 
 import java.util.ArrayList;
+
+import static java.lang.Double.*;
 
 
 public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
@@ -46,6 +52,9 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
     FellingRegisterInputListModel fellingRegInpuModel;
     FellingTreeDetailsModel fellingTreeDetModel;
     InternalDataBaseTabelsClass DbClassObject;
+    ExportModel exportListModel;
+    ExportDetailsModel exportDetailsModel;
+    ExportInputDetailsModel exportinputDetailsModel;
     private static InternalDataBaseHelperClass instance;
 
     public InternalDataBaseHelperClass(Context context) {
@@ -78,6 +87,15 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         /*Version 5.3*/
         db.execSQL(DbClassObject.ReceivedIDList5_3());
         db.execSQL(DbClassObject.FellingRegistrationDetails5_3());
+        /*Version 5.6-New Home Design*/
+        /*Version 5.7-Export*/
+        db.execSQL(DbClassObject.ExportLoadPlanList5_7());
+        db.execSQL(DbClassObject.ExportLoadPlanDetails5_7());
+    }
+
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        throw new SQLiteException("Can't downgrade database from version " +
+                oldVersion + " to " + newVersion);
     }
 
     @Override
@@ -101,6 +119,9 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
             }
             if (Common.VersionName.equals("5.4")) {
                 Version5_3(db);
+            }
+            if (Common.VersionName.equals("5.7")) {
+                Version5_7(db);
             }
         } catch (Exception ex) {
             AlertDialogBox("DataBase onUpgrade", ex.toString(), false);
@@ -275,6 +296,17 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         }
     }
 
+    public void Version5_7(SQLiteDatabase db) {
+        boolean ELPListFlag = tableExists(db, Common.TBL_EXPORTLIST);
+        if (ELPListFlag == false) {
+            db.execSQL(DbClassObject.ExportLoadPlanList5_7());
+        }
+        boolean ELPDetailFlag = tableExists(db, Common.TBL_EXPORTDETAILS);
+        if (ELPDetailFlag == false) {
+            db.execSQL(DbClassObject.ExportLoadPlanDetails5_7());
+        }
+    }
+
     public boolean tableExists(SQLiteDatabase db, String tableName) {
         if (tableName == null || db == null || !db.isOpen()) {
             return false;
@@ -314,6 +346,7 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
      public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
          db.setVersion(oldVersion);
      }*/
+
     public void openDatabase() {
         String dbPath = mContext.getDatabasePath(Common.INTERNELDBNAME).getPath();
         if (mDatabase != null && mDatabase.isOpen()) {
@@ -510,14 +543,14 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean UpdateInventoryReceivedItems(int receivedID, String Sbblabel, String CheckedValue) {
+    public boolean UpdateInventoryReceivedItems(int receivedID, String BarCode, String CheckedValue) {
         boolean Flag = true;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
             String strSQL = "UPDATE " + Common.TBL_INVENTORYRECEIVED + " SET "
                     + Common.ISCHECKED + " = '" + CheckedValue + "'"
-                    + " WHERE " + Common.RECEIVEDID + " = " + receivedID + " and " + Common.SBBLabel + " = " + Sbblabel;
+                    + " WHERE " + Common.RECEIVEDID + " = " + receivedID + " and " + Common.BARCODE + " = " + BarCode;
             mDatabase.execSQL(strSQL);
             mDatabase.setTransactionSuccessful();
             Flag = true;
@@ -692,13 +725,14 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return Flag;
     }
 
-    public ArrayList<InventoryCountModel> getInventoryCountIdList() {
+    public ArrayList<InventoryCountModel> getInventoryCountIdList(String SelectedDate) {
         ArrayList<InventoryCountModel> scannedReusltList = new ArrayList<InventoryCountModel>();
         mDatabase = this.getReadableDatabase();
         mDatabase.beginTransaction();
         try {
             //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " WHERE IsActive is null or  IsActive  = 1";
-            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " WHERE IsActive  = 1";
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " WHERE IsActive  = 1";
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 countModel = new InventoryCountModel();
@@ -726,12 +760,15 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return scannedReusltList;
     }
 
-    public ArrayList<InventoryReceivedListModel> getInventoryReceivedIdList() {
+    public ArrayList<InventoryReceivedListModel> getInventoryReceivedIdList(String SelectedDate) {
         ArrayList<InventoryReceivedListModel> scannedReusltList = new ArrayList<InventoryReceivedListModel>();
         mDatabase = this.getReadableDatabase();
         mDatabase.beginTransaction();
         try {
-            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVEDLIST + " WHERE " + Common.ISACTIVE + " = 1";
+            /*String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVEDLIST + " WHERE " + Common.ISACTIVE + " = 1";
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);*/
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVEDLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+            //+ " and " + Common.TRANSPORTTYPEID + "=" + Common.TransportTypeId;
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 ReceivedModel = new InventoryReceivedListModel();
@@ -751,7 +788,7 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
                 ReceivedModel.setCount(cursor.getInt(cursor.getColumnIndex(Common.COUNT)));
                 ReceivedModel.setSyncStatus(cursor.getInt(cursor.getColumnIndex(Common.SYNCSTATUS)));
                 ReceivedModel.setSyncTime(cursor.getString(cursor.getColumnIndex(Common.SYNCTIME)));
-                ReceivedModel.setVolume(cursor.getInt(cursor.getColumnIndex(Common.VOLUME)));
+                ReceivedModel.setVolume(cursor.getDouble(cursor.getColumnIndex(Common.VOLUME)));
                 ReceivedModel.setTransferUniqueID(cursor.getString(cursor.getColumnIndex(Common.TRANSFERUNIQUEID)));
                 ReceivedModel.setLoadedTypeID(cursor.getInt(cursor.getColumnIndex(Common.LOADEDTYPE)));
                 scannedReusltList.add(ReceivedModel);
@@ -937,12 +974,13 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return TrnasferIDSList;
     }
 
-    public boolean getScannedResultWithMapListIDCheck(int List_ID, String SbbLabel) {
+    public boolean getScannedResultWithMapListIDCheck(int List_ID, String Barcode) {
         boolean Result = false;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
-            String selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_ID + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " = " + SbbLabel + " or " + Common.ORGSBBLABEL + " = " + SbbLabel + ")";
+            //String selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_ID + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " = " + SbbLabel + " or " + Common.ORGSBBLABEL + " = " + SbbLabel + ")";
+            String selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_ID + " and " + Common.ISACTIVE + " = " + 1 + " and " + Common.BARCODE + " = '" + Barcode + "'";
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 Result = true;
@@ -963,7 +1001,7 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         mDatabase = this.getReadableDatabase();
         mDatabase.beginTransaction();
         try {
-            String selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_ID;
+            String selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_ID + " and " + Common.ISACTIVE + " = 1";
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 inventoryInputModel = new InventoryCountInputListModel();
@@ -990,7 +1028,7 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
                 if (cursor.getString(cursor.getColumnIndex(Common.VOLUME)).equals("")) {
                     inventoryInputModel.setVolume(0.00);
                 } else {
-                    inventoryInputModel.setVolume(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME))));
+                    inventoryInputModel.setVolume(parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME))));
                 }
                 inventoryInputModel.setWoodSpecieCode(cursor.getString(cursor.getColumnIndex(Common.WoodSPiceCode)));
                 inventoryInputModel.setWoodSpecieId(cursor.getInt(cursor.getColumnIndex(Common.WoodSpiceID)));
@@ -1207,15 +1245,13 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
           return scannedReusltList;
       }
   */
-    public ArrayList<InventoryTransferModel> getInventoryTransferIdList() {
+    public ArrayList<InventoryTransferModel> getInventoryTransferIdList(String SelectedDate) {
         ArrayList<InventoryTransferModel> scannedReusltList = new ArrayList<InventoryTransferModel>();
-
-
         mDatabase = this.getReadableDatabase();
         mDatabase.beginTransaction();
         try {
-            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERIDLIST + " WHERE IsActive is null or  IsActive  = 1";
-            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERIDLIST + " WHERE IsActive  = 1";
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERIDLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1"
+                    + " and " + Common.TRANSPORTTYPEID + "=" + Common.TransportTypeId;
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 transferModel = new InventoryTransferModel();
@@ -1825,14 +1861,15 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
     }
 
 
-    public boolean getInventoryTransferduplicateCheck(String vbb_number, int Trans_ID, String SbbLabel, String fromLocation) {
+    public boolean getInventoryTransferduplicateCheck(String vbb_number, int Trans_ID, String Barcode, String fromLocation) {
         boolean Result = false;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
             // String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where VBB_Number = '" + vbb_number + "'" + " and " + Common.TRANSFERID + "= '" + Trans_ID + "'" + " and " + SBBLabel + "= '" + SBBLabel + "'";
             //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.SBBLabel + "= '" + SbbLabel + "'" + " and FromLocation" + "= '" + fromLocation + "' and " + Common.ISACTIVE + "= 1";
-            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + " FromLocation" + "= '" + fromLocation + "' and " + Common.ISACTIVE + "= 1" + " and (" + Common.SBBLabel + " IN (" + SbbLabel + ")" + " or " + Common.ORGSBBLABEL + "=" + SbbLabel + ")";
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + " FromLocation" + "= '" + fromLocation + "' and " + Common.ISACTIVE + "= 1" + " and (" + Common.SBBLabel + " IN (" + SbbLabel + ")" + " or " + Common.ORGSBBLABEL + "=" + SbbLabel + ")";
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + " FromLocation" + "= '" + fromLocation + "' and " + Common.ISACTIVE + "= " + 1 + " and " + Common.BARCODE + " = '" + Barcode + "'";
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 Result = true;
@@ -1847,14 +1884,15 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return Result;
     }
 
-    public boolean getInventoryReceivedduplicateCheck(int Received_ID, String SbbLabel) {
+    public boolean getInventoryReceivedduplicateCheck(int Received_ID, String Barcode) {
         boolean Result = false;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
             // String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where VBB_Number = '" + vbb_number + "'" + " and " + Common.TRANSFERID + "= '" + Trans_ID + "'" + " and " + SBBLabel + "= '" + Common.SBBLabel + "'";
             //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVED + " where " + Common.SBBLabel + "= '" + SbbLabel + "'" + " and ReceivedID" + "= '" + Received_ID + "' and " + Common.ISACTIVE + "= 1";
-            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVED + " where " + " ReceivedID" + "= '" + Received_ID + "' and " + Common.ISACTIVE + "= 1" + " and (" + Common.SBBLabel + " IN (" + SbbLabel + ")" + " or " + Common.ORGSBBLABEL + "=" + SbbLabel + ")";
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVED + " where " + " ReceivedID" + "= '" + Received_ID + "' and " + Common.ISACTIVE + "= 1" + " and (" + Common.SBBLabel + " IN (" + SbbLabel + ")" + " or " + Common.ORGSBBLABEL + "=" + SbbLabel + ")";
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVED + " where " + " ReceivedID" + "= '" + Received_ID + "' and " + Common.ISACTIVE+ "= " + 1 + " and " + Common.BARCODE + " = '" + Barcode + "'";
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 Result = true;
@@ -1960,6 +1998,31 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return Flag;
     }
 
+    public boolean UpdateExportSavedStatus(String SyncTime, int SyncStatus, String OrderNo, int ExportID) {
+        boolean Flag = true;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String strSQL = "UPDATE " + Common.TBL_EXPORTLIST + " SET "
+                    + Common.SYNCTIME + " = '" + SyncTime + "' , "
+                    + Common.SYNCSTATUS + " = '" + SyncStatus + "' WHERE "
+                    + Common.VBBNUMBER + " = '" + OrderNo + "' and "
+                    + Common.TRANSFERID + " = " + ExportID;
+            mDatabase.execSQL(strSQL);
+            mDatabase.setTransactionSuccessful();
+            Flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "UpdateInventoryTransferSyncStatusTransID", e.toString(), false);
+            Flag = false;
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Flag;
+    }
+
+
     public ArrayList<InventoryTransferInputListModel> getTransferScannedResultInputWithVBBNo(String Vbb_Number, int TransID) {
         ArrayList<InventoryTransferInputListModel> InventoryResultList = new ArrayList<InventoryTransferInputListModel>();
         int ID = 1;
@@ -1980,12 +2043,12 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
                 if (cursor.getString(cursor.getColumnIndex(Common.LENGTH)).equals("")) {
                     inventoryTransferInputListModel.setLength(0.00);
                 } else {
-                    inventoryTransferInputListModel.setLength(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Common.LENGTH))));
+                    inventoryTransferInputListModel.setLength(parseDouble(cursor.getString(cursor.getColumnIndex(Common.LENGTH))));
                 }
                 if (cursor.getString(cursor.getColumnIndex(Common.VOLUME)).equals("")) {
                     inventoryTransferInputListModel.setVolume(0.00);
                 } else {
-                    inventoryTransferInputListModel.setVolume(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME))));
+                    inventoryTransferInputListModel.setVolume(parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME))));
                 }
                 inventoryTransferInputListModel.setEntryModeID(cursor.getInt(cursor.getColumnIndex(Common.ENTRYMODE)));
                 inventoryTransferInputListModel.setIsSBBLabelCorrected(cursor.getInt(cursor.getColumnIndex(Common.ISSBLABELCORRECT)));
@@ -2052,7 +2115,7 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
                 if (cursor.getString(cursor.getColumnIndex(Common.LENGTH)).equals("")) {
                     inventoryReceivedInputListModel.setLength(0.00);
                 } else {
-                    inventoryReceivedInputListModel.setLength(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Common.LENGTH))));
+                    inventoryReceivedInputListModel.setLength(parseDouble(cursor.getString(cursor.getColumnIndex(Common.LENGTH))));
                 }
                 inventoryReceivedInputListModel.setOrgSBBLabel(cursor.getString(cursor.getColumnIndex(Common.ORGSBBLABEL)));
                 inventoryReceivedInputListModel.setQuality(cursor.getString(cursor.getColumnIndex(Common.QULAITY)));
@@ -2063,7 +2126,7 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
                 if (cursor.getString(cursor.getColumnIndex(Common.VOLUME)).equals("")) {
                     inventoryReceivedInputListModel.setVolume(0.00);
                 } else {
-                    inventoryReceivedInputListModel.setVolume(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME))));
+                    inventoryReceivedInputListModel.setVolume(parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME))));
                 }
                 inventoryReceivedInputListModel.setWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.WoodSPiceCode)));
                 inventoryReceivedInputListModel.setWoodSpieceID(cursor.getInt(cursor.getColumnIndex(Common.WoodSpiceID)));
@@ -2494,6 +2557,26 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return Flag;
     }
 
+    public boolean RemoveFromExportDetailsList(String Sbb_Label, int IsActiveValue, int ListID) {
+        boolean Flag = true;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String strSQL = "UPDATE " + Common.TBL_EXPORTDETAILS + " SET " + Common.ISACTIVE + " = '" + IsActiveValue + "'where " + Common.SBBLabel + "=" + Sbb_Label + " and " + Common.EXPORTID + "=" + ListID;
+            mDatabase.execSQL(strSQL);
+            mDatabase.setTransactionSuccessful();
+            Flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "RemoveFromScanneList", e.toString(), false);
+            Flag = false;
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Flag;
+    }
+
   /*  public boolean RemoveInventoryCountListID(String endDateTime, int ScannedCount, int CountID, String VolumeSum) {
         boolean Flag = true;
         mDatabase = this.getWritableDatabase();
@@ -2549,17 +2632,23 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return Flag;
     }
 
-    public boolean getAdvanceSearchCountListCheck(int List_IDs, String SbbLabels, int size, boolean Flag) {
+    public boolean getAdvanceSearchCountListCheck(int List_IDs, String Barcodes, int size, boolean Flag) {
         boolean Result = false;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
             String selectQuery = "";
             if (Flag == true) {
+                selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.BARCODE + " IN (" + Barcodes + "))";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and " + Common.BARCODE + "='" + Barcodes + "'";
+            }
+           /* if (Flag == true) {
                 selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " IN (" + SbbLabels + ")" + " or " + Common.ORGSBBLABEL + " IN (" + SbbLabels + "))";
             } else {
                 selectQuery = "SELECT * FROM " + Common.TBL_SCANNEDRESULT + " where " + Common.LISTID + "=" + List_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " IN (" + SbbLabels + ")" + " or " + Common.ORGSBBLABEL + "=" + SbbLabels + ")";
-            }
+            }*/
+
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 if (Flag == true) {
@@ -2579,17 +2668,23 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return Result;
     }
 
-    public boolean getAdvanceSearchTransferListCheck(int transfer_IDs, String SbbLabels, int size, boolean Flag) {
+    public boolean getAdvanceSearchTransferListCheck(int transfer_IDs, String Barcodes, int size, boolean Flag) {
         boolean Result = false;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
             String selectQuery = "";
             if (Flag == true) {
+                selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.TRANSFERID + "=" + transfer_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.BARCODE + " IN (" + Barcodes + "))";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.TRANSFERID + "=" + transfer_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and " + Common.BARCODE + "='" + Barcodes + "'";
+            }
+
+            /*if (Flag == true) {
                 selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.TRANSFERID + "=" + transfer_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " IN (" + SbbLabels + ")" + " or " + Common.ORGSBBLABEL + " IN (" + SbbLabels + "))";
             } else {
                 selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.TRANSFERID + "=" + transfer_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " IN (" + SbbLabels + ")" + " or " + Common.ORGSBBLABEL + "=" + SbbLabels + ")";
-            }
+            }*/
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 if (Flag == true) {
@@ -2602,6 +2697,42 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
             AlertDialogBox("I-DB-" + "getAdvanceSearchTransferListCheck", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Result;
+    }
+
+    public boolean getAdvanceSearchReceivedListCheck(int received_IDs, String Barcodes, int size, boolean Flag) {
+        boolean Result = false;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "";
+            if (Flag == true) {
+                selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVED + " where " + Common.RECEIVEDID + "=" + received_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.BARCODE + " IN (" + Barcodes + "))";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVED + " where " + Common.RECEIVEDID + "=" + received_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and " + Common.BARCODE + "='" + Barcodes + "'";
+            }
+
+            /*if (Flag == true) {
+                selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.TRANSFERID + "=" + transfer_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " IN (" + SbbLabels + ")" + " or " + Common.ORGSBBLABEL + " IN (" + SbbLabels + "))";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.TRANSFERID + "=" + transfer_IDs + " and " + Common.ISACTIVE + " = " + 1 + " and (" + Common.SBBLabel + " IN (" + SbbLabels + ")" + " or " + Common.ORGSBBLABEL + "=" + SbbLabels + ")";
+            }*/
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                if (Flag == true) {
+                    Result = size == cursor.getCount();
+                } else {
+                    Result = true;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getAdvanceSearchReceivedListCheck", e.toString(), false);
         } finally {
             mDatabase.endTransaction();
             closeDatabase();
@@ -2886,6 +3017,8 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         mDatabase.beginTransaction();
         try {
             String selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONLIST;
+            //String selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             //if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
@@ -2970,12 +3103,12 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return Flag;
     }
 
-    public boolean RemoveFromfellingform(String Sbb_Label, int IsActiveValue, int FellingReg_id) {
+    public boolean RemoveFromfellingform(String Barcode, int IsActiveValue, int FellingReg_id) {
         boolean Flag = true;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
-            String strSQL = "UPDATE " + Common.TBL_FELLINGREGISTRATIONDETAILS + " SET " + Common.ISACTIVE + " = '" + IsActiveValue + "'where " + Common.SBBLabel + "=" + Sbb_Label + " and " + Common.FELLINGREGID + "=" + FellingReg_id;
+            String strSQL = "UPDATE " + Common.TBL_FELLINGREGISTRATIONDETAILS + " SET " + Common.ISACTIVE + " = '" + IsActiveValue + "'where " + Common.BARCODE + "='" + Barcode + "' and " + Common.FELLINGREGID + "=" + FellingReg_id;
             mDatabase.execSQL(strSQL);
             mDatabase.setTransactionSuccessful();
             Flag = true;
@@ -3172,7 +3305,7 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
             }
             Cursor cursor = mDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
-                TotVolume = TotVolume + Double.parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME)));
+                TotVolume = TotVolume + parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -3184,22 +3317,23 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return TotVolume;
     }
 
-    public boolean getFellingformDetailswithIDCheck(String SbbLabel) {
+    public boolean getFellingformDetailswithIDCheck(String Barcode) {
         boolean Result = false;
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
             //String selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONDETAILS + " where " + Common.FELLINGREGID + "=" + FellingReg_ID + " and " + Common.ISACTIVE + " = " + 1 + " and " + Common.SBBLabel + " = " + SbbLabel;
-            String selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONDETAILS + " where " + Common.ISACTIVE + " = " + 1 + " and " + Common.SBBLabel + " = " + SbbLabel;
-            if (SbbLabel.length() > 0) {
+            //String selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONDETAILS + " where " + Common.ISACTIVE + " = " + 1 + " and " + Common.SBBLabel + " = " + SbbLabel;
+            String selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONDETAILS + " where " + Common.ISACTIVE + " = " + 1 + " and " + Common.BARCODE + " ='" + Barcode + "'";
+            if (Barcode.length() > 0) {
                 Cursor cursor = mDatabase.rawQuery(selectQuery, null);
                 while (cursor.moveToNext()) {
                     Result = true;
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
+            Result = true;
             AlertDialogBox("I-DB-" + "getFellingformDetailswithIDCheck", e.toString(), false);
         } finally {
             mDatabase.endTransaction();
@@ -3210,6 +3344,9 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
 
     public boolean getTreeNumberDuplicationCheck(int fromLocationID, String FellingSecID, String treeNUm) {
         boolean Result = false;
+        if (isNullOrEmpty(FellingSecID)) {
+            FellingSecID = "0";
+        }
         mDatabase = this.getWritableDatabase();
         mDatabase.beginTransaction();
         try {
@@ -3374,6 +3511,41 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
         return fellingTreeList;
     }
 
+    public ArrayList<FellingTreeDetailsModel> getExportTreeNumber() {
+        ArrayList<FellingTreeDetailsModel> fellingTreeList = new ArrayList<FellingTreeDetailsModel>();
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * FROM " + Common.TBL_FELLINGTREEDETAILS;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                fellingTreeDetModel = new FellingTreeDetailsModel();
+                fellingTreeDetModel.setFellingRegID(cursor.getInt(cursor.getColumnIndex(Common.FELLINGREGID)));
+                fellingTreeDetModel.setLocationID(cursor.getInt(cursor.getColumnIndex(Common.LOCATIONID)));
+                fellingTreeDetModel.setFellingRegUniqueID(cursor.getString(cursor.getColumnIndex(Common.FELLIINGREGUNIQUEID)));
+                fellingTreeDetModel.setTreeNumber(cursor.getString(cursor.getColumnIndex(Common.TREENO)));
+                fellingTreeDetModel.setFooter_1(cursor.getString(cursor.getColumnIndex(Common.DF1)));
+                fellingTreeDetModel.setFooter_2(cursor.getString(cursor.getColumnIndex(Common.DF2)));
+                fellingTreeDetModel.setTop_1(cursor.getString(cursor.getColumnIndex(Common.DT1)));
+                fellingTreeDetModel.setTop_2(cursor.getString(cursor.getColumnIndex(Common.DT2)));
+                fellingTreeDetModel.setLength(cursor.getString(cursor.getColumnIndex(Common.LENGTH)));
+                fellingTreeDetModel.setWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.WoodSPiceCode)));
+                fellingTreeDetModel.setIsNewTreeNumber(cursor.getString(cursor.getColumnIndex(Common.ISNEWTREENO)));
+                fellingTreeDetModel.setPlotNumber(cursor.getString(cursor.getColumnIndex(Common.PLOTNO)));
+                fellingTreeDetModel.setOldPlotNo(cursor.getString(cursor.getColumnIndex(Common.OLDPLOTNO)));
+                fellingTreeDetModel.setOldWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.OLDWOODSPECODE)));
+                fellingTreeList.add(fellingTreeDetModel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getExportTreeNumber", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return fellingTreeList;
+    }
+
     public ArrayList<String> getTreeNumber(int FellingRegID) {
         ArrayList<String> fellingTreeList = new ArrayList<String>();
         mDatabase = this.getReadableDatabase();
@@ -3442,6 +3614,809 @@ public class InternalDataBaseHelperClass extends SQLiteOpenHelper {
             closeDatabase();
         }
         return InternalNewTreeNumber;
+    }
+
+    // 27 - 9 -19
+    public double TotalVolumeForInventoryCount(String SelectedDate) {
+        double TotVolume = 0.00;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " where " + Common.ISACTIVE + " = " + 1;
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                TotVolume = TotVolume + cursor.getDouble(cursor.getColumnIndex(Common.VOLUME));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "TotalVolumeForInventoryCount", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return TotVolume;
+    }
+
+    public double TotalVolumeForInventoryTransfer(String SelectedDate) {
+        double TotVolume = 0.00;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.ISACTIVE + " = " + 1;
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERIDLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1"
+                    + " and " + Common.TRANSPORTTYPEID + "=" + Common.TransportTypeId;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                TotVolume = TotVolume + cursor.getDouble(cursor.getColumnIndex(Common.VOLUME));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "TotalVolumeForInventoryTransfer", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return TotVolume;
+    }
+
+    public double TotalVolumeForInventoryReceive(String SelectedDate) {
+        double TotVolume = 0.00;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVED + " where " + Common.ISACTIVE + " = " + 1;
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYRECEIVEDLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                TotVolume = TotVolume + cursor.getDouble(cursor.getColumnIndex(Common.VOLUME));
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "TotalVolumeForInventoryReceive", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return TotVolume;
+    }
+
+    /*5.6 Version*/
+    public ArrayList<String> getInventoryCountDate() {
+        ArrayList<String> fellingTreeList = new ArrayList<String>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * from " + Common.TBL_INVENTORYCOUNTLIST;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                String SdateTime = cursor.getString(cursor.getColumnIndex(Common.STARTDATETIME));
+                String[] parts = SdateTime.split(" ");
+                fellingTreeList.add(parts[0]);
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return fellingTreeList;
+    }
+
+    public ArrayList<String> getInventoryTransferDate() {
+        ArrayList<String> fellingTreeList = new ArrayList<String>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * from " + Common.TBL_INVENTORYTRANSFERIDLIST + " Where " + Common.TRANSPORTTYPEID + "=" + Common.TransportTypeId;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                String SdateTime = cursor.getString(cursor.getColumnIndex(Common.STARTDATETIME));
+                String[] parts = SdateTime.split(" ");
+                fellingTreeList.add(parts[0]);
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return fellingTreeList;
+    }
+
+    public ArrayList<String> getInventoryReceivedDate() {
+        ArrayList<String> fellingTreeList = new ArrayList<String>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * from " + Common.TBL_INVENTORYRECEIVEDLIST;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                String SdateTime = cursor.getString(cursor.getColumnIndex(Common.STARTDATETIME));
+                String[] parts = SdateTime.split(" ");
+                fellingTreeList.add(parts[0]);
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return fellingTreeList;
+    }
+
+    public ArrayList<String> getFellingRegistrationDate() {
+        ArrayList<String> fellingTreeList = new ArrayList<String>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * from " + Common.TBL_FELLINGREGISTRATIONLIST;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                String SdateTime = cursor.getString(cursor.getColumnIndex(Common.STARTDATETIME));
+                String[] parts = SdateTime.split(" ");
+                fellingTreeList.add(parts[0]);
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return fellingTreeList;
+    }
+
+    public boolean getSyncStatusForExportExcel(String FellingSecID) {
+        boolean Result = false;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "";
+            if (FellingSecID.length() == 0) {
+                selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONLIST + " where " + Common.SYNCSTATUS + " = " + 0;
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_FELLINGREGISTRATIONLIST + " where " + Common.FELLING_SECTIONID + " = " + FellingSecID + " and " + Common.SYNCSTATUS + " = " + 0;
+            }
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                Result = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getSyncStatusForExportExcel", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Result;
+    }
+
+    /*Export Load Plan*/
+    public ArrayList<String> getExportDate() {
+        ArrayList<String> fellingTreeList = new ArrayList<String>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * from " + Common.TBL_EXPORTLIST + " Where " + Common.ISACTIVE + "=1";
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                /*String SdateTime = cursor.getString(cursor.getColumnIndex(Common.STARTDATETIME));
+                String[] parts = SdateTime.split(" ");
+                fellingTreeList.add(parts[0]);*/
+                String OrderNumber = cursor.getString(cursor.getColumnIndex(Common.ORDERNO));
+                if (isNullOrEmpty(OrderNumber)) {
+                    OrderNumber = "N/A";
+                }
+                fellingTreeList.add(OrderNumber);
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return fellingTreeList;
+    }
+
+    public ArrayList<ExportModel> getExportList(String SelectedDate) {
+        ArrayList<ExportModel> ExportContainerListList = new ArrayList<ExportModel>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        String selectQuery = "";
+        try {
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " WHERE IsActive is null or  IsActive  = 1";
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " WHERE IsActive  = 1";
+            //String selectQuery = "SELECT * FROM " + Common.TBL_EXPORTLOADPLANLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+            if (isNullOrEmpty(SelectedDate) || SelectedDate.equals("N/A")) {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTLIST + " WHERE ifnull(OrderNo, '') = '' and " + Common.ISACTIVE + " = 1";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTLIST + " WHERE " + Common.ORDERNO + " = '" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+            }
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                exportListModel = new ExportModel();
+                exportListModel.setExportID(cursor.getInt(cursor.getColumnIndex(Common.EXPORTID)));
+                exportListModel.setExportUniqueID(cursor.getString(cursor.getColumnIndex(Common.EXPORTUNIQUEID)));
+                //exportListModel.setContainerNo(cursor.getString(cursor.getColumnIndex(Common.CONTAINERNO)));
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ORDERNO)))) {
+                    exportListModel.setOrderNo("N/A");
+                } else {
+                    exportListModel.setOrderNo(cursor.getString(cursor.getColumnIndex(Common.ORDERNO)));
+                }
+                exportListModel.setIMEI(cursor.getString(cursor.getColumnIndex(Common.IMEINumber)));
+                exportListModel.setLocationID(cursor.getInt(cursor.getColumnIndex(Common.LOCATIONID)));
+                exportListModel.setStartDateTime(cursor.getString(cursor.getColumnIndex(Common.STARTDATETIME)));
+                exportListModel.setEndDateTime(cursor.getString(cursor.getColumnIndex(Common.ENDDATETIME)));
+                exportListModel.setUserID(cursor.getInt(cursor.getColumnIndex(Common.USERID)));
+                exportListModel.setTotalCount(cursor.getInt(cursor.getColumnIndex(Common.COUNT)));
+                exportListModel.setVolume(cursor.getDouble(cursor.getColumnIndex(Common.VOLUME)));
+                exportListModel.setIsActive(cursor.getInt(cursor.getColumnIndex(Common.ISACTIVE)));
+                exportListModel.setSyncStatus(cursor.getInt(cursor.getColumnIndex(Common.SYNCSTATUS)));
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.SYNCTIME)))) {
+                    exportListModel.setSyncDate("");
+                } else {
+                    exportListModel.setSyncDate(cursor.getString(cursor.getColumnIndex(Common.SYNCTIME)));
+                }
+                ExportContainerListList.add(exportListModel);
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getExportLoadPlanList", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return ExportContainerListList;
+    }
+
+    public double TotalVolumeForExport(String SelectedDate) {
+        double TotVolume = 0.00;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        String selectQuery = "";
+        try {
+            //String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYCOUNTLIST + " where " + Common.ISACTIVE + " = " + 1;
+            //String selectQuery = "SELECT * FROM " + Common.TBL_EXPORTLOADPLANLIST + " WHERE substr(StartDateTime,1,11)='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+            if (isNullOrEmpty(SelectedDate) || SelectedDate.equals("N/A")) {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTLIST + " WHERE ifnull(OrderNo, '') = '' and " + Common.ISACTIVE + " = 1";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTLIST + " WHERE " + Common.ORDERNO + " ='" + SelectedDate + "' and " + Common.ISACTIVE + " = 1";
+            }
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                TotVolume = TotVolume + parseDouble(cursor.getString(cursor.getColumnIndex(Common.VOLUME)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "TotalVolumeForInventoryCount", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return TotVolume;
+    }
+
+    public boolean DeleteExportListID(int ExportID) {
+        boolean Flag = true;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "DELETE FROM " + Common.TBL_EXPORTLIST + " WHERE " + Common.EXPORTID + " = " + ExportID;
+            //Delete from InventoryCountList where ListID=6 and TotalCount=0
+            mDatabase.execSQL(selectQuery);
+            mDatabase.setTransactionSuccessful();
+            Flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "DeleteInventoryTransferListID", e.toString(), false);
+            Flag = false;
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Flag;
+    }
+
+    public boolean DeleteExportScanned(int ExportID) {
+        boolean Flag = true;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "DELETE FROM " + Common.TBL_EXPORTDETAILS + " WHERE " + Common.EXPORTID + " = " + ExportID;
+            mDatabase.execSQL(selectQuery);
+            mDatabase.setTransactionSuccessful();
+            Flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "DeleteInventoryTransferScanned", e.toString(), false);
+            Flag = false;
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Flag;
+    }
+
+    public boolean getExportOrderNoDuplicateCheck(String container_number) {
+        boolean Result = false;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * FROM " + Common.TBL_EXPORTDETAILS + " where " + Common.CONTAINERNO + "='" + container_number + "'";
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                Result = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getExportOrderNoDuplicateCheck", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Result;
+    }
+
+    /*Inventory Transfer Detials*/
+    public boolean insertExportIDList(String order_Number, String IMEI, int LocationID, String StartDate, String EndDate,
+                                      int UserID, int Count, String Volume, int Isactive, String ExporUniqueID) {
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Common.ORDERNO, order_Number);
+            //values.put(Common.CONTAINERNO, container_Number);
+            values.put(Common.IMEINumber, IMEI);
+            values.put(Common.LOCATIONID, LocationID);
+            values.put(Common.STARTDATETIME, StartDate);
+            values.put(Common.ENDDATETIME, EndDate);
+            values.put(Common.USERID, UserID);
+            values.put(Common.COUNT, Count);
+            values.put(Common.VOLUME, Volume);
+            values.put(Common.ISACTIVE, Isactive);
+            values.put(Common.EXPORTUNIQUEID, ExporUniqueID);
+            mDatabase.insert(Common.TBL_EXPORTLIST, null, values);
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "insertExportIDList", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return true;
+    }
+
+    public boolean UpdateExportUniqueID(int exportID, String exportUniqueID) {
+        boolean Flag = true;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String strSQL = "UPDATE " + Common.TBL_EXPORTLIST + " SET "
+                    + Common.EXPORTUNIQUEID + " = '" + exportUniqueID + "'" +
+                    " WHERE " + Common.EXPORTID + " = " + exportID;
+            mDatabase.execSQL(strSQL);
+            mDatabase.setTransactionSuccessful();
+            Flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "UpdateInventoryTransferUniqueID", e.toString(), false);
+            Flag = false;
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Flag;
+    }
+
+    public ArrayList<ExportDetailsModel> getExportDetailsList(int Export_ID, boolean ExpoDetailsFlag) {
+        int ID = 1;
+        ArrayList<ExportDetailsModel> exportList = new ArrayList<ExportDetailsModel>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        String selectQuery = "";
+        try {
+            if (ExpoDetailsFlag == true) {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTDETAILS + " where " + Common.EXPORTID + "=" + Export_ID + " and " + Common.ISACTIVE + " = 1";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTDETAILS + " where " + Common.EXPORTID + "=" + Export_ID + " and " + Common.ISACTIVE + " = 1";
+            }
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                exportDetailsModel = new ExportDetailsModel();
+                exportDetailsModel.setID(ID);
+                exportDetailsModel.setExportID(cursor.getInt(cursor.getColumnIndex(Common.EXPORTID)));
+                exportDetailsModel.setExportUniqueID(cursor.getInt(cursor.getColumnIndex(Common.EXPORTUNIQUEID)));
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.CONTAINERNO)))) {
+                    exportDetailsModel.setContainerNo("");
+                } else {
+                    exportDetailsModel.setContainerNo(cursor.getString(cursor.getColumnIndex(Common.CONTAINERNO)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DATETIME)))) {
+                    exportDetailsModel.setDateTime("");
+                } else {
+                    exportDetailsModel.setDateTime(cursor.getString(cursor.getColumnIndex(Common.DATETIME)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ORDERNO)))) {
+                    exportDetailsModel.setOrderNo("");
+                } else {
+                    exportDetailsModel.setOrderNo(cursor.getString(cursor.getColumnIndex(Common.ORDERNO)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.PVNO)))) {
+                    exportDetailsModel.setPvNo("");
+                } else {
+                    exportDetailsModel.setPvNo(cursor.getString(cursor.getColumnIndex(Common.PVNO)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.PVDATE)))) {
+                    exportDetailsModel.setPvDate("");
+                } else {
+                    exportDetailsModel.setPvDate(cursor.getString(cursor.getColumnIndex(Common.PVDATE)));
+                }
+                exportDetailsModel.setLocationID(cursor.getInt(cursor.getColumnIndex(Common.LOCATIONID)));
+                exportDetailsModel.setWoodSpieceID(cursor.getInt(cursor.getColumnIndex(Common.WoodSpiceID)));
+                exportDetailsModel.setUserID(cursor.getInt(cursor.getColumnIndex(Common.USERID)));
+                exportDetailsModel.setEntryMode(cursor.getInt(cursor.getColumnIndex(Common.ENTRYMODE)));
+                exportDetailsModel.setIsActive(cursor.getInt(cursor.getColumnIndex(Common.ISACTIVE)));
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.AGEOFLOG)))) {
+                    exportDetailsModel.setAgeOfLog("");
+                } else {
+                    exportDetailsModel.setAgeOfLog(cursor.getString(cursor.getColumnIndex(Common.AGEOFLOG)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.WoodSPiceCode)))) {
+                    exportDetailsModel.setWoodSpieceCode("");
+                } else {
+                    exportDetailsModel.setWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.WoodSPiceCode)));
+                }
+
+                exportDetailsModel.setSbbLabel(cursor.getString(cursor.getColumnIndex(Common.SBBLabel)));
+                exportDetailsModel.setDiameter(cursor.getString(cursor.getColumnIndex(Common.DIAMETER)));
+                exportDetailsModel.setQutDiameter(cursor.getString(cursor.getColumnIndex(Common.QUTDIAMETER)));
+
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DF1)))) {
+                    exportDetailsModel.setFooter_1("");
+                } else {
+                    exportDetailsModel.setFooter_1(cursor.getString(cursor.getColumnIndex(Common.DF1)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DF2)))) {
+                    exportDetailsModel.setFooter_2("");
+                } else {
+                    exportDetailsModel.setFooter_2(cursor.getString(cursor.getColumnIndex(Common.DF2)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DT1)))) {
+                    exportDetailsModel.setTop_1("");
+                } else {
+                    exportDetailsModel.setTop_1(cursor.getString(cursor.getColumnIndex(Common.DT1)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DT2)))) {
+                    exportDetailsModel.setTop_2("");
+                } else {
+                    exportDetailsModel.setTop_2(cursor.getString(cursor.getColumnIndex(Common.DT2)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.LENGTH)))) {
+                    exportDetailsModel.setLength("");
+                } else {
+                    exportDetailsModel.setLength(cursor.getString(cursor.getColumnIndex(Common.LENGTH)));
+                }
+                exportDetailsModel.setDateTime(cursor.getString(cursor.getColumnIndex(Common.DATETIME)));
+
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.PVDATE)))) {
+                    exportDetailsModel.setPvDate("");
+                } else {
+                    exportDetailsModel.setPvDate(cursor.getString(cursor.getColumnIndex(Common.PVDATE)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.QUTWOODSPECODE)))) {
+                    exportDetailsModel.setQutWoodSpieceCode("");
+                } else {
+                    exportDetailsModel.setQutWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.QUTWOODSPECODE)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.QUTTOTALCBM)))) {
+                    exportDetailsModel.setQutTotalCBM(0.00);
+                } else {
+                    exportDetailsModel.setQutTotalCBM(cursor.getDouble(cursor.getColumnIndex(Common.QUTTOTALCBM)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.VOLUME)))) {
+                    exportDetailsModel.setVolume(0.00);
+                } else {
+                    exportDetailsModel.setVolume(cursor.getDouble(cursor.getColumnIndex(Common.VOLUME)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ISVALIDPVNO)))) {
+                    exportDetailsModel.setIsValidPvNo(0);
+                } else {
+                    exportDetailsModel.setIsValidPvNo(cursor.getInt(cursor.getColumnIndex(Common.ISVALIDPVNO)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ISVALIDVOLUME)))) {
+                    exportDetailsModel.setIsValidVolume(0);
+                } else {
+                    exportDetailsModel.setIsValidVolume(cursor.getInt(cursor.getColumnIndex(Common.ISVALIDVOLUME)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ISVALIDWSCODE)))) {
+                    exportDetailsModel.setIsValidWSCode(0);
+                } else {
+                    exportDetailsModel.setIsValidWSCode(cursor.getInt(cursor.getColumnIndex(Common.ISVALIDWSCODE)));
+                }
+                exportList.add(exportDetailsModel);
+                ID = ID + 1;
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getExportDetailsList", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return exportList;
+    }
+
+    public ArrayList<ExportInputDetailsModel> getExportInputDetailsList(int Export_ID, boolean ExpoDetailsFlag) {
+        int ID = 1;
+        ArrayList<ExportInputDetailsModel> exportInputList = new ArrayList<ExportInputDetailsModel>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        String selectQuery = "";
+        try {
+            if (ExpoDetailsFlag == true) {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTDETAILS + " where " + Common.EXPORTID + "=" + Export_ID + " and " + Common.ISACTIVE + " = 1";
+            } else {
+                selectQuery = "SELECT * FROM " + Common.TBL_EXPORTDETAILS + " where " + Common.EXPORTID + "=" + Export_ID + " and " + Common.ISACTIVE + " = 1";
+            }
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                exportinputDetailsModel = new ExportInputDetailsModel();
+                exportinputDetailsModel.setID(ID);
+                exportinputDetailsModel.setExportId(cursor.getInt(cursor.getColumnIndex(Common.EXPORTID)));
+                exportinputDetailsModel.setExportUniqueID(cursor.getInt(cursor.getColumnIndex(Common.EXPORTUNIQUEID)));
+                exportinputDetailsModel.setContainerNo(cursor.getString(cursor.getColumnIndex(Common.CONTAINERNO)));
+                exportinputDetailsModel.setOrderNo(cursor.getString(cursor.getColumnIndex(Common.ORDERNO)));
+                exportinputDetailsModel.setPvNo(cursor.getString(cursor.getColumnIndex(Common.PVNO)));
+                exportinputDetailsModel.setLocationID(cursor.getInt(cursor.getColumnIndex(Common.LOCATIONID)));
+                exportinputDetailsModel.setWoodSpieceID(cursor.getInt(cursor.getColumnIndex(Common.WoodSpiceID)));
+                exportinputDetailsModel.setUserID(cursor.getInt(cursor.getColumnIndex(Common.USERID)));
+                exportinputDetailsModel.setEntryMode(cursor.getInt(cursor.getColumnIndex(Common.ENTRYMODE)));
+                exportinputDetailsModel.setIsActive(cursor.getInt(cursor.getColumnIndex(Common.ISACTIVE)));
+                exportinputDetailsModel.setPvNo(cursor.getString(cursor.getColumnIndex(Common.PVNO)));
+                exportinputDetailsModel.setAgeOfLog(cursor.getString(cursor.getColumnIndex(Common.AGEOFLOG)));
+                exportinputDetailsModel.setWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.WoodSPiceCode)));
+                exportinputDetailsModel.setSbbLabel(cursor.getString(cursor.getColumnIndex(Common.SBBLabel)));
+                exportinputDetailsModel.setDiameter(cursor.getString(cursor.getColumnIndex(Common.DIAMETER)));
+                exportinputDetailsModel.setQutDiameter(cursor.getString(cursor.getColumnIndex(Common.QUTDIAMETER)));
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DF1)))) {
+                    exportinputDetailsModel.setDF1("");
+                } else {
+                    exportinputDetailsModel.setDF1(cursor.getString(cursor.getColumnIndex(Common.DF1)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DF2)))) {
+                    exportinputDetailsModel.setDF2("");
+                } else {
+                    exportinputDetailsModel.setDF2(cursor.getString(cursor.getColumnIndex(Common.DF2)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DT1)))) {
+                    exportinputDetailsModel.setDT1("");
+                } else {
+                    exportinputDetailsModel.setDT1(cursor.getString(cursor.getColumnIndex(Common.DT1)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.DT2)))) {
+                    exportinputDetailsModel.setDT2("");
+                } else {
+                    exportinputDetailsModel.setDT2(cursor.getString(cursor.getColumnIndex(Common.DT2)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.LENGTH)))) {
+                    exportinputDetailsModel.setLength("");
+                } else {
+                    exportinputDetailsModel.setLength(cursor.getString(cursor.getColumnIndex(Common.LENGTH)));
+                }
+                exportinputDetailsModel.setDateTime(cursor.getString(cursor.getColumnIndex(Common.DATETIME)));
+
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.PVDATE)))) {
+                    exportinputDetailsModel.setPvDate("");
+                } else {
+                    exportinputDetailsModel.setPvDate(cursor.getString(cursor.getColumnIndex(Common.PVDATE)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.QUTWOODSPECODE)))) {
+                    exportinputDetailsModel.setQutWoodSpieceCode("");
+                } else {
+                    exportinputDetailsModel.setQutWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.QUTWOODSPECODE)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.QUTTOTALCBM)))) {
+                    exportinputDetailsModel.setQutTotalCBM(0.00);
+                } else {
+                    exportinputDetailsModel.setQutTotalCBM(cursor.getDouble(cursor.getColumnIndex(Common.QUTTOTALCBM)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.VOLUME)))) {
+                    exportinputDetailsModel.setVolume(0.00);
+                } else {
+                    exportinputDetailsModel.setVolume(cursor.getDouble(cursor.getColumnIndex(Common.VOLUME)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ISVALIDPVNO)))) {
+                    exportinputDetailsModel.setIsValidPvNo(0);
+                } else {
+                    exportinputDetailsModel.setIsValidPvNo(cursor.getInt(cursor.getColumnIndex(Common.ISVALIDPVNO)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ISVALIDVOLUME)))) {
+                    exportinputDetailsModel.setIsValidVolume(0);
+                } else {
+                    exportinputDetailsModel.setIsValidVolume(cursor.getInt(cursor.getColumnIndex(Common.ISVALIDVOLUME)));
+                }
+                if (isNullOrEmpty(cursor.getString(cursor.getColumnIndex(Common.ISVALIDWSCODE)))) {
+                    exportinputDetailsModel.setIsValidWSCode(0);
+                } else {
+                    exportinputDetailsModel.setIsValidWSCode(cursor.getInt(cursor.getColumnIndex(Common.ISVALIDWSCODE)));
+                }
+                exportInputList.add(exportinputDetailsModel);
+                ID = ID + 1;
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getExportDetailsList", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return exportInputList;
+    }
+
+    public String getLastExportID() {
+        String ExportID = "";
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT MAX(ExportID) as LastExportID FROM " + Common.TBL_EXPORTLIST;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                ExportID = (cursor.getString(cursor.getColumnIndex("LastExportID")));
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "DeleteInventoryTransferListID", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return ExportID;
+    }
+
+    public ArrayList<ExportDetailsModel> getExportLoadPlanContainerDetails(String vbb_number, int TransferID) {
+        ArrayList<ExportDetailsModel> scannedReusltList = new ArrayList<ExportDetailsModel>();
+        mDatabase = this.getReadableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * FROM " + Common.TBL_INVENTORYTRANSFERSCANNED + " where " + Common.TRANSFERID + "=" + TransferID + " and " + Common.ISACTIVE + " = 1";
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+               /* exportDetailsModel = new ExportDetailsModel();
+                exportDetailsModel.setSbbLabel(cursor.getString(cursor.getColumnIndex(Common.SBBLabel)));
+                exportDetailsModel.setLength(cursor.getInt(cursor.getColumnIndex(Common.LENGTH)));
+                exportDetailsModel.setBarCode(cursor.getString(cursor.getColumnIndex(Common.BARCODE)));
+                exportDetailsModel.setFromLocation(cursor.getString(cursor.getColumnIndex(Common.FROMLOCATION)));
+                exportDetailsModel.setToLocation(cursor.getString(cursor.getColumnIndex(Common.TOLOCATION)));
+                exportDetailsModel.setVolume(cursor.getString(cursor.getColumnIndex(Common.VOLUME)));
+                exportDetailsModel.setVBB_Number(cursor.getString(cursor.getColumnIndex(Common.VBBNUMBER)));
+                exportDetailsModel.setUserID(cursor.getString(cursor.getColumnIndex(Common.USERID)));
+                exportDetailsModel.setWoodSpieceID(cursor.getInt(cursor.getColumnIndex(Common.WoodSpiceID)));
+                exportDetailsModel.setWoodSpieceCode(cursor.getString(cursor.getColumnIndex(Common.WoodSPiceCode)));
+                exportDetailsModel.setIsActive(cursor.getInt(cursor.getColumnIndex(Common.ISACTIVE)));
+                exportDetailsModel.setQualitiy(cursor.getString(cursor.getColumnIndex(Common.QULAITY)));
+                exportDetailsModel.setFellingSectionId(cursor.getInt(cursor.getColumnIndex(Common.FELLING_SECTIONID)));
+                exportDetailsModel.setTreeNumber(cursor.getInt(cursor.getColumnIndex(Common.TREENO)));*/
+                //inventoryTransModel.setTransUniqueID(cursor.getString(cursor.getColumnIndex(TRANSFERUNIQUEID)));
+                scannedReusltList.add(exportDetailsModel);
+            }
+            mDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getInventoryTransferWithVBBNumber", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return scannedReusltList;
+    }
+
+    public boolean getExportLoadPlanListIDCheck(String SbbLabel) {
+        boolean Result = false;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * FROM " + Common.TBL_EXPORTDETAILS + " where " + Common.ISACTIVE + " = " + 1 + " and " + Common.SBBLabel + " = " + SbbLabel;
+            Cursor cursor = mDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                Result = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "getScannedResultWithMapListIDCheck", e.toString(), false);
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Result;
+    }
+
+    public boolean UpdateExportLoadPlanListID(String endDateTime, int ScannedCount, int ExportID, String VolumeSum, int Isactive, String CountUniqID) {
+        boolean Flag = true;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            String strSQL = "UPDATE " + Common.TBL_EXPORTLIST + " SET "
+                    + Common.ENDDATETIME + " = '" + endDateTime + "' , "
+                    + "[" + Common.COUNT + "]" + "= '" + ScannedCount + "', "
+                    + Common.ISACTIVE + " = '" + Isactive + "' , "
+                    + Common.EXPORTUNIQUEID + " = '" + CountUniqID + "' , "
+                    + Common.VOLUME + " = '" + VolumeSum + "'" +
+                    " WHERE " + Common.EXPORTID + " = " + ExportID;
+            mDatabase.execSQL(strSQL);
+            mDatabase.setTransactionSuccessful();
+            Flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "UpdateInventoryCountListID", e.toString(), false);
+            Flag = false;
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Flag;
+    }
+
+    public boolean insertExportDetailsResult(int ExportID, String ExportUniqueID, String OrderNo, String ContainerNo, int ToLocationID, String IMEI, String PvNo, String PvDate, String SbbLabel, String BarCode,
+                                             String WoodSpieceID, String QutWoodSpieceCode, String WoodSpieceCode, String AgeofLOG, String Df1, String Df2, String Dt1, String Dt2, String Length,
+                                             int UserID, int EntryMode, String TotCBM, String Volume, String DateTime, int IsActive, String NoteF, String NoteT, String NoteL, int IsValidVolume,
+                                             int IsValidWSCode, int IsValidDiameter, String Export_Diameter, String Export_TotDiameter) {
+        boolean Flag = true;
+        mDatabase = this.getWritableDatabase();
+        mDatabase.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Common.EXPORTID, ExportID);
+            values.put(Common.EXPORTUNIQUEID, ExportUniqueID);
+            values.put(Common.CONTAINERNO, OrderNo);
+            values.put(Common.CONTAINERNO, ContainerNo);
+            values.put(Common.PVNO, PvNo);
+            values.put(Common.PVDATE, PvDate);
+            values.put(Common.LOCATIONID, ToLocationID);
+            values.put(Common.IMEINumber, IMEI);
+            values.put(Common.SBBLabel, SbbLabel);
+            values.put(Common.BARCODE, BarCode);
+            values.put(Common.WoodSpiceID, WoodSpieceID);
+            values.put(Common.QUTWOODSPECODE, QutWoodSpieceCode);
+            values.put(Common.WoodSPiceCode, WoodSpieceCode);
+            values.put(Common.AGEOFLOG, AgeofLOG);
+            values.put(Common.DF1, Df1);
+            values.put(Common.DF2, Df2);
+            values.put(Common.DT1, Dt1);
+            values.put(Common.DT2, Dt2);
+            values.put(Common.LENGTH, Length);
+            values.put(Common.USERID, UserID);
+            values.put(Common.ENTRYMODE, EntryMode);
+            values.put(Common.QUTTOTALCBM, TotCBM);
+            values.put(Common.VOLUME, Volume);
+            values.put(Common.DATETIME, DateTime);
+            values.put(Common.ISACTIVE, IsActive);
+            values.put(Common.ISVALIDWSCODE, IsValidWSCode);
+            values.put(Common.ISVALIDDIAMETER, IsValidDiameter);
+            values.put(Common.DIAMETER, Export_Diameter);
+            values.put(Common.QUTDIAMETER, Export_TotDiameter);
+            mDatabase.insert(Common.TBL_EXPORTDETAILS, null, values);
+            mDatabase.setTransactionSuccessful();
+            Flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("I-DB-" + "insertExportDetailsResult", e.toString(), false);
+            Flag = false;
+        } finally {
+            mDatabase.endTransaction();
+            closeDatabase();
+        }
+        return Flag;
     }
 
 

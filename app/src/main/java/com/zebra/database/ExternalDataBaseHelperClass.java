@@ -266,8 +266,9 @@ public class ExternalDataBaseHelperClass extends SQLiteOpenHelper {
                 translogModel.setFellingSectionId(cursor.getString(cursor.getColumnIndex("FellingSectionId")));
                 translogModel.setQuality(cursor.getString(cursor.getColumnIndex("LogQuality")));
                 translogModel.setLogStatus(cursor.getString(cursor.getColumnIndex("LogStatus")));
+                translogModel.setLogStatus(cursor.getString(cursor.getColumnIndex("BarCode")));
                 labels.add(translogModel);
-                getAllTransferLogDetails.put(cursor.getString(cursor.getColumnIndex("SBBLabel")), labels);
+                getAllTransferLogDetails.put(cursor.getString(cursor.getColumnIndex("BarCode")), labels);
             }
             mExDatabase.setTransactionSuccessful();
         } catch (Exception e) {
@@ -608,6 +609,7 @@ public class ExternalDataBaseHelperClass extends SQLiteOpenHelper {
             Cursor cursor = mExDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 advanceSearchModel = new AdvanceSearchModel();
+                advanceSearchModel.setBarCode(cursor.getString(cursor.getColumnIndex("BarCode")));
                 advanceSearchModel.setSBBLabel(cursor.getString(cursor.getColumnIndex("SBBLabel")));
                 advanceSearchModel.setLength_dm(cursor.getString(cursor.getColumnIndex("Length_dm")));
                 advanceSearchModel.setVolume(cursor.getString(cursor.getColumnIndex("Volume")));
@@ -803,7 +805,7 @@ public class ExternalDataBaseHelperClass extends SQLiteOpenHelper {
         mExDatabase = this.getReadableDatabase();
         mExDatabase.beginTransaction();
         try {
-            String selectQuery = "SELECT DISTINCT PlotId,PlotNumber  FROM " + Common.ExternalDataBaseClass.TBL_FELLINGREGISTER + " where " + Common.ExternalDataBaseClass.ExPLOTNO + "='" + PlotNumber + "'";
+            String selectQuery = "SELECT DISTINCT PlotId,PlotNumber  FROM " + Common.ExternalDataBaseClass.TBL_FELLINGREGISTER + " where " + Common.ExternalDataBaseClass.ExPLOTNO + "='" + PlotNumber + "' and "+Common.FELLING_SECTIONID + "='" + Common.FellingSectionId + "'";
             Cursor cursor = mExDatabase.rawQuery(selectQuery, null);
             while (cursor.moveToNext()) {
                 fellingRegDistinctModel = new FellingRegisterWithPlotIDModel();
@@ -1623,6 +1625,45 @@ public class ExternalDataBaseHelperClass extends SQLiteOpenHelper {
             mExDatabase.close();
         }
         return Result;
+    }
+
+    public Map<String, ArrayList<TransferLogDetailsModel>> getAllExportListDetails() {
+        Map<String, ArrayList<TransferLogDetailsModel>> getAllTransferLogDetails = new HashMap<>();
+        mExDatabase = this.getReadableDatabase();
+        mExDatabase.beginTransaction();
+        try {
+            String selectQuery = "SELECT * FROM  " + Common.ExternalDataBaseClass.TBL_TRANSFERLOG;
+            Cursor cursor = mExDatabase.rawQuery(selectQuery, null);
+            while (cursor.moveToNext()) {
+                ArrayList<TransferLogDetailsModel> labels = new ArrayList<TransferLogDetailsModel>();
+                translogModel = new TransferLogDetailsModel();
+                translogModel.setLocationId(cursor.getString(cursor.getColumnIndex("LocationId")));
+                translogModel.setLocationName(cursor.getString(cursor.getColumnIndex("LocationName")));
+                translogModel.setPlotNo(cursor.getString(cursor.getColumnIndex("PlotNo")));
+                translogModel.setFellingSectionNumber(cursor.getString(cursor.getColumnIndex("FellingSectionNumber")));
+                translogModel.setHarvestCropsId(cursor.getString(cursor.getColumnIndex("HarvestCropsId")));
+                translogModel.setInStockId(cursor.getString(cursor.getColumnIndex("InStockId")));
+                translogModel.setTreeNumber(cursor.getString(cursor.getColumnIndex("TreeNumber")));
+                translogModel.setWoodSpeciesCode(cursor.getString(cursor.getColumnIndex("WoodSpeciesCode")));
+                translogModel.setSBBLabel(cursor.getString(cursor.getColumnIndex("SBBLabel")));
+                translogModel.setLength_dm(cursor.getString(cursor.getColumnIndex("Length_dm")));
+                translogModel.setVolume(cursor.getString(cursor.getColumnIndex("Volume")));
+                translogModel.setWoodSpeciesId(cursor.getString(cursor.getColumnIndex("WoodSpeciesId")));
+                translogModel.setFellingSectionId(cursor.getString(cursor.getColumnIndex("FellingSectionId")));
+                translogModel.setQuality(cursor.getString(cursor.getColumnIndex("LogQuality")));
+                translogModel.setLogStatus(cursor.getString(cursor.getColumnIndex("LogStatus")));
+                labels.add(translogModel);
+                getAllTransferLogDetails.put(cursor.getString(cursor.getColumnIndex("SBBLabel")), labels);
+            }
+            mExDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("E-DB-" + "getAllExportListDetails", e.toString(), false);
+        } finally {
+            mExDatabase.endTransaction();
+            mExDatabase.close();
+        }
+        return getAllTransferLogDetails;
     }
 
 

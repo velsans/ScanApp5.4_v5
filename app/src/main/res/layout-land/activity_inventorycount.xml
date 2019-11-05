@@ -94,10 +94,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/edittextstyle"
+                    android:background="@drawable/black_edittextstyle"
                     android:gravity="center"
                     android:hint="scan / enter barcode Manually"
-                    android:inputType="number"
+                    android:inputType="textCapCharacters"
                     android:maxLength="10"
                     android:padding="5dp"
                     android:textColor="@color/color_white"
@@ -221,7 +221,7 @@
                         android:gravity="center"
                         android:text="0"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/xlargeTextsize"
+                       android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
                     <TextView
@@ -244,7 +244,7 @@
                         android:paddingLeft="5dp"
                         android:text="0"
                         android:textColor="@color/color_white"
-                        android:textSize="@dimen/xlargeTextsize"
+                       android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
                 </LinearLayout>

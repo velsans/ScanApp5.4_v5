@@ -139,7 +139,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/edittextstyle"
+                        android:background="@drawable/black_edittextstyle"
                         android:gravity="center"
                         android:hint="Enter Old Transfer ID"
                         android:inputType="number"
@@ -160,7 +160,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/edittextstyle"
+                        android:background="@drawable/black_edittextstyle"
                         android:gravity="center"
                         android:hint="Enter VBB"
                         android:inputType="number"
@@ -682,7 +682,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/edittextstyle"
+                        android:background="@drawable/black_edittextstyle"
                         android:completionThreshold="1"
                         android:hint="Felling Section"
                         android:inputType="number"
@@ -912,7 +912,7 @@
             android:paddingLeft="5dp"
             android:text="0"
             android:textColor="@color/color_white"
-            android:textSize="@dimen/xlargeTextsize"
+           android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold" />
 
     </LinearLayout>

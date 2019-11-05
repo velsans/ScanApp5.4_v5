@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/fellingRegistrationLAY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="FELLING REGISTRATION"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/theme_background"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/fellingFilter_ATxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.3"
+                android:background="@drawable/black_edittextstyle"
+                android:completionThreshold="1"
+                android:hint="Felling Section"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/theme_border"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="CREATE FELLING REGISTRATION LIST"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/fellingRegScanListTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.4"
+                android:background="@color/colorPrimary"
+                android:src="@mipmap/addbutton" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:background="@color/colorPrimary_light"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:gravity="center"
+                android:text="Reg. ID"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:gravity="center"
+                android:text="Reg. No"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Reg DateTime"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="End DateTime"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:gravity="center"
+                android:text="Count"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:gravity="center"
+                android:text="Volume"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.12"
+                android:gravity="center"
+                android:text="Status"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sync Time"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.12"
+                android:gravity="center"
+                android:text="Print"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1.12"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Sync"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/SyncAllFR_checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="@color/color_white"
+                    android:visibility="gone"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.12"
+                android:gravity="center"
+                android:text="Delete"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fellingReg_RecyclerListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
+            android:layout_weight="1"
+            android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/FellingTotalLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:background="@color/colorPrimary_light"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@color/deeporange"
+            android:gravity="right|center"
+            android:paddingLeft="5dp"
+            android:text="Total Count : "
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TotalFilteredCount"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:paddingLeft="5dp"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/deeporange"
+            android:gravity="center|right"
+            android:paddingLeft="5dp"
+            android:text="Total Volume : "
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TotalFilteredVolume"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:paddingLeft="5dp"
+            android:text="0"
+            android:textColor="@color/color_white"
+           android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/FellSecExportTOExcel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:background="@color/deeporange"
+            android:src="@mipmap/excel" />
+
+        <ImageView
+            android:id="@+id/SendExceltoMail_IMG"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:background="@color/deeporange"
+            android:src="@mipmap/gmail" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/NovalueFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Value not found"
+        android:textColor="@color/color_black"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/GmailSend_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:visibility="gone"
+        android:clickable="true"
+        android:background="@color/transperantBlack"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="100dp"
+            android:background="@color/color_white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+                android:orientation="horizontal"
+                android:background="@color/colorPrimary_light">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="MAIL"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_black"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_weight="1"
+                    />
+
+                <ImageView
+                    android:id="@+id/buttonClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:src="@mipmap/delete_cross" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <EditText
+                    android:id="@+id/editTextTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Email Address!"
+                    android:layout_weight="1"
+                    android:textColor="@color/color_black"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:id="@+id/buttonAttachment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:src="@mipmap/attachment" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <EditText
+                    android:id="@+id/editTextSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Subject"
+                    android:layout_weight="1"
+                    android:textColor="@color/color_black"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:id="@+id/buttonSend"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:src="@mipmap/send" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/progressbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/progressbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
+    </LinearLayout>
+
+</FrameLayout>

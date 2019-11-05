@@ -1,9 +1,16 @@
 package com.zebra.utilities;
 
-import android.os.Environment;
+import android.graphics.Bitmap;
 import android.widget.ArrayAdapter;
 
+import com.zebra.R;
 import com.zebra.main.model.AdvanceSearchModel;
+import com.zebra.main.model.Export.ExportContainerDetailsModel;
+import com.zebra.main.model.Export.ExportDetailsModel;
+import com.zebra.main.model.Export.ExportInputDetailsModel;
+import com.zebra.main.model.Export.ExportModel;
+import com.zebra.main.model.Export.ExportSbblabelOutputModel;
+import com.zebra.main.model.Export.QuotationModel;
 import com.zebra.main.model.ExternalDB.AgencyDetailsModel;
 import com.zebra.main.model.ExternalDB.ConcessionNamesModel;
 import com.zebra.main.model.ExternalDB.DriverDetailsModel;
@@ -15,8 +22,6 @@ import com.zebra.main.model.ExternalDB.LocationsModel;
 
 
 import com.zebra.main.model.ExternalDB.LocationDevicesModel;
-import com.zebra.main.model.ExternalDB.LocationsModel;
-import com.zebra.main.model.ExternalDB.TransferLogDetails;
 import com.zebra.main.model.ExternalDB.TransferLogDetailsExModel;
 import com.zebra.main.model.ExternalDB.WoodSpeciesModel;
 import com.zebra.main.model.FellingRegistration.FellingTreeDetailsModel;
@@ -47,36 +52,56 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Common {
-    public static boolean AlertDialogVisibleFlag = true, AuthorizationFlag = false, ScanMode = true, IsNetworkConnection, IsConnected = true, IsExternalSync = false, IsPrintBtnClickFlag = true,
-            QRCodeScan = true, QrBarCodeScan = true, isSpinnerTouched = false, IsTransferEditListFlag = true, IsReceivedEditListFlag = true, IsFellingRegEditListFlag = true,
-            ScannedEditTXTFlag = false, IsEditorViewFlag = true, isFellingSpinnerTouched = true, IsSBBLabelCorrected = false, FellingRegSyncALL = false;
+    /*SVN Sample*/
+    public static boolean AlertDialogVisibleFlag = true, AuthorizationFlag = false, ScanMode = true, IsNetworkConnection, IsConnected = true, IsExternalSync = false,
+            IsPrintBtnClickFlag = true, QRCodeScan = true, QrBarCodeScan = true, isSpinnerTouched = false, IsTransferEditListFlag = true, IsReceivedEditListFlag = true,
+            IsFellingRegEditListFlag = true, ScannedEditTXTFlag = false, IsEditorViewFlag = true, isFellingSpinnerTouched = true, IsSBBLabelCorrected = false,
+            FellingRegSyncALL = false, InventoryCountSyncALL = false, InventoryTransferSyncALL = false, InventoryReceivedSyncALL = false, IsExportEditListFlag = true,
+            IsNewTreeNumberAdded = false;
 
-    public static String devAddress, TSCstatus, Printerstatus, ToLocationName, BarCode, SbbLabel, WoodSpieceID, WoodSpieceCode, DateTime, IMEI, StartDate,
+    public static String devAddress, TSCstatus, Printerstatus, ToLocationName, BarCode, SbbLabel, WoodSpieceID, OLDWoodSpieceCode, WoodSpieceCode, DateTime, IMEI, StartDate,
             EndDate, ReceivedDate, SyncTime, OrgSBBLabel, ServiceURLPath, Length, InventoryErrorMsg, RemoveSBBLabel, FromLocationname, AgencyName, TrucklicensePlateNo,
-            DriverName, NewClassificationName, NewSbblabel, VBB_Number, Volume, TransportMode, PACKAGE_NAME, VersionName, FellingSectionName, FellingSectionId, FellingSectionNumber, TreeNumber,
-            QualityName, CheckedFlag, CountUniqueID, TransferUniqueID, ReceivedUniqueID, TransferReciveUniqueID, FellingRegUniqueID, FellingRegDate, DeviceName, AppPackageName,
-            SyncStartDateTime, SyncEndDateTime, AppUpdateURL, VersionNamefromWebApi, FellingRegNo = "", FsWoodSpieceCode = "", FsWoodSpieceID = "", FsTreeNumber = "",
-            RecFromLocationname, LoadedName, OldWSCode, TreeDF1, TreeDF2, TreeDT1, TreeDT2, TreeLenght, SbbLabelDF1, SbbLabelDF2, SbbLabelDT1, SbbLabelDT2, SbbLabelLenght,
-            SbbLabelNoteF, SbbLabelNoteT, SbbLabelNoteL, UpdateSBBLabel, UpdateFellRegUnique, PlotNo, OldPlotNo, TreePart, UpdatedTreeNumber, ReceivedLoadedTypeName, ReceivedTransferID;
+            DriverName, NewClassificationName, NewSbblabel, VBB_Number, Order_Number, ContainerNo, OLDVolume, Volume, TransportMode, PACKAGE_NAME, VersionName, FellingSectionName,
+            FellingSectionId, FellingSectionNumber, TreeNumber, QualityName, CheckedFlag, CountUniqueID, TransferUniqueID, ReceivedUniqueID, TransferReciveUniqueID,
+            FellingRegUniqueID, FellingRegDate, DeviceName, AppPackageName, SyncStartDateTime, SyncEndDateTime, AppUpdateURL, VersionNamefromWebApi, FellingRegNo = "",
+            FsWoodSpieceCode = "", FsWoodSpieceID = "", FsTreeNumber = "", RecFromLocationname, LoadedName, OldWSCode, TreeDF1, TreeDF2, TreeDT1, TreeDT2, TreeLenght,
+            SbbLabelDF1, SbbLabelDF2, SbbLabelDT1, SbbLabelDT2, SbbLabelLenght, SbbLabelNoteF, SbbLabelNoteT, SbbLabelNoteL, UpdateSBBLabel, UpdateFellRegUnique, PlotNo,
+            OldPlotNo, TreePart, UpdatedTreeNumber, ReceivedLoadedTypeName, ReceivedTransferID, ExportUniqueID, Export_Diameter, Export_OLDDiameter, Export_treeNo, Export_Sbblabel,
+            Export_WSC, Export_PvNo, Export_PvDate, Export_AgeOFLog, Export_Footer_1, Export_Footer_2, Export_Top_1, Export_Top_2, Export_NoteT, Export_NoteF, Export_NoteL,
+            Export_Length, Export_Volume;
 
     public static int SPLASH_TIME_OUT = 3000;
     public static int NETWORK_TIME_OUT = 10000;
-    public static final int VVBLimitation = 21, FellingRegLimit = 17, SBBlenght = 7, ScannedValueLenght = 10, MinimumScannedItemSize = 5;
+    public static final int VVBLimitation = 21, FellingRegLimit = 17, SBBlenght = 10, ScannedValueLenght = 10, MinimumScannedItemSize = 5;
 
     public static int DATABASE_VERSION = 1, IsActive, EntryMode = 1, ListID = 0, ReceivedID = 0, TransferID = 0, SyncStatus, UserID, SyncListID, SyncBarCodeCount,
             LocationID, TransferAgencyID, DriverID, Count = 0, FromLocationID, TransportTypeId = 1, VersionCode, ToLocationID, FromTransLocID, ToLocaTransID, TransportId,
             classificationID, InventoryPageID = 1, CheckedSize = 0, TotalReceivedVVBLimitation, LDeviceID, ToLocReceivedID, FellingRegID, HttpResponceCode,
             AgencyDetailsIndex = 0, ConcessionNamesIndex = 0, DrivedDetailsIndex = 0, FellingRegistrationIndex = 0, FellingSectionIndex = 0, LocationDeviceIndex = 0,
             LocationsIndex = 0, TransferLogDetilsIndex = 0, TransportModesIndex = 0, TruckDetailsIndex = 0, WoodSpicesIndex = 0, LoadedIndex = 0, RecFromLocationID,
-            IsNewTreeNumber = 0, IsNewWSCode = 0, LoadedTypeID = 1, ReceivedLoadedTypeID = 0, TreeFromLocation, PlotId, IsNewPlotNumber = 0, IsNewWoodSpiceCode = 0;
-    // Common.TotalfellingRegisterScannedItems= cursor.getCount();
-    public static double VolumeSum, DensityOFWood = 0.7854;
+            IsNewTreeNumber = 0, IsNewWSCode = 0, LoadedTypeID = 2, ReceivedLoadedTypeID = 0, TreeFromLocation, PlotId, IsNewPlotNumber = 0, IsNewWoodSpiceCode = 0,
+            InveCountSyncALlIndex = 0, InveTransferSyncALlIndex = 0, InveReceivedSyncALlIndex = 0, FellingRegSyncALlIndex = 0, InventCountDateSelectedIndex = 0, InventTransDateSelectedIndex = 0,
+            InventReceivedDateSelectedIndex = 0, FellingRegSelectedIndex = 0, ExportDateSelectedIndex = 0, Export_Count, ExportID, IsValidPvNo, IsValidVolume = 0, IsValidWSCode, IsValidDiameter;
+
+    public static double VolumeSum, DensityOFWood = 0.7854, ExportSingleContainerTotValue = 20.8;
     public static String INTERNAL_DB_Path = "/data/com.zebra/databases/GWW.db";
     public static String INTERNAL_DB_Path1 = "/data/com.zebra/databases/";
     public static String EXTERNAL_MASTER_DB_NAME = "GWW.db";
     public static final String INTERNELDBNAME = "GWWINTERNAL.db";
     public static String[] Tabs = {"FELLING REGISTRATION", "INVENTORY COUNT", "INVENTORY TRANSFER", "INVENTORY RECEIVED"};
+    public static String[] defaultDevicePer = {"Count", "LoadedBy Truck", "LoadedBy Boat", "Received", "Fuel Filling", "Felling Registration","Export"};
+    public static int[] defaultDevicePer_img = {R.mipmap.count, R.mipmap.trans_truck, R.mipmap.trans_boat, R.mipmap.received, R.mipmap.fuel_filling,
+            R.mipmap.fellingregistration,R.mipmap.export};
+    public static ArrayList<String> POSDefault_ClientProducts = new ArrayList<>();
+    public static ArrayList<Bitmap> POSDefault_ClientProducts_img = new ArrayList<>();
+    public static ArrayList<String> Filter_ClientProdName = new ArrayList<>();
+    public static ArrayList<Bitmap> Filter_ClientProdImg = new ArrayList<>();
 
+    public static ArrayList<String> Filter_InventoryCountDate = new ArrayList<>();
+    public static ArrayList<String> Filter_InventoryTransDate = new ArrayList<>();
+    public static ArrayList<String> Filter_InventoryReceivedDate = new ArrayList<>();
+    public static ArrayList<String> Filter_FellingRegistrationDate = new ArrayList<>();
+    public static ArrayList<String> Filter_ExportDate = new ArrayList<>();
     public static DecimalFormat decimalFormat = new DecimalFormat("###,###.####");
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
@@ -102,6 +127,7 @@ public class Common {
     public static ArrayList<TruckDetailsModel> TruckDeatilsList = new ArrayList<TruckDetailsModel>();
     public static ArrayList<WoodSpeciesModel> WoodSpeicesDeatilsList = new ArrayList<WoodSpeciesModel>();
     public static ArrayList<WoodSpeciesModel> WoodSpeicesFilterDeatilsList = new ArrayList<WoodSpeciesModel>();
+    public static ArrayList<ExportModel> ExportList = new ArrayList<ExportModel>();
 
     public static String[] ConcessionListStringList;
     public static String[] DriverListStringList;
@@ -116,9 +142,7 @@ public class Common {
     public static ArrayList<ScannedResultModel> ScannnedResultList = new ArrayList<ScannedResultModel>();
     public static ArrayList<AdvanceSearchModel> AdvancedSearchList = new ArrayList<AdvanceSearchModel>();
 
-
     public static ArrayList<InventoryTransferInputListModel> InventoryTransferInputList = new ArrayList<InventoryTransferInputListModel>();
-
 
     public static ArrayAdapter<String> mPairedDevicesArrayAdapter;
 
@@ -146,11 +170,18 @@ public class Common {
     public static String[] FellingRegTreeNoStringList;
     public static String[] FellingRegPlotNoStringList;
     public static String[] FellingRegTreePartStringList = new String[]{"A", "B", "C", "D"};
-    public static String[] FellingRegExcelExportList = new String[]{"FellingRegistrationList", "FellingRegistrationDetails"};
+    public static String[] FellingRegExcelExportList = new String[]{"FellingRegistrationList", "FellingRegistrationDetails", "FellingTreeDetails"};
     public static ArrayList<FellingRegisterResultModel> FellingRegisterLogsExportDetails = new ArrayList<FellingRegisterResultModel>();
+    public static ArrayList<FellingTreeDetailsModel> FellingExportTreeDetailsList = new ArrayList<FellingTreeDetailsModel>();
+
 
     public static String[] FellingRegWoodSpeicesStringList;
     public static ArrayList<String> TreeNosList = new ArrayList<>();
+    public static ArrayList<ExportDetailsModel> ExportDetailsList = new ArrayList<ExportDetailsModel>();
+    public static ArrayList<ExportDetailsModel> ExportDetailsInputList = new ArrayList<ExportDetailsModel>();
+    public static ArrayList<ExportContainerDetailsModel> ExportHeaderList = new ArrayList<ExportContainerDetailsModel>();
+    public static ArrayList<ExportSbblabelOutputModel> AllExportLoadPlanDetailsmap = new ArrayList<ExportSbblabelOutputModel>();
+    public static ArrayList<QuotationModel> QuotationDetailsList = new ArrayList<QuotationModel>();
 
 
     /*DataBase Details*/
@@ -158,7 +189,7 @@ public class Common {
             TBL_INVENTORYTRANSFERSCANNED = "InventoryTransfer", TBL_INVENTORYTRANSFERIDLIST = "InventoryTransferList",
             TBL_INVENTORYRECEIVED = "InventoryReceived", TBL_INVENTORYRECEIVEDLIST = "InventoryReceivedList",
             TBL_FELLINGREGISTRATIONLIST = "FellingRegistrationList", TBL_FELLINGREGISTRATIONDETAILS = "FellingRegistrationDetails",
-            TBL_LOGINAUTHENTICATION = "LoginAuthentication", TBL_FELLINGTREEDETAILS = "FellingTreeDetails";
+            TBL_LOGINAUTHENTICATION = "LoginAuthentication", TBL_FELLINGTREEDETAILS = "FellingTreeDetails", TBL_EXPORTLIST = "ExportList", TBL_EXPORTDETAILS = "ExportDetails";
     public static final String LOCATION_ID = "ToLocationID", LOCATION_NAME = "ToLocationName", FROMLOCATION = "FromLocation", FROMLOCATIONID = "FromLocationID", SBBLabel = "SbbLabel",
             WoodSpiceID = "WoodSpieceID", WoodSPiceCode = "WoodSpieceCode", DATETIME = "DateTime", IMEINumber = "IMEI", BARCODE = "BarCode", ISACTIVE = "IsActive", ENTRYMODE = "EntryMode",
             LISTID = "ListID", ISSBLABELCORRECT = "IsSBBLabelCorrected", ORGSBBLABEL = "OrgSBBLabel", VBBNUMBER = "VBB_Number", STARTDATETIME = "StartDateTime", ENDDATETIME = "EndDateTime",
@@ -169,7 +200,10 @@ public class Common {
             FELLINGREGDATE = "FellingRegistrationDate", LOCATIONID = "LocationID", FELLIINGREGUNIQUEID = "FellingRegistrationUniqueID", RECEIVEDUNIQUEID = "ReceivedUniqueID",
             COUNTUNIQUEID = "CountUniqueID", ISNEWTREENO = "IsNewTreeNumber", ISWOODSPECODE = "IsWoodSpieceCode", ISOLDWOODSPECODE = "IsOldWoodSpieceCode", OLDWOODSPECODE = "OldWoodSpieceCode",
             LOADEDID = "Loadedid", NAME = "Name", LOADEDTYPE = "LoadedTypeID", DF1 = "Footer_1", DF2 = "Footer_2", DT1 = "Top_1", DT2 = "Top_2", NOTET = "NoteT", NOTEF = "NoteF", NOTEL = "NoteL",
-            PLOTID = "PlotId", PLOTNO = "PlotNo", OLDPLOTNO = "OldPlotNo", TREEPARTTYPE = "TreePartType", ISNEWPLOTNO = "IsNewPlotNumber", LOCATION = "Location";
+            PLOTID = "PlotId", PLOTNO = "PlotNo", OLDPLOTNO = "OldPlotNo", TREEPARTTYPE = "TreePartType", ISNEWPLOTNO = "IsNewPlotNumber", LOCATION = "Location", EXPORTUNIQUEID = "ExportUniqueID",
+            ORDERNO = "OrderNo", CONTAINERNO = "ContainerNo", AGEOFLOG = "AgeOfLog", PVNO = "PvNo", PVDATE = "PvDate", EXPORTID = "ExportID", QUTTOTALCBM = "QutTotalCBM",ISVALIDPVNO = "IsValidPvNo",
+            ISVALIDVOLUME = "IsValidVolume", ISVALIDWSCODE = "IsValidWSCode", Quotation_NO = "QuotNum", DIAMETER = "Diameter", QUTWOODSPECODE = "QutWoodSpieceCode",QUTDIAMETER = "QutDiameter",
+            ISVALIDDIAMETER = "IsValidDiameter";
 
     public class ExternalDataBaseClass {
         public static final String WOODSpeciesCODE = "WoodSpeciesCode", TBL_TRANSFERLOG = "TransferLogDetails", TBL_CONCESSION = "ConcessionNames", TBL_DRIVER = "DriverDetails",

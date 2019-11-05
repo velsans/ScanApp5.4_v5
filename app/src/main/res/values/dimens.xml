@@ -8,7 +8,7 @@
     <dimen name="scanbuttonSize">100dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
-
+    <dimen name="normalSize">13.5sp</dimen>
     <dimen name="largeTextsize">15sp</dimen>
     <dimen name="xlargeTextsize">20sp</dimen>
 

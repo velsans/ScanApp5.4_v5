@@ -4,9 +4,11 @@
     <color name="colorPrimary">#2e7d32</color>
     <color name="colorPrimary_light">#4caf50</color>
     <color name="colorAccent">#f44336</color>
+    <color name="colorgGreenSmooth">#E5FFE5</color>
 
     <color name="blacktransper">#BF000000</color>
 
+    <color name="syncdetailsColor">#dbe1dd</color>
     <color name="divider">#BDBDBD</color>
     <color name="TabColor">#A22326</color>
 
@@ -30,5 +32,6 @@
     <color name="orange">#ff6d00</color>
     <color name="deeporange">#dd2c00</color>
     <color name="brown">#6d4c41</color>
+    <color name="backgroud">#26272B</color>
 
 </resources>

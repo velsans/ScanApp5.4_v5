@@ -480,5 +480,62 @@ public class InternalDataBaseTabelsClass {
         return SqlCreateQuery;
     }
 
+    public String ExportLoadPlanList5_7() {
+        String SqlCreateQuery = "CREATE TABLE IF NOT EXISTS " + Common.TBL_EXPORTLIST + "("
+                + Common.EXPORTID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + Common.EXPORTUNIQUEID + " TEXT,"
+                + Common.ORDERNO + " TEXT,"
+                + Common.IMEINumber + " TEXT,"
+                + Common.LOCATIONID + " INTEGER,"
+                + Common.STARTDATETIME + " TEXT,"
+                + Common.ENDDATETIME + " TEXT,"
+                + Common.USERID + " INTEGER,"
+                + Common.COUNT + " INTEGER,"
+                + Common.VOLUME + " TEXT,"
+                + Common.SYNCSTATUS + " INTEGER,"
+                + Common.SYNCTIME + " TEXT,"
+                + Common.ISACTIVE + " INTEGER)";
+        return SqlCreateQuery;
+    }
+
+    public String ExportLoadPlanDetails5_7() {
+        String SqlCreateQuery = "CREATE TABLE IF NOT EXISTS " + Common.TBL_EXPORTDETAILS + "("
+                + "ID" + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + Common.EXPORTID + " INTEGER,"
+                + Common.EXPORTUNIQUEID + " INTEGER,"
+                + Common.ORDERNO + " TEXT,"
+                + Common.CONTAINERNO + " TEXT,"
+                + Common.PVNO + " TEXT,"
+                + Common.PVDATE + " TEXT,"
+                + Common.LOCATIONID + " TEXT,"
+                + Common.IMEINumber + " TEXT,"
+                + Common.SBBLabel + " TEXT,"
+                + Common.BARCODE + " TEXT,"
+                + Common.WoodSpiceID + " INTEGER,"
+                + Common.QUTWOODSPECODE + " TEXT,"
+                + Common.WoodSPiceCode + " TEXT,"
+                + Common.AGEOFLOG + " TEXT,"
+                + Common.DF1 + " TEXT,"
+                + Common.DF2 + " TEXT,"
+                + Common.DT1 + " TEXT,"
+                + Common.DT2 + " TEXT,"
+                + Common.LENGTH + " TEXT,"
+                + Common.NOTEF + " TEXT,"
+                + Common.NOTET + " TEXT,"
+                + Common.NOTEL + " TEXT,"
+                + Common.USERID + " TEXT,"
+                + Common.ENTRYMODE + " INTEGER,"
+                + Common.QUTTOTALCBM + " TEXT,"
+                + Common.VOLUME + " TEXT,"
+                + Common.DATETIME + " TEXT,"
+                + Common.ISVALIDPVNO + " INTEGER,"
+                + Common.ISVALIDVOLUME + " INTEGER,"
+                + Common.ISVALIDWSCODE + " INTEGER,"
+                + Common.DIAMETER + " TEXT,"
+                + Common.QUTDIAMETER + " TEXT,"
+                + Common.ISVALIDDIAMETER + " INTEGER,"
+                + Common.ISACTIVE + " INTEGER)";
+        return SqlCreateQuery;
+    }
 }
 

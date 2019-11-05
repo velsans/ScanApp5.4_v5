@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/inventorycountLAY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/theme_background"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:backgroundTint="@color/color_white"
+                android:hint="to Location"
+                android:overlapAnchor="false"
+                android:popupBackground="@color/cyan"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="CREATE EXPORT LIST"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/exportOrderEditTXT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/black_edittextstyle"
+                android:gravity="center"
+                android:hint="OrderNo"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/theme_border" />
+
+            <EditText
+                android:id="@+id/exportContainerEditTXT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/black_edittextstyle"
+                android:gravity="center"
+                android:hint="ContainerNo"
+                android:inputType="text"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textColor="@color/color_white"
+                android:textColorHint="@color/theme_border" />
+
+            <Button
+                android:id="@+id/exportLoadPlancreateListTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@color/colorAccent"
+                android:text="New Export"
+                android:textColor="@color/color_white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/theme_border"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_large"
+                    android:background="@color/backgroud"
+                    android:gravity="center"
+                    android:text="Order No"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/exportloadplanListViewDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_white"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        android:text="ORDER DETAILS"
+                        android:textColor="@color/color_white"
+                        android:background="@color/colorPrimary_light"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:background="@color/colorPrimary_light"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:text="Exp ID"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:text="Order ID "
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="IMEI"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:text="Contr No"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="StartTime"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="EndTime"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:text="Count"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:text="Volume"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:text="Delete"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/exportloadplanListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
+                        android:layout_below="@+id/layout_title"
+                        android:background="@color/theme_background">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_large"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:background="@color/colorPrimary_light"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:background="@color/deeporange"
+                        android:gravity="right|center"
+                        android:paddingLeft="5dp"
+                        android:text="Total Count : "
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/TotalFilteredCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/deeporange"
+                        android:gravity="center|right"
+                        android:paddingLeft="5dp"
+                        android:text="Total Volume : "
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/TotalFilteredVolume"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="5dp"
+                        android:text="0"
+                        android:textColor="@color/color_white"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/progressbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/NovalueFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Value not found"
+        android:textColor="@color/color_black"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+</FrameLayout>

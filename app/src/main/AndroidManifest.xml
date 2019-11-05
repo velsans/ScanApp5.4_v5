@@ -2,6 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zebra">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:icon="@mipmap/applogo"
         android:label="@string/app_name"
@@ -9,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".main.activity.LoginActivity"
+            android:name=".main.activity.Common.LoginActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -19,50 +37,59 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.activity.InventoryFragmentActivity"
+            android:name=".main.activity.Common.InventoryFragmentActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".main.activity.InventoryActivity"
+            android:name=".main.activity.Common.InventoryActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
-            android:name=".main.activity.InventoryCountActivity"
+            android:name=".main.activity.Count.InventoryCountActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".main.activity.InventoryReceivedActivity"
+            android:name=".main.activity.Received.InventoryReceivedActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".main.activity.InventoryTransferActivity"
+            android:name=".main.activity.Transfer.InventoryTransferActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".main.activity.FellingRegistrationActivity"
+            android:name=".main.activity.FellingRegistration.FellingRegistrationActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".main.activity.Common.GwwMainActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".main.activity.Count.InventoryCountListActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".main.activity.Transfer.InventoryTransferListActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".main.activity.Received.InventoryReceivedListActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".main.activity.FellingRegistration.FellingRegistationListActivitiy"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".main.activity.Export.ExportListActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".main.activity.Export.ExportDetailsActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <service android:name=".main.sdl.SdlScanService" />
     </application>
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest>

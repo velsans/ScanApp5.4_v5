@@ -75,7 +75,7 @@
             android:id="@+id/fellingReg_StatusTxT"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.13"
+            android:layout_weight="1.12"
             android:gravity="center"
             android:text="Status"
             android:textColor="@color/color_black"

@@ -1,7 +1,7 @@
 package com.zebra.main.model.ExternalDB;
 
 public class TransferLogDetailsModel {
-    String  LocationId,
+    String LocationId,
             LocationName,
             PlotNo,
             FellingSectionNumber,
@@ -15,7 +15,16 @@ public class TransferLogDetailsModel {
             WoodSpeciesId,
             FellingSectionId,
             Quality,
+            BarCode,
             LogStatus;
+
+    public String getBarCode() {
+        return BarCode;
+    }
+
+    public void setBarCode(String barCode) {
+        BarCode = barCode;
+    }
 
     public String getLocationId() {
         return LocationId;

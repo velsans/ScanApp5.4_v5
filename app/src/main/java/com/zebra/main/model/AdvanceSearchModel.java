@@ -1,7 +1,7 @@
 package com.zebra.main.model;
 
 public class AdvanceSearchModel {
-    String SBBLabel, Length_dm, Volume, WoodSpeciesCode, FellingSectionId, TreeNumber, Classification,F1,F2,T1,T2;
+    String BarCode,SBBLabel, Length_dm, Volume, WoodSpeciesCode, FellingSectionId, TreeNumber, Classification,F1,F2,T1,T2;
     int WoodSpeciesId;
     boolean Exisiting;
 
@@ -107,5 +107,13 @@ public class AdvanceSearchModel {
 
     public void setClassification(String classification) {
         Classification = classification;
+    }
+
+    public String getBarCode() {
+        return BarCode;
+    }
+
+    public void setBarCode(String barCode) {
+        BarCode = barCode;
     }
 }

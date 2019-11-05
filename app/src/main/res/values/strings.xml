@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">GWW-5.4-V5</string>
+    <string name="app_name">GWW-5.7-V7</string>
     <string name="ValidBarCodeMsg">Enter valid Barcode</string>
-    <string name="BarCodeLenghtMsg">SBB Label lenght should be 7</string>
+    <string name="BarCodeLenghtMsg">SBB Label lenght should be 10</string>
     <string name="OldTransferHead">Old TransferID</string>
     <string name="OldTransferMsg">please enter Transfer ID</string>
     <string name="OldTransferIDLenghtMsg">Transfer ID lenght should be more then 9</string>
@@ -21,10 +21,12 @@
 
     <string name="PrinterHDmsg">please check the printer either connected or not</string>
 
+    <string name="CountHead">Inventory Count</string>
     <string name="TransferHead">Inventory Transer</string>
     <string name="TransferMessage">Please add atleast one item </string>
     <string name="ReceivedHead">Inventory Received</string>
     <string name="FellingRegisterHead">Felling Registration</string>
+    <string name="ExportHead">Export</string>
     <string name="ExtenalDBHead">External DataBase Sync</string>
 
     <string name="LoginHD">Login</string>

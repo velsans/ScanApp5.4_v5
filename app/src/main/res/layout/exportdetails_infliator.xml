@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/exportlayoutBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/export_removeBarCode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:background="@color/red">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:src="@mipmap/ic_delete_forever_white_24dp"
+                android:textColor="@android:color/black"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/export_sbblabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="123456789"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_speiceCode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="ABCDEFGH"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_DiameterSizes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Dia Sizes"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_TotCBM"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Tot CBM"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_SelectedCBM"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:gravity="center"
+            android:text="CBM"
+            android:textColor="@color/color_black" />
+
+    </LinearLayout>
+
+</LinearLayout>

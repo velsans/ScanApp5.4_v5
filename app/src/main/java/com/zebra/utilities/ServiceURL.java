@@ -12,7 +12,8 @@ public class ServiceURL {
     public final static String ServiceURLPathLocalNetwork = "http://10.200.10.15:8085/GWWHHDeviceAPI";
     /*public final static String ServiceURLPathLocalNetwork = "http://192.162.248.240/RetailerCollection/RetailerCollectionAPI";*/
     public final static String ServiceURLPathLiveNetwork = "http://dv.ysecit.com/GWWHHDeviceAPI";
-    public final static String LoginRegContraollerNme = "Verification", DenoControllerName = "ClientInfo", ControllorName = "ScannedResult";
+    public final static String SubServerServiceURLPathLiveNetwork = "http://10.10.13.89";
+    public final static String LoginRegContraollerNme = "Verification", DenoControllerName = "ClientInfo", ControllorName = "ScannedResult",ExportControllerName="Export";
     private static Context _context;
     private final static int TIME_OUT = 5000; // Millisecond
     public static boolean CONNECTION_AVAILABILITY = true;

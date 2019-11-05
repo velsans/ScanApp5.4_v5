@@ -26,8 +26,7 @@ import com.google.gson.Gson;
 import com.zebra.R;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
-import com.zebra.main.activity.InventoryActivity;
-import com.zebra.main.activity.InventoryReceivedActivity;
+import com.zebra.main.activity.Received.InventoryReceivedActivity;
 import com.zebra.main.model.InvReceived.InventoryReceivedListModel;
 import com.zebra.main.model.InvReceived.InventoryReceivedModel;
 import com.zebra.main.model.InvReceived.InventoryReceivedSyncModel;
@@ -141,7 +140,7 @@ public class InventoryReceivedFragments extends Fragment {
     private void GetInventoryReceivedList() {
         try {
             Common.InventoryReceivedList.clear();
-            Common.InventoryReceivedList = mDBInternalHelper.getInventoryReceivedIdList();
+            Common.InventoryReceivedList = mDBInternalHelper.getInventoryReceivedIdList(Common.Filter_InventoryReceivedDate.get(Common.InventReceivedDateSelectedIndex));
             if (Common.InventoryReceivedList.size() > 0) {
                 invenRecievadapter = new InventorReceivedAdapter(Common.InventoryReceivedList, getActivity());
                 horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
@@ -172,7 +171,7 @@ public class InventoryReceivedFragments extends Fragment {
                         Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TrucklicensePlateNo, Common.UserID, Common.Count,
                         Common.SyncStatus, Common.SyncTime, Common.Volume, 1, Common.ReceivedUniqueID);
                 if (ListIdFlag == true) {
-                    Common.InventoryReceivedList = mDBInternalHelper.getInventoryReceivedIdList();
+                    Common.InventoryReceivedList = mDBInternalHelper.getInventoryReceivedIdList(Common.Filter_InventoryReceivedDate.get(Common.InventReceivedDateSelectedIndex));
                     if (Common.InventoryReceivedList.size() > 0) {
                         Common.ReceivedID = Integer.parseInt(mDBInternalHelper.getLastReceivedID());
                         String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());

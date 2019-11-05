@@ -28,8 +28,7 @@ import com.google.gson.Gson;
 import com.zebra.R;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
-import com.zebra.main.activity.InventoryTransferActivity;
-import com.zebra.main.model.InvCount.InventoryCountSyncModel;
+import com.zebra.main.activity.Transfer.InventoryTransferActivity;
 import com.zebra.main.model.InvTransfer.InventoryTransferModel;
 import com.zebra.main.model.InvTransfer.InventoryTransferScannedResultModel;
 import com.zebra.main.model.InvTransfer.InventoryTransferSyncModel;
@@ -172,7 +171,7 @@ public class InventoryTransferFragments extends Fragment {
                         Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TrucklicensePlateNo, Common.UserID, Common.Count,
                         Common.SyncStatus, Common.SyncTime, Common.Volume, 1, Common.TransferUniqueID);
                 if (ListIdFlag == true) {
-                    Common.InventoryTransferList = mDBInternalHelper.getInventoryTransferIdList();
+                    Common.InventoryTransferList = mDBInternalHelper.getInventoryTransferIdList(Common.Filter_InventoryTransDate.get(Common.InventTransDateSelectedIndex));
                     if (Common.InventoryTransferList.size() > 0) {
                         Common.TransferID = Integer.parseInt(mDBInternalHelper.getLastTransferID());
                         String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
@@ -199,7 +198,7 @@ public class InventoryTransferFragments extends Fragment {
     public void GetInventoryTransferList() {
         try {
             Common.InventoryTransferList.clear();
-            Common.InventoryTransferList = mDBInternalHelper.getInventoryTransferIdList();
+            Common.InventoryTransferList = mDBInternalHelper.getInventoryTransferIdList(Common.Filter_InventoryTransDate.get(Common.InventTransDateSelectedIndex));
             if (Common.InventoryTransferList.size() > 0) {
                 invenTransadapter = new InventoryTransferAdapter(Common.InventoryTransferList, getActivity());
                 horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
