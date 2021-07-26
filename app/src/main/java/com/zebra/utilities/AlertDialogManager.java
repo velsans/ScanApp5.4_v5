@@ -1,14 +1,15 @@
 package com.zebra.utilities;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
 import com.zebra.R;
 
+import androidx.appcompat.app.AlertDialog;
+
 public class AlertDialogManager {
     AlertDialog alertDialog = null;
-    AlertDialog.Builder builder1 = null;
 
     public void showAlertDialog(final Context context, String title, String message,
                                 Boolean status) {
@@ -24,7 +25,7 @@ public class AlertDialogManager {
             // Setting alert dialog collector
             alertDialog.setIcon((status) ? R.mipmap.success : R.mipmap.fail);
         // Setting OK Button
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(Dialog.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Common.AlertDialogVisibleFlag = true;
                 if (Common.AuthorizationFlag == true) {

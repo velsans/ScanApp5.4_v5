@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zebra.R;
-import com.zebra.main.model.ExternalDB.ConcessionNamesModel;
+import com.zebra.main.model.externaldb.ConcessionNamesModel;
 
 import java.util.ArrayList;
 

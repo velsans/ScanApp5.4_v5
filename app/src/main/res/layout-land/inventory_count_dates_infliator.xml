@@ -23,4 +23,5 @@
             android:textColor="@color/color_black"
             />
     </LinearLayout>
+
 </FrameLayout>

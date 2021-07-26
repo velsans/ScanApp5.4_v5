@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/container_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:layout_alignParentTop="true"
+        android:background="@color/TabColor"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="ContainerNo"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Log Count"
+            android:visibility="visible"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Total Gross Volume"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Total Volume"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/add_containerIMG"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.08"
+            app:srcCompat="@mipmap/addbutton"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.08"
+            android:visibility="invisible"
+            app:srcCompat="@mipmap/edit"
+            />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RV_ContainerFrg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/Container_bottom_layout"
+        android:layout_below="@+id/container_header_layout"></androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/Container_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:layout_alignParentBottom="true"
+        android:background="@color/TabColor"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right|center"
+            android:paddingRight="10dp"
+            android:text="TOTAL :"
+            android:background="@color/colorbtnsplash"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ContainerTotalScanLogs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ContainerTotScanLogsCountVolumeTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorbtnsplash"
+            android:gravity="center"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <!--<ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="1.3"
+            android:background="@color/red"
+            android:src="@mipmap/ic_delete_forever_white_24dp"
+            android:visibility="invisible" />-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/containerDetailsLAYOUT"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/containers_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</RelativeLayout>

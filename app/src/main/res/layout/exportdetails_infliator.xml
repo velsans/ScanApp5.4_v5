@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,53 +16,146 @@
             android:id="@+id/export_removeBarCode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.2"
+            android:layout_weight="1.25"
+            android:visibility="visible"
             android:background="@color/red">
+
+            <ImageView
+                android:id="@+id/img_deleted"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                app:srcCompat="@mipmap/ic_delete_forever_white_24dp"
+                android:textColor="@android:color/black"
+                android:visibility="visible" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/export_EditSbbLable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.25"
+            android:background="@color/blue">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:gravity="center"
-                android:src="@mipmap/ic_delete_forever_white_24dp"
-                android:textColor="@android:color/black"
-                android:visibility="visible" />
+                android:layout_gravity="center"
+                app:srcCompat="@mipmap/edit"
+                android:textColor="@android:color/black" />
         </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_weight="1.25"
+            >
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/barcode_Checkbox"
+                />
+        </FrameLayout>
+
+        <Spinner
+            android:id="@+id/export_containerSpinners"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            android:hint="_transporter"
+            android:layout_weight="1.15"
+            android:visibility="gone"
+            android:overlapAnchor="false"
+            android:popupBackground="@color/color_white"
+            android:textAlignment="center"
+            android:textColor="@color/color_black"
+            />
+
+        <TextView
+            android:id="@+id/export_containerText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.15"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/color_black" />
 
         <TextView
             android:id="@+id/export_sbblabel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.17"
             android:gravity="center"
-            android:text="123456789"
+            android:text=""
             android:textColor="@color/color_black" />
 
         <TextView
-            android:id="@+id/export_speiceCode"
+            android:id="@+id/export_wsc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:gravity="center"
-            android:text="ABCDEFGH"
+            android:text=""
             android:textColor="@color/color_black" />
 
         <TextView
-            android:id="@+id/export_DiameterSizes"
+            android:id="@+id/export_DiaF1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:gravity="center"
-            android:text="Dia Sizes"
+            android:text=" "
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_DiaF2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_DiaT1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_DiaT2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/export_Diameter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text=" "
             android:textColor="@color/color_black" />
 
         <TextView
             android:id="@+id/export_TotCBM"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:gravity="center"
-            android:text="Tot CBM"
+            android:text=" "
             android:textColor="@color/color_black" />
 
         <TextView
@@ -73,6 +167,7 @@
             android:gravity="center"
             android:text="CBM"
             android:textColor="@color/color_black" />
+
 
     </LinearLayout>
 

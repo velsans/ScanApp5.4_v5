@@ -1,10 +1,10 @@
 package com.zebra.main.model.FellingRegistration;
 
 public class FellingRegisterResultModel {
-    int FellingRegID, WoodSpieceID, EntryMode, IsActive, UserID, ISNewTree,IsWoodSpieceCode,IsOldWoodSpieceCode;
+    int FellingRegID, WoodSpieceID, EntryMode, IsActive, UserID, ISNewTree, IsWoodSpieceCode, IsOldWoodSpieceCode;
     String LocationID, SbbLabel, WoodSpieceCode, TreeNumber, Quality, BarCode, FellingSectionID, FellingRegistrationUniqueID,
-            Footer_1, Footer_2, Top_1, Top_2, Length, NoteF, NoteT, NoteL, TreePartType,PlotNo;
-    double Volume;
+            Footer_1, Footer_2, Top_1, Top_2, Length, NoteF, NoteT, NoteL, TreePartType, PlotNo, LHT1, LHT2, LHF1, LHF2, LHVolume;
+    double Volume, HeartVolume;
 
     public int getIsWoodSpieceCode() {
         return IsWoodSpieceCode;
@@ -222,4 +222,53 @@ public class FellingRegisterResultModel {
     public void setNoteL(String noteL) {
         NoteL = noteL;
     }
+
+    public String getLHT1() {
+        return LHT1;
+    }
+
+    public void setLHT1(String LHT1) {
+        this.LHT1 = LHT1;
+    }
+
+    public String getLHT2() {
+        return LHT2;
+    }
+
+    public void setLHT2(String LHT2) {
+        this.LHT2 = LHT2;
+    }
+
+    public String getLHF1() {
+        return LHF1;
+    }
+
+    public void setLHF1(String LHF1) {
+        this.LHF1 = LHF1;
+    }
+
+    public String getLHF2() {
+        return LHF2;
+    }
+
+    public void setLHF2(String LHF2) {
+        this.LHF2 = LHF2;
+    }
+
+    public String getLHVolume() {
+        return LHVolume;
+    }
+
+    public void setLHVolume(String LHVolume) {
+        this.LHVolume = LHVolume;
+    }
+
+    public double getHeartVolume() {
+        return HeartVolume;
+    }
+
+    public void setHeartVolume(double heartVolume) {
+        HeartVolume = heartVolume;
+    }
+
 }

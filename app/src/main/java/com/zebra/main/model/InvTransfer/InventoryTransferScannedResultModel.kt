@@ -1,0 +1,4 @@
+package com.zebra.main.model.InvTransfer
+
+data class InventoryTransferScannedResultModel(var VBB_Number: String? = null, var FromLocation: String? = null, var ToLocation: String? = null, var SbbLabel: String? = null, var BarCode: String? = null, var Volume: String? = null, var UserID: String? = null, var Qualitiy: String? = null,
+                                               var Length: String? = null, var WoodSpieceID: Int = 0, var EntryMode: Int = 0, var IsSBBLabelCorrected: Int = 0, var IsActive: Int = 0, var TreeNumber: Int = 0, var FellingSectionId: Int = 0,var WoodSpieceCode: String? = null )

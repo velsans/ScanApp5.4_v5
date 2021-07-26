@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <LinearLayout
-        android:id="@+id/inventorycountLAY"
+        android:id="@+id/snack_barList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -21,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
                 android:backgroundTint="@color/color_white"
-                android:hint="to Location"
+                android:hint="@string/tolocation"
                 android:overlapAnchor="false"
                 android:popupBackground="@color/cyan"
                 android:textAlignment="center"
@@ -46,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="6"
                 android:background="@color/colorPrimary"
-                android:src="@mipmap/addbutton" />
+                app:srcCompat="@mipmap/addbutton" />
 
         </LinearLayout>
 
@@ -72,11 +73,11 @@
                     android:textColor="@color/color_white"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/inventoryCountListViewDate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
             <RelativeLayout
@@ -214,7 +215,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/inventoryCountListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -222,7 +223,7 @@
                     android:layout_below="@+id/layout_title"
                     android:background="@color/color_white">
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <LinearLayout
                     android:id="@+id/inventoryCountListTotalLayout"
@@ -275,7 +276,7 @@
                         android:paddingLeft="5dp"
                         android:text="0"
                         android:textColor="@color/color_white"
-                       android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
                 </LinearLayout>

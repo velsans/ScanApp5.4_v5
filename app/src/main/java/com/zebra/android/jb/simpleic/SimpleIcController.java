@@ -1,4 +1,4 @@
-package com.zebra.android.jb.simpleic;
+package android.jb.simpleic;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,9 +9,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.utils.AddressUtils;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.Preference;
+import android.jb.utils.AddressUtils;
+import android.jb.utils.Tools;
 import android.util.Log;
 import android_serialport_api.SerialPort;
 
@@ -53,7 +53,7 @@ public class SimpleIcController {
 	 */
 	public void Simpleic_Open(Context context) throws IOException,
 			SecurityException {
-
+		// TODO Auto-generated method stub
 		mContext = context;
 		device_type = Preference.getDeviceType(mContext);
 		power = new File(AddressUtils.P_ESAM_ENM_EN);
@@ -182,7 +182,7 @@ public class SimpleIcController {
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int count = mInputStream.available();
@@ -210,21 +210,21 @@ public class SimpleIcController {
 	}
 	
 //	private void IO_OE(String status) {
-//
+//		// TODO Auto-generated method stub
 //		System.out.println("power:" + IO_OE + " "
 //				+ status);
 //		writeFile(new File(IO_OE), status);
 //	}
 //
 //	private void IO_CS1(String status) {
-//
+//		// TODO Auto-generated method stub
 //		System.out.println("power:" + IO_CS1 + " "
 //				+ status);
 //		writeFile(new File(IO_CS1), status);
 //	}
 //	
 //	private void IO_CS0(String status) {
-//
+//		// TODO Auto-generated method stub
 //		System.out.println("power:" + IO_CS0 + " "
 //				+ status);
 //		writeFile(new File(IO_CS0), status);
@@ -234,7 +234,7 @@ public class SimpleIcController {
 	 * 关闭设备
 	 */
 	public void Simpleic_Close() throws IOException {
-
+		// TODO Auto-generated method stub
 		if (mInputStream != null)
 			mInputStream.close();
 		if (mOutputStream != null)

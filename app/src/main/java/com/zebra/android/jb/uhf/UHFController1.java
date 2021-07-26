@@ -1,4 +1,4 @@
-package com.zebra.android.jb.uhf;
+package android.jb.uhf;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import android.content.Context;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.utils.Tools;
 import android.widget.SlidingDrawer;
 import android_serialport_api.SerialPort;
 
@@ -85,7 +85,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(300);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -138,7 +138,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -172,7 +172,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ReflectionBean refBean = UHFCommand.paser_parse_GetReflection(buffer_Read());
@@ -199,7 +199,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ErrorBean errorBean = new ErrorBean();
@@ -223,7 +223,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		boolean isSuccess =  UHFCommand.paser_parse_SetArea(buffer_Read());
@@ -249,7 +249,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(timeout);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -312,7 +312,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -322,7 +322,7 @@ public class UHFController1{
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			buffer = buffer_Read();
@@ -332,7 +332,7 @@ public class UHFController1{
 				try {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				buffer = buffer_Read();
@@ -373,7 +373,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return UHFCommand.paser_parse_SetPower(buffer_Read());
@@ -399,7 +399,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		byte[] buffer = buffer_Read();
@@ -407,7 +407,7 @@ public class UHFController1{
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			buffer = buffer_Read();
@@ -416,7 +416,7 @@ public class UHFController1{
 				try {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				buffer = buffer_Read();
@@ -449,7 +449,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -476,7 +476,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long id = UHFCommand.parser_parse_ID(buffer_Read());
@@ -543,7 +543,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		byte[] buffer = buffer_Read();
@@ -553,7 +553,7 @@ public class UHFController1{
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			buffer = buffer_Read();
@@ -562,7 +562,7 @@ public class UHFController1{
 				try {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				buffer = buffer_Read();
@@ -593,7 +593,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		TransmittedPowerMsgBean transmittedPowerMsgBean = UHFCommand
@@ -611,7 +611,7 @@ public class UHFController1{
 		try {
 			Thread.sleep(setting_waitTime);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -622,7 +622,7 @@ public class UHFController1{
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			buffer = buffer_Read();
@@ -632,7 +632,7 @@ public class UHFController1{
 				try {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				buffer = buffer_Read();
@@ -674,7 +674,7 @@ public class UHFController1{
 	}
 
 	public void handDetail(byte[] temp) {
-
+		// TODO Auto-generated method stub
 		switch (currentAction) {
 		case Action_FindCardContiue:
 			System.out.println("Action_FindCardContiue_RE:"
@@ -726,7 +726,7 @@ public class UHFController1{
 			readThread.start();
 			return true;
 		} catch (Exception e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -738,7 +738,7 @@ public class UHFController1{
 	 * @return
 	 */
 	private boolean closeSerialPort() {
-
+		// TODO Auto-generated method stub
 		try {
 //			stopContineFindCard();
 			notifyReader();
@@ -836,7 +836,7 @@ public class UHFController1{
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			while (run) {
 				// if (currentAction == Action_Idle && isInitFinish) {
 				// setCurrentAction(Action_GetTransmittedPower);
@@ -871,14 +871,14 @@ public class UHFController1{
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
-
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} else {
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
-
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -921,10 +921,10 @@ public class UHFController1{
 				}
 			}
 		} catch (IOException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e1) {
-
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return buffer;

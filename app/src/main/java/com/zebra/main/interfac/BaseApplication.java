@@ -7,11 +7,9 @@
  * @email:981385016@qq.com
  * @version 1.0
  */
-
 package com.zebra.main.interfac;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -31,11 +29,12 @@ import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.zebra.R;
+import com.zebra.main.firebase.CrashAnalytics;
+import com.zebra.utilities.ConnectivityReceiver;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -48,6 +47,9 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.BuildConfig;
 
 public class BaseApplication extends Application {
 
@@ -80,6 +82,14 @@ public class BaseApplication extends Application {
         return mAppInstance;
     }
 
+    public static synchronized BaseApplication getInstance() {
+        return mAppInstance;
+    }
+
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
+    }
+
     public static String getCMD() {
         return mAppInstance.getPackageName();
         // + mAppInstance.getString(R.string.app_id);
@@ -93,12 +103,19 @@ public class BaseApplication extends Application {
         try {
             mVersionCode = getPackageManager().getPackageInfo(getPackageName(),
                     0).versionName;
-        } catch (NameNotFoundException e) {
-            Log.d(LOG_TAG, "Version not found.");
+        } catch (NameNotFoundException ex) {
+            CrashAnalytics.CrashReport(ex);
         }
         initDeviceType();
 //		LogcatHelper.getInstance(this).start();
+        //  Timber log's in debug mode
+        if (BuildConfig.DEBUG) {
+            //Timber.plant(new Timber.DebugTree());
+        } else {
+            //Timber.plant(new ReleaseTree());
+        }
     }
+
 
     private void initDeviceType() {
         DisplayMetrics dis = getResources().getDisplayMetrics();
@@ -112,6 +129,10 @@ public class BaseApplication extends Application {
         // } else {
         // ShareCookie.setPhoneType("0");
         // }
+    }
+
+    public static SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(mAppContext);
     }
 
     public static boolean isExternalStorageWritableErrorToast(Context context) {
@@ -155,17 +176,17 @@ public class BaseApplication extends Application {
                 } else {
                     ret = new String[]{""};
                 }
-            } catch (Exception e) {
-                Log.e(LOG_TAG,
-                        "Error while reading from file " + file.getPath() + ".",
-                        e);
+            } catch (Exception ex) {
+                CrashAnalytics.CrashReport(ex);
+                //Timber.d("Error while reading from file " + file.getPath() + ". :%s", e.getMessage());
                 ret = null;
             } finally {
                 if (br != null) {
                     try {
                         br.close();
-                    } catch (IOException e) {
-                        Log.e(LOG_TAG, "Error while closing file.", e);
+                    } catch (IOException ex) {
+                        CrashAnalytics.CrashReport(ex);
+                        //Timber.d("Error while closing file. : %s", e.getMessage());
                         ret = null;
                     }
                 }
@@ -197,17 +218,19 @@ public class BaseApplication extends Application {
                     bw.newLine();
                 }
                 bw.write(lines[i]);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Error while writing to '" + file.getName()
-                        + "' file.", e);
+            } catch (IOException ex) {
+                CrashAnalytics.CrashReport(ex);
+              /*  Timber.d("Error while writing to '" + file.getName()
+                        + "' file. : %S", e.getMessage());*/
                 noError = false;
 
             } finally {
                 if (bw != null) {
                     try {
                         bw.close();
-                    } catch (IOException e) {
-                        Log.e(LOG_TAG, "Error while closing file.", e);
+                    } catch (IOException ex) {
+                        CrashAnalytics.CrashReport(ex);
+                        /*  Timber.d("Error while closing file. : %s", e.getMessage());*/
                         noError = false;
                     }
                 }
@@ -218,11 +241,7 @@ public class BaseApplication extends Application {
         return noError;
     }
 
-    public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(mAppContext);
-    }
-
-    public static void enableNfcForegroundDispatch(Activity targetActivity) {
+    public static void enableNfcForegroundDispatch(AppCompatActivity targetActivity) {
         if (mNfcAdapter != null && mNfcAdapter.isEnabled()) {
 
             Intent intent = new Intent(targetActivity,
@@ -236,7 +255,7 @@ public class BaseApplication extends Application {
         }
     }
 
-    public static void disableNfcForegroundDispatch(Activity targetActivity) {
+    public static void disableNfcForegroundDispatch(AppCompatActivity targetActivity) {
         if (mNfcAdapter != null && mNfcAdapter.isEnabled()) {
             mNfcAdapter.disableForegroundDispatch(targetActivity);
         }
@@ -416,7 +435,7 @@ public class BaseApplication extends Application {
                 || (c2 == 0 && c3 == 1);
     }
 
-    public static byte[][] acBytesToACMatrix(byte acBytes[]) {
+    public static byte[][] acBytesToACMatrix(byte[] acBytes) {
         // ACs correct?
         // C1 (Byte 7, 4-7) == ~C1 (Byte 6, 0-3) and
         // C2 (Byte 8, 0-3) == ~C2 (Byte 6, 4-7) and
@@ -443,7 +462,7 @@ public class BaseApplication extends Application {
         return null;
     }
 
-    public static byte[] acMatrixToACBytes(byte acMatrix[][]) {
+    public static byte[] acMatrixToACBytes(byte[][] acMatrix) {
         if (acMatrix != null && acMatrix.length == 3) {
             for (int i = 0; i < 3; i++) {
                 if (acMatrix[i].length != 4)
@@ -542,6 +561,7 @@ public class BaseApplication extends Application {
                 try {
                     sector = Integer.parseInt(lines[i].split(": ")[1]);
                 } catch (Exception ex) {
+                    CrashAnalytics.CrashReport(ex);
                     // Not a valid sector header.
                     // Should not occur due to the previous check (regex).
                     return 1;
@@ -636,9 +656,10 @@ public class BaseApplication extends Application {
                 data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
                         .digit(s.charAt(i + 1), 16));
             }
-        } catch (Exception e) {
-            Log.d(LOG_TAG, "Argument(s) for hexStringToByteArray(String s)"
-                    + "was not a hex string");
+        } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
+           /* Timber.d("Argument(s) for hexStringToByteArray(String s)"
+                    + "was not a hex string");*/
         }
         return data;
     }

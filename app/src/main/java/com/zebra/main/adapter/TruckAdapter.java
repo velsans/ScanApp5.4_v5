@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zebra.R;
-import com.zebra.main.model.ExternalDB.TruckDetailsModel;
+import com.zebra.main.model.externaldb.TruckDetailsModel;
 
 import java.util.ArrayList;
 

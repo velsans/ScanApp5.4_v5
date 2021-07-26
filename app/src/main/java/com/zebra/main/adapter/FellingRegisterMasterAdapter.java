@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.zebra.R;
-import com.zebra.main.model.ExternalDB.FellingRegisterModel;
+import com.zebra.main.model.externaldb.FellingRegisterModel;
 
 import java.util.ArrayList;
 

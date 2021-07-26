@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/agreementTXT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/TabColor"
+            android:gravity="center"
+            android:text="AGREEMENT"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/logsTXT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/blue"
+            android:gravity="center"
+            android:text="LOGS"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/transferTXT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/blue"
+            android:gravity="center"
+            android:text="TRANSFER"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/receivedTXT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/blue"
+            android:gravity="center"
+            android:text="RECEIVED"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+        <ImageView
+            android:id="@+id/PrintPurchase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.5"
+            android:scaleType="fitCenter"
+            app:srcCompat="@mipmap/printerlogo" />
+
+        <ImageView
+            android:id="@+id/syncPurchse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="5.5"
+            app:srcCompat="@mipmap/refresh" />
+
+        <ImageView
+            android:id="@+id/purchaseScanBTN"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="5.5"
+            app:srcCompat="@mipmap/scannercircle" />
+
+        <ImageView
+            android:id="@+id/closePurchse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="5.5"
+            app:srcCompat="@mipmap/delete_cross" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/TabColor" />
+
+    <TextView
+        android:id="@+id/purchaseNoTXT"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/Darkblue"
+        android:gravity="left|center"
+        android:paddingLeft="@dimen/IconimageSize"
+        android:text="LOGS"
+        android:textColor="@color/color_white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/agrementLAY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                layout="@layout/fragment_agreement"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/logsLAY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                layout="@layout/fragment_logs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/transferLAY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                layout="@layout/fragment_transfer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/receivedLAY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                layout="@layout/fragment_notifications"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/progressbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                layout="@layout/progressbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></include>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

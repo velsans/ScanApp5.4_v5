@@ -1,21 +1,17 @@
 package com.zebra.main.activity.FellingRegistration;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,15 +36,18 @@ import android.widget.Toast;
 
 import com.ajts.androidmads.library.SQLiteToExcel;
 import com.example.tscdll.TSCActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.zebra.R;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
-
 import com.zebra.main.activity.Common.GwwMainActivity;
+import com.zebra.main.api.ApiClient;
+import com.zebra.main.api.ApiInterface;
+import com.zebra.main.api.ServiceURL;
 import com.zebra.main.interfac.FellingFilterInterface;
-import com.zebra.main.model.ExternalDB.ConcessionNamesModel;
-import com.zebra.main.model.ExternalDB.FellingSectionModel;
+import com.zebra.main.model.externaldb.ConcessionNamesModel;
+import com.zebra.main.model.externaldb.FellingSectionModel;
 import com.zebra.main.model.FellingRegistration.FellingRegisterListModel;
 import com.zebra.main.model.FellingRegistration.FellingRegistrationSyncModel;
 import com.zebra.main.model.SyncStatusModel;
@@ -57,12 +56,10 @@ import com.zebra.utilities.BlueTooth;
 import com.zebra.utilities.BlutoothCommonClass;
 import com.zebra.utilities.Common;
 import com.zebra.utilities.Communicator;
-import com.zebra.utilities.ConnectionFinder;
+import com.zebra.utilities.ConnectivityReceiver;
 import com.zebra.utilities.DeviceIMEIClass;
 import com.zebra.utilities.GwwException;
 import com.zebra.utilities.PrintSlipsClass;
-import com.zebra.utilities.ServiceURL;
-import com.zebra.utilities.Utils;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -74,15 +71,20 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class
-FellingRegistationListActivitiy extends Activity implements FellingFilterInterface {
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class FellingRegistationListActivitiy extends AppCompatActivity implements FellingFilterInterface, ConnectivityReceiver.ConnectivityReceiverListener {
     private InternalDataBaseHelperClass mDBInternalHelper;
     private ExternalDataBaseHelperClass mDBExternalHelper;
     DeviceIMEIClass device_imei;
@@ -112,6 +114,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
     private static HSSFSheet mySheet = myWorkBook.createSheet();
     ArrayAdapter<String> StringtreeNoadapter;
     Uri URI = null;
+    ApiInterface FellingRegClient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +122,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
         setContentView(R.layout.activity_fellingregistration_list);
         mDBExternalHelper = new ExternalDataBaseHelperClass(this);
         mDBInternalHelper = new InternalDataBaseHelperClass(this);
+        FellingRegClient = ApiClient.getInstance().getUserService();
         printSlip = new PrintSlipsClass(this);
         device_imei = new DeviceIMEIClass(this);
         Initialization();
@@ -208,7 +212,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
             TotalFilteredCount.setText(String.valueOf(Common.FellingRegisterList.size()));
             TotalFilteredVolume.setText(String.valueOf(mDBInternalHelper.TotalFilteredVolume("")));
         } catch (Exception ex) {
-            Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
+            Log.d("Exception : %s ", ex.toString());
         }
     }
 
@@ -246,7 +250,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                         }
                     }
                     if (fellingRegadapter != null) {
-                        HideKeyboard();
+                         Common.HideKeyboard(FellingRegistationListActivitiy.this);
                         fellingRegadapter.getFilter().filter(FellingID);
                     }
                 } else {
@@ -259,18 +263,14 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
 
             }
         });
-        FellingSectionSearchATV.setOnTouchListener(new View.OnTouchListener() {
+        FellingSectionSearchATV.setOnTouchListener((v, event) -> {
+            try {
+                FellingSectionSearchATV.showDropDown();
+                FellingSectionSearchATV.requestFocus();
+            } catch (Exception ex) {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    FellingSectionSearchATV.showDropDown();
-                    FellingSectionSearchATV.requestFocus();
-                } catch (Exception ex) {
-
-                }
-                return false;
             }
+            return false;
         });
         FellingSectionSearchATV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -286,7 +286,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                         }
                     }
                     if (fellingRegadapter != null) {
-                        HideKeyboard();
+                         Common.HideKeyboard(FellingRegistationListActivitiy.this);
                         fellingRegadapter.getFilter().filter(FellingID);
                     }
                 } else {
@@ -298,25 +298,49 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
         SyncAllFRCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SyncAllFRCheckBox.isChecked()) {
-                    Common.FellingRegSyncALL = true;
-                } else {
-                    Common.FellingRegSyncALL = false;
-                }
+                Common.FellingRegSyncALL = SyncAllFRCheckBox.isChecked();
             }
         });
 
         SyncAllFRCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (SyncAllFRCheckBox.isChecked()) {
-                    Common.FellingRegSyncALL = true;
-                } else {
-                    Common.FellingRegSyncALL = false;
-                }
+                Common.FellingRegSyncALL = SyncAllFRCheckBox.isChecked();
             }
         });
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
+    }
+
+    private boolean checkConnection() {
+        isInternetPresent = ConnectivityReceiver.isConnected();
+        showSnack(isInternetPresent);
+        return isInternetPresent;
+    }
+
+    private void showSnack(boolean isConnected) {
+        try {
+            String message;
+            int color;
+            if (isConnected) {
+                message = "Good! Connected to Internet";
+                color = Color.WHITE;
+            } else {
+                message = "Sorry! Not connected to internet";
+                color = Color.RED;
+            }
+
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.snack_barList), message, Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            TextView textView = sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+            textView.setTextColor(color);
+            snackbar.show();
+        } catch (Exception e) {
+
+        }
+    }
     public class FellingRegistrationAdapter extends RecyclerView.Adapter<FellingRegistrationAdapter.FellingRegViewHolder> implements Filterable {
         private List<FellingRegisterListModel> FellingRegisterList = new ArrayList<>();
         private List<FellingRegisterListModel> FellingRegisterListFilter = new ArrayList<>();
@@ -374,31 +398,28 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                         holder.syncTXT.setVisibility(View.INVISIBLE);
                         holder.PrintIMG.setVisibility(View.INVISIBLE);
                     }
-                    holder.syncTXT.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                if (Common.FellingRegSyncALL == false) {
-                                    //Sync Date to BackEnd
-                                    Common.SyncStartDateTime = FellingRegLstModel.getFellingRegistrationDate();
-                                    Common.SyncEndDateTime = FellingRegLstModel.getEndDateTime();
-                                    Common.FellingRegID = FellingRegLstModel.getFellingRegID();
-                                    Common.FellingRegNo = FellingRegLstModel.getFellingRegistrationNumber();
-                                    Common.SyncBarCodeCount = FellingRegLstModel.getCount();
-                                    Common.FellingSectionId = FellingRegLstModel.getFellingSectionID();
-                                    Common.FellingRegUniqueID = FellingRegLstModel.getFellingRegistrationUniqueID();
-                                    Common.SyncEndDateTime = FellingRegLstModel.getEndDateTime();
-                                    Common.TreeFromLocation = FellingRegLstModel.getLocationID();
-                                    Common.VolumeSum = FellingRegLstModel.getVolume();
-                                    FellingRegistrayionSync(Common.TreeFromLocation, Common.FellingSectionId, Common.FellingRegID, Common.FellingRegUniqueID);
-                                } else {
-                                    FellingRegSyncALLDialog("Are you sure want to sync all datas?");
-                                }
-                            } catch (Exception ex) {
-                                AlertDialogBox("Felling Sync", ex.toString(), false);
+                    holder.syncTXT.setOnClickListener(v -> {
+                        try {
+                            if (Common.FellingRegSyncALL == false) {
+                                //Sync Date to BackEnd
+                                Common.SyncStartDateTime = FellingRegLstModel.getFellingRegistrationDate();
+                                Common.SyncEndDateTime = FellingRegLstModel.getEndDateTime();
+                                Common.FellingRegID = FellingRegLstModel.getFellingRegID();
+                                Common.FellingRegNo = FellingRegLstModel.getFellingRegistrationNumber();
+                                Common.SyncBarCodeCount = FellingRegLstModel.getCount();
+                                Common.FellingSectionId = FellingRegLstModel.getFellingSectionID();
+                                Common.FellingRegUniqueID = FellingRegLstModel.getFellingRegistrationUniqueID();
+                                Common.SyncEndDateTime = FellingRegLstModel.getEndDateTime();
+                                Common.TreeFromLocation = FellingRegLstModel.getLocationID();
+                                Common.VolumeSum = FellingRegLstModel.getVolume();
+                                FellingRegistrayionSync(Common.TreeFromLocation, Common.FellingSectionId, Common.FellingRegID, Common.FellingRegUniqueID);
+                            } else {
+                                FellingRegSyncALLDialog("Are you sure want to sync all datas?");
                             }
-
+                        } catch (Exception ex) {
+                            AlertDialogBox("Felling Sync", ex.toString(), false);
                         }
+
                     });
                     holder.DeleteIMG.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -485,7 +506,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                     });
                 }
             } catch (Exception e) {
-                Log.e("Exception", ">>>>>>>>>>>" + e.toString());
+                Log.e("Exception : %s",  e.toString());
             }
         }
 
@@ -586,11 +607,11 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                     String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
                     String DeviceID = "";
                     if (String.valueOf(Common.LDeviceID).length() == 1) {
-                        DeviceID = "0" + String.valueOf(Common.LDeviceID);
+                        DeviceID = "0" + Common.LDeviceID;
                     } else {
                         DeviceID = String.valueOf(Common.LDeviceID);
                     }
-                    Common.FellingRegUniqueID = String.valueOf(DateUniqueFormat + DeviceID + Common.FellingRegID);
+                    Common.FellingRegUniqueID = DateUniqueFormat + DeviceID + Common.FellingRegID;
                     boolean FellingIDFlag = mDBInternalHelper.UpdateFellingUniqueID(Common.FellingRegID, Common.FellingRegUniqueID);
                     Common.IsFellingRegEditListFlag = true;
                     Common.IsEditorViewFlag = true;
@@ -675,17 +696,19 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
     };
 
     public void FellingRegistrayionSync(int TreeFromLocation, String FellingSecID, int FellingRegID, String FellingRegUniqueID) {
-        Common.FellingRegisterInputList.clear();
-        Common.FellingRegisterInputList = mDBInternalHelper.getFellingRegInputWithFellingUniqID(FellingRegID);
-        Common.FellingTreeDetailsList = mDBInternalHelper.getFellingRegInputWithTreeDetails(TreeFromLocation, FellingSecID, FellingRegUniqueID);
-        if (Common.FellingRegisterInputList.size() > 0) {
-            if (!CheckisInternetPresent()) {
-                AlertDialogBox(CommonMessage(R.string.Internet_Conn), CommonMessage(R.string.Internet_ConnMsg), false);
+        try {
+            Common.FellingRegisterInputList.clear();
+            Common.FellingRegisterInputList = mDBInternalHelper.getFellingRegInputWithFellingUniqID(FellingRegID);
+            Common.FellingTreeDetailsList = mDBInternalHelper.getFellingRegInputWithTreeDetails(TreeFromLocation, FellingSecID, FellingRegUniqueID);
+            if (Common.FellingRegisterInputList.size() > 0) {
+                if (checkConnection() == true) {
+                    FelingRegListSync();
+                }
             } else {
-                new GetFellingRegSyncAsynkTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                AlertDialogBox("InventoryTransfer Sync", "Values are empty", false);
             }
-        } else {
-            AlertDialogBox("InventoryTransfer Sync", "Values are empty", false);
+        } catch (Exception ex) {
+
         }
     }
 
@@ -696,7 +719,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
         Signoutbuilder = new AlertDialog.Builder(this);
         Signoutbuilder.setMessage(ErrorMessage);
         Signoutbuilder.setCancelable(true);
-        Signoutbuilder.setPositiveButton("Cancel",
+        Signoutbuilder.setPositiveButton(CommonMessage(R.string.action_cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -727,20 +750,6 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
         return this.getResources().getString(Common_Msg);
     }
 
-    public boolean CheckisInternetPresent() {
-        try {
-            isInternetPresent = ConnectionFinder.isInternetOn(getBaseContext());
-        } catch (Exception ex) {
-            //AlertDialogBox("Internet Connection", ex.toString(), false);
-        }
-        if (!isInternetPresent) {
-            AlertDialogBox(CommonMessage(R.string.Internet_Conn), CommonMessage(R.string.Internet_ConnMsg), false);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public void DeleteFellingListannFellingScannedList(int fellingID) {
         try {
             boolean DeleteListFlag = mDBInternalHelper.DeleteFellingRegistrationListID(fellingID);
@@ -762,13 +771,13 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
         Signoutbuilder = new AlertDialog.Builder(this);
         Signoutbuilder.setMessage(ErrorMessage);
         Signoutbuilder.setCancelable(true);
-        Signoutbuilder.setPositiveButton("Cancel",
+        Signoutbuilder.setPositiveButton(CommonMessage(R.string.action_cancel),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 });
-        Signoutbuilder.setNegativeButton("Delete",
+        Signoutbuilder.setNegativeButton(CommonMessage(R.string.action_delete),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         DeleteFellingListannFellingScannedList(Common.FellingRegID);
@@ -824,6 +833,70 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
         }
     }
 
+    public void FelingRegListSync() {
+        try {
+            ProgressBarLay.setVisibility(View.VISIBLE);
+            fellingSyncModel = new FellingRegistrationSyncModel();
+            fellingSyncModel.setFellingRegID(Common.FellingRegID);
+            fellingSyncModel.setFellingRegistrationNumber(Common.FellingRegNo);
+            fellingSyncModel.setLocationID(Common.TreeFromLocation);
+            fellingSyncModel.setTotalCount(Common.SyncBarCodeCount);
+            fellingSyncModel.setIMEI(Common.IMEI);
+            fellingSyncModel.setFellingRegisterUniqueID(Common.FellingRegUniqueID);
+            fellingSyncModel.setFellingSectionID(Common.FellingSectionId);
+            fellingSyncModel.setFellingRegistrationDate(Common.SyncStartDateTime);
+            fellingSyncModel.setEndDateTime(Common.SyncEndDateTime);
+            fellingSyncModel.setUserID(Common.UserID);
+            //fellingSyncModel.setVolume(Common.VolumeSum);
+            fellingSyncModel.setFellingReg(Common.FellingRegisterInputList);
+            fellingSyncModel.setFellingTreeDetails(Common.FellingTreeDetailsList);
+            FellingRegClient = ApiClient.getApiInterface();
+            FellingRegClient.getFellingRegSync(fellingSyncModel).enqueue(new Callback<FellingRegistrationSyncModel>() {
+
+                @Override
+                public void onResponse(Call<FellingRegistrationSyncModel> call, Response<FellingRegistrationSyncModel> response) {
+                    ProgressBarLay.setVisibility(View.GONE);
+                    if (GwwException.GwwException(response.code()) == true) {
+                        if (response.isSuccessful()) {
+                            Common.SyncStatusList.clear();
+                            Common.SyncStatusList.addAll(response.body().getStatus());
+                            if (Common.SyncStatusList.get(0).getStatus() == 1) {
+                                Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+                                Common.SyncTime = Common.SyncStatusList.get(0).getSyncTime();
+                                boolean ListIdFlag = mDBInternalHelper.UpdateFellingRegSyncStatusFellingRegID(Common.SyncTime, 1, Common.FellingRegID);
+                                if (Common.FellingRegSyncALL == false) {
+                                    if (ListIdFlag == true) {
+                                        //Scanned Result Refresh
+                                        GetFellingRegistrationList();
+                                        AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + Common.SyncStatusList.get(0).getMessage(), true);
+                                    }
+                                }
+                            } else {
+                                AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + Common.SyncStatusList.get(0).getMessage(), false);
+                            }
+                        }
+                        else {
+                            AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + "Not Synced", false);
+                        }
+                    }
+                    else {
+                        Common.AuthorizationFlag = true;
+                        AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), response.message(), false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<FellingRegistrationSyncModel> call, Throwable t) {
+                    ProgressBarLay.setVisibility(View.GONE);
+                    AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), t.getMessage(), false);
+                }
+            });
+        } catch (Exception ex) {
+            ProgressBarLay.setVisibility(View.GONE);
+            AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), ex.toString(), false);
+        }
+    }
+
     class GetFellingRegSyncAsynkTask extends AsyncTask<String, String, String> {
 
         @Override
@@ -835,7 +908,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
 
         @Override
         protected String doInBackground(String... params) {
-            Log.e("FellingRegistrayion", "FellingRegisterInside---" + Common.FellingRegID);
+            Log.e("","FellingRegistration-FellingRegisterInside : %s" + Common.FellingRegID);
             String MethodName = "FellingRegistration/";
             String SyncURL = ServiceURL.getServiceURL(ServiceURL.ControllorName, MethodName);
             fellingSyncModel = new FellingRegistrationSyncModel();
@@ -857,7 +930,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                 if (GwwException.GwwException(Common.HttpResponceCode) == true) {
                     if (SyncURLInfo != null) {
                         JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
+                        String SyncResponceStr = jsonObj.getString("SyncStatusModel");
                         if (SyncResponceStr != null) {
                             JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
                             for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
@@ -897,14 +970,14 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                                 if (ListIdFlag == true) {
                                     //Scanned Result Refresh
                                     GetFellingRegistrationList();
-                                    AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + String.valueOf(Common.FellingRegID) + "--" + Common.SyncStatusList.get(0).getMessage(), true);
+                                    AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + Common.SyncStatusList.get(0).getMessage(), true);
                                 }
                             }
                         } else {
-                            AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + String.valueOf(Common.FellingRegID) + "--" + Common.SyncStatusList.get(0).getMessage(), false);
+                            AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + Common.SyncStatusList.get(0).getMessage(), false);
                         }
                     } else {
-                        AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + String.valueOf(Common.FellingRegID) + "--" + "Not Synced", false);
+                        AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + "Not Synced", false);
                     }
                 }
             });
@@ -915,12 +988,9 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
 
     public void FellingRegistrayionSyncALL() {
         try {
-            if (!CheckisInternetPresent()) {
-                AlertDialogBox(CommonMessage(R.string.Internet_Conn), CommonMessage(R.string.Internet_ConnMsg), false);
-            } else {
+            if (checkConnection() == true) {
                 Common.FellingRegSyncALlIndex = 0;
-                new GetFellingRegSyncAsynkAllTask().execute();
-            }
+                new GetFellingRegSyncAsynkAllTask().execute();            }
         } catch (Exception ex) {
             AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), ex.toString(), false);
         }
@@ -1009,7 +1079,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                 if (GwwException.GwwException(Common.HttpResponceCode) == true) {
                     if (SyncURLInfo != null) {
                         JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
+                        String SyncResponceStr = jsonObj.getString("SyncStatusModel");
                         if (SyncResponceStr != null) {
                             JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
                             for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
@@ -1054,10 +1124,10 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                                 new GetFellingRegSyncAsynkAllTask().execute();
                             }
                         } else {
-                            AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + String.valueOf(Common.FellingRegID) + "--" + Common.SyncStatusList.get(0).getMessage(), false);
+                            AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + Common.SyncStatusList.get(0).getMessage(), false);
                         }
                     } else {
-                        AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + String.valueOf(Common.FellingRegID) + "--" + "Not Synced", false);
+                        AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), "#" + Common.FellingRegID + "--" + "Not Synced", false);
                     }
                 }
             });
@@ -1076,7 +1146,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
             String FelingSectionID = "00";
             File file = new File(directory_path);
             if (!file.exists()) {
-                Log.v("File Created", String.valueOf(file.mkdirs()));
+                Log.v("File Created : %s", String.valueOf(file.mkdirs()));
             }
             if (FellingSectionSearchATV.getText().toString().length() > 0) {
                 FelingSectionID = FellingSectionSearchATV.getText().toString();
@@ -1145,7 +1215,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                             try {
                                 AdvanceSearchStr.append(FellingRegisterFilteredList.get(Row).getFellingRegID() + ",");
                             } catch (Exception ex) {
-                                Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
+                                Log.d("Exception : %s",  ex.toString());
                             }
                         }
                         Common.FellingRegisterLogsExportDetails = mDBInternalHelper.getFellingDetailsExportList(AdvanceSearchStr.toString().substring(0, AdvanceSearchStr.toString().length() - 1));
@@ -1314,7 +1384,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                 Uri uri = data.getData();
                 File myFile = new File(uri.getPath());
                 URI = Uri.parse("file://" + myFile);
-                Log.e("Attachment Path:", myFile.toString());
+                Log.e("Attachment Path : %s", myFile.toString());
                 Subject_path = URI.toString();
                 editTextSubject.setText(Subject_path);
             } else {
@@ -1323,7 +1393,7 @@ FellingRegistationListActivitiy extends Activity implements FellingFilterInterfa
                 cursor.moveToFirst();
                 columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 attachmentFile = cursor.getString(columnIndex);
-                Log.e("Attachment Path:", attachmentFile);
+                Log.e("Attachment Path : %s", attachmentFile);
                 URI = Uri.parse("file://" + attachmentFile);
                 Subject_path = URI.toString();
                 editTextSubject.setText(Subject_path);

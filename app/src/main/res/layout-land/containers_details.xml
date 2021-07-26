@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
+    android:background="@color/transperantBlack"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorbtnsplash"
+                android:gravity="center"
+                android:text="Container Details"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/cancelContainerDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center"
+                android:gravity="center"
+                app:srcCompat="@mipmap/delete_cross" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_normal"
+                android:background="@color/amber"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:gravity="right|center"
+                    android:text="Order No :"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/OrderNoTxT"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/blue"
+                    android:gravity="center"
+                    android:text="1001"
+                    android:textColor="@color/color_black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:background="@color/color_white"
+                    android:gravity="center"
+                    android:text="Container Nr"
+                    android:textSize="@dimen/containerSize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/cd_containersNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/blue"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/containerSize"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/cd_containersSpin"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@color/lime"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_black"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:background="@color/color_white"
+                    android:gravity="center"
+                    android:text="Export Nr"
+                    android:textSize="@dimen/containerSize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ExportNoTxT"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/blue"
+                    android:gravity="center"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/containerSize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:background="@color/color_white"
+                    android:gravity="center"
+                    android:text="Booking Nr"
+                    android:textSize="@dimen/containerSize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/BookingNoETxT"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/blue"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/containerSize"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/amber" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/teal"
+                android:gravity="left|center"
+                android:paddingLeft="2dp"
+                android:text="Loding Details:"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/green"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Stuffing Date"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="StartTime"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="EndTime"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Agency"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="License Plate Nr"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Truck Driver"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="Pointer(Name)"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="Excavator"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:id="@+id/StuffingDateELAY"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                            <TextView
+                                android:id="@+id/StuffingDateETxT"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/white_edittextstyle"
+                                android:gravity="left|center"
+                                android:inputType="datetime"
+                                android:paddingLeft="10dp"
+                                android:textColor="@color/color_black"
+                                android:textSize="@dimen/containerSize"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="@dimen/IconimageSize"
+                                android:layout_height="@dimen/IconimageSize"
+                                android:layout_gravity="right|center"
+                                android:layout_margin="3dp"
+                                app:srcCompat="@mipmap/calender" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/StuffStartTimeELAY"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                            <TextView
+                                android:id="@+id/StuffStartTimeETxT"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/white_edittextstyle"
+                                android:gravity="left|center"
+                                android:paddingLeft="10dp"
+                                android:textColor="@color/color_black"
+                                android:textSize="@dimen/containerSize"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="@dimen/IconimageSize"
+                                android:layout_height="@dimen/IconimageSize"
+                                android:layout_gravity="right|center"
+                                android:layout_margin="3dp"
+                                app:srcCompat="@mipmap/time" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/StuffEndTimeELAY"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                            <TextView
+                                android:id="@+id/StuffEndTimeETxT"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/white_edittextstyle"
+                                android:gravity="left|center"
+                                android:paddingLeft="10dp"
+                                android:textColor="@color/color_black"
+                                android:textSize="@dimen/containerSize"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="@dimen/IconimageSize"
+                                android:layout_height="@dimen/IconimageSize"
+                                android:layout_gravity="right|center"
+                                android:layout_margin="3dp"
+                                app:srcCompat="@mipmap/time" />
+                        </FrameLayout>
+
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/cd_transportAgencyAuto"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:completionThreshold="1"
+                            android:gravity="center"
+                            android:hint="Select Agency"
+                            android:inputType="textNoSuggestions"
+                            android:popupBackground="@color/teal"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_black"
+                            android:textColorHint="@color/theme_border"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/cd_transportAgencySpin"
+                            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:overlapAnchor="false"
+                            android:popupBackground="@color/deeporange"
+                            android:textAlignment="center"
+                            android:textColor="@color/color_black"
+                            android:textSize="@dimen/containerSize"
+                            android:visibility="gone" />
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/cd_transportTruckPlateAuto"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:completionThreshold="1"
+                            android:gravity="center"
+                            android:hint="Select Plate Nr"
+                            android:inputType="textNoSuggestions"
+                            android:popupBackground="@color/lime"
+                            android:textAlignment="center"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_black"
+                            android:textColorHint="@color/theme_border"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/cd_transportTruckPlateSpin"
+                            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:overlapAnchor="false"
+                            android:popupBackground="@color/cyan"
+                            android:textAlignment="center"
+                            android:textColor="@color/color_black"
+                            android:textSize="@dimen/containerSize"
+                            android:visibility="gone" />
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/cd_transportDriverAuto"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:completionThreshold="1"
+                            android:gravity="center"
+                            android:hint="Select Driver"
+                            android:inputType="textNoSuggestions"
+                            android:popupBackground="@color/amber"
+                            android:textAlignment="center"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_black"
+                            android:textColorHint="@color/theme_border"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/cd_transportDriverSpin"
+                            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:overlapAnchor="false"
+                            android:popupBackground="@color/teal"
+                            android:textAlignment="center"
+                            android:textColor="@color/color_black"
+                            android:textSize="@dimen/containerSize"
+                            android:visibility="gone" />
+
+                        <EditText
+                            android:id="@+id/PointerNameETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/ExcavatorETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/amber" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.3"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="Loader"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="Closed By"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="Checked By"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Customs(Name)"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="SBB (Name)"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="LVV (Name)"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="ContainerType"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="MaxGrossWeight"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <EditText
+                            android:id="@+id/LoaderETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/ClosedByETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/CheckedByETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/CustomsOfficerETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/SBBOfficerETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/LVVOfficerETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionDone"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/cd_containerTypeSpin"
+                            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_gravity="center"
+                            android:background="@color/deeporange"
+                            android:gravity="center"
+                            android:overlapAnchor="false"
+                            android:popupBackground="@color/lime"
+                            android:textAlignment="center"
+                            android:textColor="@color/color_black"
+                            android:textSize="@dimen/containerSize" />
+
+                        <EditText
+                            android:id="@+id/MaxGrossWeightContainerETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/amber" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.3"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="MaxPayload"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:gravity="center"
+                            android:text="TareWeight"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Container Serial Nr"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Custom Seal Nr"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Agent Seal Nr"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Wired Seal"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Label Seal"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="SealKit Package Nr"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <EditText
+                            android:id="@+id/MaxPayloadContainerEETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/VerifiedGrsMassContinerETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/containerSealNoETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions|textCapCharacters"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/CustomsSealNoETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/AgentSealNoETxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:background="@drawable/white_edittextstyle"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            android:textSize="@dimen/containerSize"
+                            android:textStyle="bold" />
+
+                        <FrameLayout
+                            android:id="@+id/SecuritySeal1ELAY"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                            <EditText
+                                android:id="@+id/WiredSealETxT"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/white_edittextstyle"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:inputType="textNoSuggestions"
+                                android:textSize="@dimen/containerSize"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="@dimen/textview_or_edittext_hight_normal"
+                                android:layout_height="@dimen/textview_or_edittext_hight_normal"
+                                android:layout_gravity="right|center"
+                                android:layout_margin="1dp"
+                                android:visibility="gone"
+                                app:srcCompat="@mipmap/scannercircle" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/SecuritySeal2ELAY"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                            <EditText
+                                android:id="@+id/LabelSeal2ETxT"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/white_edittextstyle"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:inputType="textNoSuggestions"
+                                android:textSize="@dimen/containerSize"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="@dimen/textview_or_edittext_hight_normal"
+                                android:layout_height="@dimen/textview_or_edittext_hight_normal"
+                                android:layout_gravity="right|center"
+                                android:layout_margin="1dp"
+                                android:visibility="gone"
+                                app:srcCompat="@mipmap/scannercircle" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/SealKitPackageNumberELAY"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                            <EditText
+                                android:id="@+id/SealKitPackageNumberETxT"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/white_edittextstyle"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:inputType="textNoSuggestions"
+                                android:textSize="@dimen/containerSize"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="@dimen/textview_or_edittext_hight_normal"
+                                android:layout_height="@dimen/textview_or_edittext_hight_normal"
+                                android:layout_gravity="right|center"
+                                android:layout_margin="1dp"
+                                android:visibility="gone"
+                                app:srcCompat="@mipmap/scannercircle" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/updateContainerDetails"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                android:background="@color/amber"
+                android:gravity="center"
+                android:text="SAVE"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/amber" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

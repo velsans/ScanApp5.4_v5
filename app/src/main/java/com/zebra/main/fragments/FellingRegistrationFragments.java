@@ -8,11 +8,12 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,8 @@ import com.zebra.R;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
 import com.zebra.main.activity.FellingRegistration.FellingRegistrationActivity;
-import com.zebra.main.model.ExternalDB.LocationsModel;
+import com.zebra.main.firebase.CrashAnalytics;
+import com.zebra.main.model.externaldb.LocationsModel;
 import com.zebra.main.model.FellingRegistration.FellingRegisterListModel;
 import com.zebra.main.model.FellingRegistration.FellingRegistrationSyncModel;
 import com.zebra.main.model.SyncStatusModel;
@@ -39,13 +41,14 @@ import com.zebra.utilities.Communicator;
 import com.zebra.utilities.ConnectionFinder;
 import com.zebra.utilities.GwwException;
 import com.zebra.utilities.PrintSlipsClass;
-import com.zebra.utilities.ServiceURL;
+import com.zebra.main.api.ServiceURL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.List;
+
 
 public class FellingRegistrationFragments extends Fragment {
     FellingReceiver felling_receiver;
@@ -164,7 +167,8 @@ public class FellingRegistrationFragments extends Fragment {
                 FellingRegListView.setVisibility(View.GONE);
             }
         } catch (Exception ex) {
-            Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
+            CrashAnalytics.CrashReport(ex);
+            Log.d("Exception : %s", ex.toString());
         }
     }
 
@@ -183,11 +187,11 @@ public class FellingRegistrationFragments extends Fragment {
                     String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
                     String DeviceID = "";
                     if (String.valueOf(Common.LDeviceID).length() == 1) {
-                        DeviceID = "0" + String.valueOf(Common.LDeviceID);
+                        DeviceID = "0" + Common.LDeviceID;
                     } else {
                         DeviceID = String.valueOf(Common.LDeviceID);
                     }
-                    Common.FellingRegUniqueID = String.valueOf(DateUniqueFormat + DeviceID + Common.FellingRegID);
+                    Common.FellingRegUniqueID = DateUniqueFormat + DeviceID + Common.FellingRegID;
                 }
             }
             InventorFellingRegAcivityCall();
@@ -270,7 +274,7 @@ public class FellingRegistrationFragments extends Fragment {
                             DeleteFellingListannFellingScannedList(Common.FellingRegID);
                             return;
                         }
-                        AlertDialogBox("InventoryTransfer", "This is not Syncked yet", false);
+                        AlertDialogBox(CommonMessage(R.string.TransferHead), "This is not Syncked yet", false);
                     }
                 }
             });
@@ -319,7 +323,7 @@ public class FellingRegistrationFragments extends Fragment {
                             AlertDialogBox("Transfer PrintSlip", "No values found, try some other item", false);
                         }
                     } catch (Exception ex) {
-
+                        CrashAnalytics.CrashReport(ex);
                     }
                 }
             });
@@ -357,7 +361,8 @@ public class FellingRegistrationFragments extends Fragment {
                 }
             }
         } catch (Exception ex) {
-            AlertDialogBox("DeleteReceivedListannReceivedScannedList", ex.toString(), false);
+            CrashAnalytics.CrashReport(ex);
+            //AlertDialogBox("DeleteReceivedListannReceivedScannedList", ex.toString(), false);
         }
     }
 
@@ -445,7 +450,7 @@ public class FellingRegistrationFragments extends Fragment {
                 if (GwwException.GwwException(Common.HttpResponceCode) == true) {
                     if (SyncURLInfo != null) {
                         JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
+                        String SyncResponceStr = jsonObj.getString("SyncStatusModel");
                         if (SyncResponceStr != null) {
                             JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
                             for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
@@ -520,6 +525,7 @@ public class FellingRegistrationFragments extends Fragment {
         try {
             isInternetPresent = ConnectionFinder.isInternetOn(getActivity());
         } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
             //AlertDialogBox("Internet Connection", ex.toString(), false);
         }
         if (!isInternetPresent) {
@@ -553,6 +559,7 @@ public class FellingRegistrationFragments extends Fragment {
                     }
                 }, TimerforPrint);*/
             } catch (Exception ex) {
+                CrashAnalytics.CrashReport(ex);
                 ex.printStackTrace();
             }
         }

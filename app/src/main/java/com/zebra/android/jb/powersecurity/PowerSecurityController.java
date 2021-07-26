@@ -1,4 +1,4 @@
-package com.zebra.android.jb.powersecurity;
+package android.jb.powersecurity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,8 +12,8 @@ import java.io.Reader;
 import java.security.InvalidParameterException;
 
 import android.content.Context;
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.Preference;
+import android.jb.utils.Tools;
 import android.util.Log;
 import android_serialport_api.SerialPort;
 
@@ -117,7 +117,7 @@ public class PowerSecurityController {
 	 * 开启设备
 	 */
 	public void PowerSecurity_Open(Context context , ReceiveListener l) throws IOException, SecurityException {
-
+		// TODO Auto-generated method stub
 		mContext = context;
 		device_type = Preference.getDeviceType(mContext);
 		this.l = l;
@@ -140,7 +140,7 @@ public class PowerSecurityController {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		// begin = true;
@@ -226,7 +226,7 @@ public class PowerSecurityController {
 	 * 关闭设备
 	 */
 	public void PowerSecurity_Close() throws IOException {
-
+		// TODO Auto-generated method stub
 		if (readThread != null) {
 			readThread.run = false;
 			readThread = null;
@@ -259,7 +259,7 @@ public class PowerSecurityController {
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			while (run) {
 				if (mInputStream != null) {
 					try {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class ExportContainerDetailsModel implements Serializable {
     int ExportID, TotalCount, LocationID, UserID, IsActive,SyncStatus;
     double Volume;
-    String ExportUniqueID, IMEI, StartDateTime, EndDateTime, OrderNo,SyncDate;
+    String ExportUniqueID, IMEI, StartDateTime, EndDateTime, OrderNo,SyncDate,WoodSpieceCode,ContainerNo;
 
     public int getSyncStatus() {
         return SyncStatus;
@@ -119,6 +119,22 @@ public class ExportContainerDetailsModel implements Serializable {
 
     public void setOrderNo(String orderNo) {
         OrderNo = orderNo;
+    }
+
+    public String getWoodSpieceCode() {
+        return WoodSpieceCode;
+    }
+
+    public void setWoodSpieceCode(String woodSpieceCode) {
+        WoodSpieceCode = woodSpieceCode;
+    }
+
+    public String getContainerNo() {
+        return ContainerNo;
+    }
+
+    public void setContainerNo(String containerNo) {
+        ContainerNo = containerNo;
     }
 
     public void setContainterDetailsItems(ArrayList<ExportDetailsModel> containterDetailsItems) {

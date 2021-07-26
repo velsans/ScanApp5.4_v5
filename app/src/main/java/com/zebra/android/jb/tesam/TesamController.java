@@ -1,4 +1,4 @@
-package com.zebra.android.jb.tesam;
+package android.jb.tesam;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,8 +9,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
-import com.zebra.android.jb.utils.AddressUtils;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.utils.AddressUtils;
+import android.jb.utils.Tools;
 import android.util.Log;
 import android_serialport_api.SerialPort;
 
@@ -40,7 +40,7 @@ public class TesamController {
 	}
 
 	public int Tesam_Open(Context context) throws IOException, SecurityException {
-
+		// TODO Auto-generated method stub
 		mContext = context;
 		Tesam_Close();
 		int i = power_up();
@@ -50,7 +50,7 @@ public class TesamController {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		// begin = true;
@@ -77,7 +77,7 @@ public class TesamController {
 	}
 
 	public void Tesam_Close() throws IOException {
-
+		// TODO Auto-generated method stub
 		if (mInputStream != null)
 			mInputStream.close();
 		if (mOutputStream != null)

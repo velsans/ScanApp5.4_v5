@@ -78,7 +78,7 @@ public class LogcatHelper {
                 out = new FileOutputStream(new File(dir, "HT380A-"  
                         + Tools.getFileName() + ".log"));  
             } catch (FileNotFoundException e) {  
-
+                // TODO Auto-generated catch block  
                 e.printStackTrace();  
             }  
   

@@ -1,4 +1,4 @@
-package com.zebra.android.jb.uhf;
+package android.jb.uhf;
 
 public class ErrorBean {
 	public static final int Error_Find_Card_Failed = 1;	//寻卡失败

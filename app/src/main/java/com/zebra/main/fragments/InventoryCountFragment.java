@@ -6,17 +6,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import android.widget.TextView;
 
 import com.example.tscdll.TSCActivity;
@@ -25,6 +27,7 @@ import com.zebra.R;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
 import com.zebra.main.activity.Count.InventoryCountActivity;
+import com.zebra.main.firebase.CrashAnalytics;
 import com.zebra.main.model.InvCount.InventoryCountModel;
 import com.zebra.main.model.InvCount.InventoryCountSyncModel;
 import com.zebra.main.model.SyncStatusModel;
@@ -34,13 +37,14 @@ import com.zebra.utilities.Communicator;
 import com.zebra.utilities.ConnectionFinder;
 import com.zebra.utilities.GwwException;
 import com.zebra.utilities.PrintSlipsClass;
-import com.zebra.utilities.ServiceURL;
+import com.zebra.main.api.ServiceURL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.List;
+
 
 public class InventoryCountFragment extends Fragment {
     CountReceiver count_receiver;
@@ -141,11 +145,11 @@ public class InventoryCountFragment extends Fragment {
                     String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
                     String DeviceID = "";
                     if (String.valueOf(Common.LDeviceID).length() == 1) {
-                        DeviceID = "0" + String.valueOf(Common.LDeviceID);
+                        DeviceID = "0" + Common.LDeviceID;
                     } else {
                         DeviceID = String.valueOf(Common.LDeviceID);
                     }
-                    Common.CountUniqueID = String.valueOf(DateUniqueFormat + DeviceID + Common.ListID);
+                    Common.CountUniqueID = DateUniqueFormat + DeviceID + Common.ListID;
                     Intent _gwwIntent = new Intent(getActivity(), InventoryCountActivity.class);
                     startActivity(_gwwIntent);
                 }
@@ -171,7 +175,7 @@ public class InventoryCountFragment extends Fragment {
                 InventoryCountList.setVisibility(View.GONE);
             }
         } catch (Exception ex) {
-            Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
+            CrashAnalytics.CrashReport(ex);
         }
     }
 
@@ -248,7 +252,7 @@ public class InventoryCountFragment extends Fragment {
                             DeleteTransferCountScannedList(Common.ListID);
                             return;
                         }
-                        AlertDialogBox("InventoryTransfer", "This is not Syncked yet", false);
+                        AlertDialogBox(CommonMessage(R.string.TransferHead), "This is not Syncked yet", false);
                     }
                 }
             });
@@ -325,7 +329,7 @@ public class InventoryCountFragment extends Fragment {
                 if (GwwException.GwwException(Common.HttpResponceCode) == true) {
                     if (SyncURLInfo != null) {
                         JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
+                        String SyncResponceStr = jsonObj.getString("SyncStatusModel");
                         if (SyncResponceStr != null) {
                             JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
                             for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
@@ -388,6 +392,7 @@ public class InventoryCountFragment extends Fragment {
                 }
             }
         } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
             AlertDialogBox("DeleteTransferCountandTransferScannedList", ex.toString(), false);
         }
     }
@@ -408,7 +413,7 @@ public class InventoryCountFragment extends Fragment {
         try {
             isInternetPresent = ConnectionFinder.isInternetOn(getActivity());
         } catch (Exception ex) {
-            //AlertDialogBox("Internet Connection", ex.toString(), false);
+            CrashAnalytics.CrashReport(ex);
         }
         if (!isInternetPresent) {
             AlertDialogBox(CommonMessage(R.string.Internet_Conn), CommonMessage(R.string.Internet_ConnMsg), false);

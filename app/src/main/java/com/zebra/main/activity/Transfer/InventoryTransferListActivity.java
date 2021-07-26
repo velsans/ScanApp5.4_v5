@@ -1,45 +1,41 @@
 package com.zebra.main.activity.Transfer;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.tscdll.TSCActivity;
-import com.google.gson.Gson;
+import com.google.android.material.snackbar.Snackbar;
 import com.zebra.R;
 import com.zebra.adc.decoder.BarCodeReader;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
 import com.zebra.main.activity.Common.GwwMainActivity;
+import com.zebra.main.api.ApiClient;
+import com.zebra.main.api.ApiInterface;
+import com.zebra.main.firebase.CrashAnalytics;
 import com.zebra.main.model.InvTransfer.InventoryTransferModel;
 import com.zebra.main.model.InvTransfer.InventoryTransferScannedResultModel;
 import com.zebra.main.model.InvTransfer.InventoryTransferSyncModel;
@@ -50,14 +46,9 @@ import com.zebra.utilities.AlertDialogManager;
 import com.zebra.utilities.BlueTooth;
 import com.zebra.utilities.BlutoothCommonClass;
 import com.zebra.utilities.Common;
-import com.zebra.utilities.Communicator;
-import com.zebra.utilities.ConnectionFinder;
+import com.zebra.utilities.ConnectivityReceiver;
 import com.zebra.utilities.GwwException;
 import com.zebra.utilities.PrintSlipsClass;
-import com.zebra.utilities.ServiceURL;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,10 +56,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 
-public class InventoryTransferListActivity extends Activity implements SdlScanListener {
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class InventoryTransferListActivity extends AppCompatActivity implements SdlScanListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "Inventory Transfer";
     private InternalDataBaseHelperClass mDBInternalHelper;
     private ExternalDataBaseHelperClass mDBExternalHelper;
@@ -99,6 +98,8 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
     PrintSlipsClass printSlip;
     EditText submitVVPEDT, submitOldTransEDT;
     Button submitVBBTXT;
+    ApiInterface InvenTransAPI = null;
+    GwwMainActivity gwwMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,12 +107,14 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         setContentView(R.layout.inventory_trans_list);
         mDBExternalHelper = new ExternalDataBaseHelperClass(this);
         mDBInternalHelper = new InternalDataBaseHelperClass(this);
+        gwwMain = new GwwMainActivity(this);
         printSlip = new PrintSlipsClass(this);
         Initialization();
         OnClickListener();
         Common.InventTransDateSelectedIndex = 0;
         GetInventoryTransferDateList();
         TransferTopicTxT.setText("INVENTORY TRANSFER - " + Common.TransportMode);
+        InvenTransAPI = ApiClient.getInstance().getUserService();
     }
 
     @Override
@@ -132,8 +135,8 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         super.onStop();
         try {
             //UpdateTransferIDList();
-            Log.v(TAG, "onStop");
-        } catch (Exception Ex) {
+        } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
         }
     }
 
@@ -142,36 +145,19 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         super.onPause();
         try {
             //UpdateTransferIDList();
-            Log.v(TAG, "onPause");
             //scanService.release();
             if (scanService != null)
                 scanService.setActivityUp(false);
             releaseWakeLock();
-        } catch (Exception Ex) {
+        } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
         }
     }
 
     public void OnClickListener() {
-        SyncAllTransferCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SyncAllTransferCheckBox.isChecked()) {
-                    Common.InventoryTransferSyncALL = true;
-                } else {
-                    Common.InventoryTransferSyncALL = false;
-                }
-            }
-        });
+        SyncAllTransferCheckBox.setOnClickListener(v -> Common.InventoryTransferSyncALL = SyncAllTransferCheckBox.isChecked());
 
-        SyncAllTransferCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (SyncAllTransferCheckBox.isChecked()) {
-                    Common.InventoryTransferSyncALL = true;
-                } else {
-                    Common.InventoryTransferSyncALL = false;
-                }
-            }
-        });
+        SyncAllTransferCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> Common.InventoryTransferSyncALL = SyncAllTransferCheckBox.isChecked());
     }
 
     ServiceConnection serviceConnection = new ServiceConnection() {
@@ -179,7 +165,6 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         @Override
         public void onServiceDisconnected(ComponentName name) {
             bind = false;
-            Log.v(TAG, "SDLActivity onServiceDisconnected " + bind);
         }
 
         @Override
@@ -190,7 +175,6 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
             //
             scanService.setOnScanListener(InventoryTransferListActivity.this);
             scanService.setActivityUp(true);
-            Log.v(TAG, "SDLActivity onServiceConnected " + bind);
         }
     };
 
@@ -211,13 +195,12 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
 
     @Override
     protected void onResume() {
-        Log.v(TAG, "SDLActivity onResume bind: " + bind);
         try {
             service = new Intent(this, SdlScanService.class);
             bindService(service, serviceConnection, BIND_AUTO_CREATE);
             startService(service);
-        } catch (Exception e) {
-            //Log.e("InventoryTransferActivity","Exceptionss: "+e+" mBeepManagersdl: "+mBeepManagersdl);
+        } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
         }
         try {
             ScannedStatus("");
@@ -250,14 +233,12 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         TransferTopicTxT = findViewById(R.id.TransferTopicTXT);
     }
 
-    View.OnClickListener mTransfer_SyncAll = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            try {
-                InventoryTransferSyncALLDialog("Are you sure want to sync all datas?");
-            } catch (Exception ex) {
-                AlertDialogBox("IA-mTransfer_SyncAll", ex.toString(), false);
-            }
+    View.OnClickListener mTransfer_SyncAll = v -> {
+        try {
+            InventoryTransferSyncALLDialog("Are you sure want to sync all datas?");
+        } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
+            AlertDialogBox("IA-mTransfer_SyncAll", ex.toString(), false);
         }
     };
 
@@ -269,6 +250,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                 Common.VolumeSum = 0.0;
                 Common.VBB_Number = submitVVPEDT.getText().toString();
                 Common.StartDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+                Common.FromTransLocID = Common.FromLocationID;
                 if (Common.VBB_Number.length() > 0) {
                     boolean DuplicateFlag = mDBInternalHelper.getInventoryTransferIdListDuplicateCheck(Integer.parseInt(Common.VBB_Number));
                     if (DuplicateFlag == true) {
@@ -277,7 +259,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                     }
                 }
                 boolean ListIdFlag = mDBInternalHelper.insertInventoryTransferID(Common.VBB_Number, Common.IMEI, Common.ToLocaTransID, Common.StartDate, Common.EndDate,
-                        Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TrucklicensePlateNo, Common.UserID, Common.Count,
+                        Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TransportId, Common.UserID, Common.Count,
                         Common.SyncStatus, Common.SyncTime, Common.Volume, 1, Common.TransferUniqueID);
                 if (ListIdFlag == true) {
                     //Common.InventoryTransferList = mDBInternalHelper.getInventoryTransferIdList("null");
@@ -286,23 +268,22 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                     String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
                     String DeviceID = "";
                     if (String.valueOf(Common.LDeviceID).length() == 1) {
-                        DeviceID = "0" + String.valueOf(Common.LDeviceID);
+                        DeviceID = "0" + Common.LDeviceID;
                     } else {
                         DeviceID = String.valueOf(Common.LDeviceID);
                     }
-                    Common.TransferUniqueID = String.valueOf(DateUniqueFormat + DeviceID + Common.TransferID);
-                    Log.d("TransferID", ">>>>>>" + Common.TransferID + ">>" + Common.TransferUniqueID);
+                    Common.TransferUniqueID = DateUniqueFormat + DeviceID + Common.TransferID;
                     // Update values into TransferID
                     boolean TransferIDFlag = mDBInternalHelper.UpdateInventoryTransferUniqueID(Common.TransferID, Common.TransferUniqueID);
                     //}
                     Common.IsTransferEditListFlag = true;
                     Common.IsEditorViewFlag = true;
                     InventorTransferAcivityCall();
-                }else{
+                } else {
                     AlertDialogBox("IT-AddTransferList", "Values are not Inserted", false);
                 }
-
             } catch (Exception ex) {
+                CrashAnalytics.CrashReport(ex);
                 AlertDialogBox("IT-AddTransferList", ex.toString(), false);
             }
         }
@@ -326,7 +307,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                         }
                     }
                     boolean ListIdFlag = mDBInternalHelper.insertInventoryTransferID(Common.VBB_Number, Common.IMEI, Common.ToLocaTransID, Common.StartDate, Common.EndDate,
-                            Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TrucklicensePlateNo, Common.UserID, Common.Count,
+                            Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TransportId, Common.UserID, Common.Count,
                             Common.SyncStatus, Common.SyncTime, Common.Volume, 1, Common.TransferUniqueID);
 
                     if (ListIdFlag == true) {
@@ -342,6 +323,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                     InventorTransferAcivityCall();
                 }
             } catch (Exception ex) {
+                CrashAnalytics.CrashReport(ex);
                 AlertDialogBox("IA-AddTransferList", ex.toString(), false);
             }
         }
@@ -352,6 +334,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
             try {
                 scanService.doDecode();
             } catch (Exception ex) {
+                CrashAnalytics.CrashReport(ex);
                 AlertDialogBox("IA-AddTransferList", ex.toString(), false);
             }
         }
@@ -377,23 +360,10 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         return Validattion;
     }
 
-    public void GetFilteredDate() {
-        try {
-        } catch (Exception ex) {
-
-
-        }
-    }
-
     public void GetInventoryTransferDateList() {
         try {
             Common.Filter_InventoryTransDate.clear();
             Common.Filter_InventoryTransDate = mDBInternalHelper.getInventoryTransferDate();
-            /*Remove Duplications*/
-            HashSet<String> hashSet = new HashSet<String>();
-            hashSet.addAll(Common.Filter_InventoryTransDate);
-            Common.Filter_InventoryTransDate.clear();
-            Common.Filter_InventoryTransDate.addAll(hashSet);
             if (Common.Filter_InventoryTransDate.size() > 0) {
                 invenTransferDateadapter = new InventoryTransferDateAdapter(Common.Filter_InventoryTransDate, this);
                 InveDateLayoutManager = new LinearLayoutManager(this);
@@ -402,7 +372,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                 InventoryTransDateList.setAdapter(invenTransferDateadapter);
                 InventoryTransDateList.setVisibility(View.VISIBLE);
                 NoValueFoundTxT.setVisibility(View.GONE);
-                GetInventoryTransferList(Common.Filter_InventoryTransDate.get(Common.InventTransDateSelectedIndex));
+                GetInventoryTransferList(String.valueOf(Common.Filter_InventoryTransDate.get(Common.InventTransDateSelectedIndex)));
             } else {
                 InventoryTransList.setVisibility(View.GONE);
                 InventoryTransDateList.setVisibility(View.GONE);
@@ -411,7 +381,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                 TotalFilteredVolume.setText("0.00");
             }
         } catch (Exception ex) {
-            Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
+            CrashAnalytics.CrashReport(ex);
         }
     }
 
@@ -435,7 +405,40 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
             TotalFilteredCount.setText(String.valueOf(Common.InventoryTransferList.size()));
             TotalFilteredVolume.setText(String.valueOf(mDBInternalHelper.TotalVolumeForInventoryTransfer(SelectedDate)));
         } catch (Exception ex) {
-            Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
+            CrashAnalytics.CrashReport(ex);
+        }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
+    }
+
+    private boolean checkConnection() {
+        isInternetPresent = ConnectivityReceiver.isConnected();
+        showSnack(isInternetPresent);
+        return isInternetPresent;
+    }
+
+    private void showSnack(boolean isConnected) {
+        try {
+            String message;
+            int color;
+            if (isConnected) {
+                message = "Good! Connected to Internet";
+                color = Color.WHITE;
+            } else {
+                message = "Sorry! Not connected to internet";
+                color = Color.RED;
+            }
+
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.snack_barList), message, Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            TextView textView = sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+            textView.setTextColor(color);
+            snackbar.show();
+        } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
         }
     }
 
@@ -488,169 +491,178 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
             } else {
                 holder.syncTXT.setVisibility(View.INVISIBLE);
             }*/
-            holder.syncTXT.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Sync Date to BackEnd
-                    try {
-                        if (Common.FellingRegSyncALL == false) {
-                            Common.VBB_Number = InventoryTransferList.get(position).getVBB_Number();
-                            Common.SyncStartDateTime = InventoryTransferList.get(position).getStartDateTime();
-                            Common.SyncEndDateTime = InventoryTransferList.get(position).getEndDateTime();
-                            Common.TransferID = InventoryTransferList.get(position).getTransferID();
-                            Common.SyncBarCodeCount = InventoryTransferList.get(position).getCount();
-                            Common.FromLocationID = InventoryTransferList.get(position).getFromLocationID();
-                            Common.ToLocaTransID = InventoryTransferList.get(position).getToLocationID();
-                            Common.TrucklicensePlateNo = InventoryTransferList.get(position).getTruckPlateNumber();
-                            Common.TransportTypeId = InventoryTransferList.get(position).getTransportTypeId();
-                            Common.LoadedTypeID = InventoryTransferList.get(position).getLoadedTypeID();
-                            Common.TransferAgencyID = InventoryTransferList.get(position).getTransferAgencyID();
-                            Common.DriverID = InventoryTransferList.get(position).getDriverID();
-                   /* if (isNullOrEmpty(InventoryTransferList.get(position).getTransUniqueID())) {
-                        Common.TransferUniqueID = String.valueOf(Common.TransferID);
-                    } else {
-                        Common.TransferUniqueID = InventoryTransferList.get(position).getTransUniqueID();
-                    }*/
-                            Common.TransferUniqueID = InventoryTransferList.get(position).getTransUniqueID();
-                            InventoryTransferSync(Common.VBB_Number, Common.TransferID);
-                        } else {
-                            InventoryTransferSyncALLDialog("Are you sure want to sync all datas?");
-                        }
-                    } catch (Exception ex) {
-                        AlertDialogBox("Transfer Sync", ex.toString(), false);
-                    }
-                }
-            });
-
-            holder.DeleteIMG.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        Common.TransferID = InventoryTransferList.get(position).getTransferID();
-                        //Remove From Transfer Lsit and Scanned list
-                        if (InventoryTransferList.get(position).getSyncStatus() == 1) {
-                            DeleteTransferListandTransferScannedList(Common.TransferID);
-                        } else {
-                            if (Common.Username.equals("1")) {
-                                TransferDeleteDatasIFUserID_ONE("Are you sure you want delete all datas");
-                            } else {
-                                if (InventoryTransferList.get(position).getCount() < 5) {
-                                    DeleteTransferListandTransferScannedList(Common.TransferID);
-                                    return;
-                                }
-                                AlertDialogBox("InventoryTransfer", "This is not Syncked yet", false);
-                            }
-                        }
-                    } catch (Exception ex) {
-                        AlertDialogBox("Transfer DeleteIMG", ex.toString(), false);
-                    }
-                }
-            });
-
-            holder.printIMG.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
+            holder.syncTXT.setOnClickListener(v -> {
+                //Sync Date to BackEnd
+                try {
+                    if (Common.InventoryTransferSyncALL == false) {
                         Common.VBB_Number = InventoryTransferList.get(position).getVBB_Number();
+                        Common.SyncStartDateTime = InventoryTransferList.get(position).getStartDateTime();
+                        Common.SyncEndDateTime = InventoryTransferList.get(position).getEndDateTime();
                         Common.TransferID = InventoryTransferList.get(position).getTransferID();
-                        Common.TransferUniqueID = InventoryTransferList.get(position).getTransUniqueID();
-                        Common.InventorytransferScannedResultList.clear();
-                        Common.InventorytransferScannedResultList = mDBInternalHelper.getInventoryTransferWithVBBNumber(Common.VBB_Number, Common.TransferID);
-                        if (Common.InventorytransferScannedResultList.size() > 0) {
-                            Common.DriverID = InventoryTransferList.get(position).getDriverID();
-                            Common.DriverName = mDBExternalHelper.getAllDriverName(Common.DriverID);
-                            Common.TransportTypeId = InventoryTransferList.get(position).getTransportTypeId();
-                            Common.TransportMode = mDBExternalHelper.getAllTransPortMode(Common.TransportTypeId);
-                            Common.FromLocationID = InventoryTransferList.get(position).getFromLocationID();
-                            Common.FromLocationname = mDBExternalHelper.getFromLocationName(Common.FromLocationID);
-                            Common.ToLocaTransID = InventoryTransferList.get(position).getToLocationID();
-                            Common.ToLocationName = mDBExternalHelper.getToLocationName(Common.ToLocaTransID);
-                            Common.TransferAgencyID = InventoryTransferList.get(position).getTransferAgencyID();
-                            if (isNullOrEmpty(String.valueOf(InventoryTransferList.get(position).getLoadedTypeID()))) {
-                                Common.LoadedName = "";
-                            } else {
-                                Common.LoadedTypeID = InventoryTransferList.get(position).getLoadedTypeID();
-                                Common.LoadedName = mDBExternalHelper.getLoadedName(Common.LoadedTypeID);
-                            }
-                            Common.AgencyName = mDBExternalHelper.getAgencyName(Common.TransferAgencyID);
-                            Common.TrucklicensePlateNo = InventoryTransferList.get(position).getTruckPlateNumber();
-                            try {
-                                Common.TruckDeatilsList.clear();
-                                Common.TruckDeatilsList = mDBExternalHelper.getAllTruckDetails();
-                                for (int i = 0; i < Common.TruckDeatilsList.size(); i++) {
-                                    if (Common.TrucklicensePlateNo.equals(Common.TruckDeatilsList.get(i).getTruckLicensePlateNo())) {
-                                        Common.TransportId = Common.TruckDeatilsList.get(i).getTransportId();
-                                    }
-                                }
-                            } catch (Exception ex) {
-                            }
-                            PrintTransferSlipCheck();
-                        } else {
-                            AlertDialogBox("Transfer PrintSlip", "No values found, try some other item", false);
-                        }
-                    } catch (Exception ex) {
-                        AlertDialogBox("Transfer PrintSlip", ex.toString(), false);
-                    }
-                }
-            });
-
-            holder.Background.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    try {
-                        Common.TransferUniqueID = InventoryTransferList.get(position).getTransUniqueID();
-                        Common.TransferID = InventoryTransferList.get(position).getTransferID();
-
-                        Common.FromTransLocID = InventoryTransferList.get(position).getFromLocationID();
-                        Common.FromLocationname = mDBExternalHelper.getFromLocationName(Common.FromTransLocID);
-
+                        Common.SyncBarCodeCount = InventoryTransferList.get(position).getCount();
+                        Common.FromLocationID = InventoryTransferList.get(position).getFromLocationID();
                         Common.ToLocaTransID = InventoryTransferList.get(position).getToLocationID();
-                        Common.ToLocationName = mDBExternalHelper.getToLocationName(Common.ToLocaTransID);
-
-                        Common.DriverID = InventoryTransferList.get(position).getDriverID();
-                        Common.DriverName = mDBExternalHelper.getAllDriverName(Common.DriverID);
-
-                        Common.TransferAgencyID = InventoryTransferList.get(position).getTransferAgencyID();
-                        Common.AgencyName = mDBExternalHelper.getAgencyName(Common.TransferAgencyID);
 
                         Common.TransportTypeId = InventoryTransferList.get(position).getTransportTypeId();
-                        Common.TransportMode = mDBExternalHelper.getAllTransPortMode(Common.TransportTypeId);
+                        Common.LoadedTypeID = InventoryTransferList.get(position).getLoadedTypeID();
+                        Common.TransferAgencyID = InventoryTransferList.get(position).getTransferAgencyID();
+                        Common.DriverID = InventoryTransferList.get(position).getDriverID();
+                        Common.TransferUniqueID = InventoryTransferList.get(position).getTransUniqueID();
 
+                        if (Common.TransferAgencyID == 0) {
+                            Common.AgencyName = InventoryTransferList.get(position).getAgencyName();
+                        } else {
+                            Common.AgencyName = mDBExternalHelper.getAgencyName(Common.TransferAgencyID);
+                        }
+                        if (Common.DriverID == 0) {
+                            Common.DriverName = InventoryTransferList.get(position).getDriverName();
+                        } else {
+                            Common.DriverName = mDBExternalHelper.getAllDriverName(Common.DriverID);
+                        }
+                        if (InventoryTransferList.get(position).getTruckId() == 0) {
+                            Common.TransportId = 0;
+                            Common.TrucklicensePlateNo = InventoryTransferList.get(position).getTruckPlateNumber();
+                        } else {
+                            Common.TransportId = InventoryTransferList.get(position).getTruckId();
+                            Common.TrucklicensePlateNo = mDBExternalHelper.getAllTruckNames(Common.TransportId);
+                        }
+                        InventoryTransferSync(Common.VBB_Number, Common.TransferID);
+                    } else {
+                        InventoryTransferSyncALLDialog("Are you sure want to sync all datas?");
+                    }
+                } catch (Exception ex) {
+                    AlertDialogBox("Transfer Sync", ex.toString(), false);
+                }
+            });
+
+            holder.DeleteIMG.setOnClickListener(v -> {
+                try {
+                    Common.TransferID = InventoryTransferList.get(position).getTransferID();
+                    //Remove From Transfer Lsit and Scanned list
+                    if (InventoryTransferList.get(position).getSyncStatus() == 1) {
+                        DeleteTransferListandTransferScannedList(Common.TransferID);
+                    } else {
+                        if (Common.Username.equals("1")) {
+                            TransferDeleteDatasIFUserID_ONE("Are you sure you want delete all datas");
+                        } else {
+                            if (InventoryTransferList.get(position).getCount() < 5) {
+                                DeleteTransferListandTransferScannedList(Common.TransferID);
+                                return;
+                            }
+                            AlertDialogBox(CommonMessage(R.string.TransferHead), "This is not Syncked yet", false);
+                        }
+                    }
+                } catch (Exception ex) {
+                    AlertDialogBox("Transfer DeleteIMG", ex.toString(), false);
+                }
+            });
+
+            holder.printIMG.setOnClickListener(v -> {
+                try {
+                    Common.VBB_Number = InventoryTransferList.get(position).getVBB_Number();
+                    Common.TransferID = InventoryTransferList.get(position).getTransferID();
+                    Common.TransferUniqueID = InventoryTransferList.get(position).getTransUniqueID();
+                    Common.InventorytransferScannedResultList.clear();
+                    Common.InventorytransferScannedResultList = mDBInternalHelper.getInventoryTransferWithVBBNumber(Common.VBB_Number, Common.TransferID);
+                    if (Common.InventorytransferScannedResultList.size() > 0) {
+                        Common.DriverID = InventoryTransferList.get(position).getDriverID();
+                        Common.TransportTypeId = InventoryTransferList.get(position).getTransportTypeId();
+                        Common.TransportMode = mDBExternalHelper.getAllTransPortMode(Common.TransportTypeId);
+                        Common.FromLocationID = InventoryTransferList.get(position).getFromLocationID();
+                        Common.FromLocationname = mDBExternalHelper.getFromLocationName(Common.FromLocationID);
+                        Common.ToLocaTransID = InventoryTransferList.get(position).getToLocationID();
+                        Common.ToLocationName = mDBExternalHelper.getToLocationName(Common.ToLocaTransID);
+                        Common.TransferAgencyID = InventoryTransferList.get(position).getTransferAgencyID();
                         if (isNullOrEmpty(String.valueOf(InventoryTransferList.get(position).getLoadedTypeID()))) {
                             Common.LoadedName = "";
                         } else {
                             Common.LoadedTypeID = InventoryTransferList.get(position).getLoadedTypeID();
                             Common.LoadedName = mDBExternalHelper.getLoadedName(Common.LoadedTypeID);
                         }
-
-                        Common.VBB_Number = InventoryTransferList.get(position).getVBB_Number();
-                        Common.TrucklicensePlateNo = InventoryTransferList.get(position).getTruckPlateNumber();
-                        try {
-                            Common.TruckDeatilsList.clear();
-                            Common.TruckDeatilsList = mDBExternalHelper.getAllTruckDetails();
-                            for (int i = 0; i < Common.TruckDeatilsList.size(); i++) {
-                                if (Common.TrucklicensePlateNo.equals(Common.TruckDeatilsList.get(i).getTruckLicensePlateNo())) {
-                                    Common.TransportId = Common.TruckDeatilsList.get(i).getTransportId();
-                                }
-                            }
-                        } catch (Exception ex) {
-                        }
-                        if (InventoryTransferList.get(position).getSyncStatus() == 0) {
-                            Common.IsEditorViewFlag = true;
-                            Common.IsTransferEditListFlag = false;
-                            if (Common.FromLocationID != Common.FromTransLocID) {
-                                Common.IsEditorViewFlag = false;
-                            }
+                        if (Common.TransferAgencyID == 0) {
+                            Common.AgencyName = InventoryTransferList.get(position).getAgencyName();
                         } else {
-                            Common.IsEditorViewFlag = false;
+                            Common.AgencyName = mDBExternalHelper.getAgencyName(Common.TransferAgencyID);
                         }
-                        InventorTransferAcivityCall();
-                    } catch (Exception ex) {
-                        AlertDialogBox("Transfer Background", ex.toString(), false);
+                        if (Common.DriverID == 0) {
+                            Common.DriverName = InventoryTransferList.get(position).getDriverName();
+                        } else {
+                            Common.DriverName = mDBExternalHelper.getAllDriverName(Common.DriverID);
+                        }
+                        if (InventoryTransferList.get(position).getTruckId() == 0) {
+                            Common.TransportId = 0;
+                            Common.TrucklicensePlateNo = InventoryTransferList.get(position).getTruckPlateNumber();
+                        } else {
+                            Common.TransportId = InventoryTransferList.get(position).getTruckId();
+                            Common.TrucklicensePlateNo = mDBExternalHelper.getAllTruckNames(Common.TransportId);
+                        }
+                        PrintTransferSlipCheck();
+                    } else {
+                        AlertDialogBox("Transfer PrintSlip", "No values found, try some other item", false);
                     }
-                    return false;
+                } catch (Exception ex) {
+                    AlertDialogBox("Transfer PrintSlip", ex.toString(), false);
                 }
+            });
 
+            holder.Background.setOnLongClickListener(v -> {
+                try {
+                    Common.TransferUniqueID = InventoryTransferList.get(position).getTransUniqueID();
+                    Common.TransferID = InventoryTransferList.get(position).getTransferID();
+
+                    Common.FromTransLocID = InventoryTransferList.get(position).getFromLocationID();
+                    Common.FromLocationname = mDBExternalHelper.getFromLocationName(Common.FromTransLocID);
+
+                    Common.ToLocaTransID = InventoryTransferList.get(position).getToLocationID();
+                    Common.ToLocationName = mDBExternalHelper.getToLocationName(Common.ToLocaTransID);
+
+                    Common.DriverID = InventoryTransferList.get(position).getDriverID();
+
+                    Common.TransferAgencyID = InventoryTransferList.get(position).getTransferAgencyID();
+
+                    Common.TransportTypeId = InventoryTransferList.get(position).getTransportTypeId();
+                    Common.TransportMode = mDBExternalHelper.getAllTransPortMode(Common.TransportTypeId);
+
+                    if (isNullOrEmpty(String.valueOf(InventoryTransferList.get(position).getLoadedTypeID()))) {
+                        Common.LoadedName = "";
+                    } else {
+                        Common.LoadedTypeID = InventoryTransferList.get(position).getLoadedTypeID();
+                        Common.LoadedName = mDBExternalHelper.getLoadedName(Common.LoadedTypeID);
+                    }
+
+                    Common.VBB_Number = InventoryTransferList.get(position).getVBB_Number();
+
+                    if (Common.TransferAgencyID == 0) {
+                        Common.AgencyName = InventoryTransferList.get(position).getAgencyName();
+                    } else {
+                        Common.AgencyName = mDBExternalHelper.getAgencyName(Common.TransferAgencyID);
+                    }
+                    if (Common.DriverID == 0) {
+                        Common.DriverName = InventoryTransferList.get(position).getDriverName();
+                    } else {
+                        Common.DriverName = mDBExternalHelper.getAllDriverName(Common.DriverID);
+                    }
+                    if (InventoryTransferList.get(position).getTruckId() == 0) {
+                        Common.TransportId = 0;
+                        Common.TrucklicensePlateNo = InventoryTransferList.get(position).getTruckPlateNumber();
+                    } else {
+                        Common.TransportId = InventoryTransferList.get(position).getTruckId();
+                        Common.TrucklicensePlateNo = mDBExternalHelper.getAllTruckNames(Common.TransportId);
+                    }
+                    if (InventoryTransferList.get(position).getSyncStatus() == 0) {
+                        Common.IsEditorViewFlag = true;
+                        Common.IsTransferEditListFlag = false;
+                        //if (Common.FromLocationID != Common.FromTransLocID) {
+                            //Common.IsEditorViewFlag = false;
+                        //}
+                    } else {
+                        Common.IsEditorViewFlag = false;
+                    }
+                    InventorTransferAcivityCall();
+                } catch (Exception ex) {
+                    AlertDialogBox("Transfer Background", ex.toString(), false);
+                }
+                return false;
             });
         }
 
@@ -709,13 +721,10 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
             }
             holder.TransferDateTXT.setText(String.valueOf(InventoryTransferDateList.get(position)));
 
-            holder.Background.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Common.InventTransDateSelectedIndex = position;
-                    notifyDataSetChanged();
-                    GetInventoryTransferList(String.valueOf(InventoryTransferDateList.get(position)));
-                }
+            holder.Background.setOnClickListener(v -> {
+                Common.InventTransDateSelectedIndex = position;
+                notifyDataSetChanged();
+                GetInventoryTransferList(String.valueOf(InventoryTransferDateList.get(position)));
             });
 
         }
@@ -733,7 +742,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
     }
 
     public static boolean isNullOrEmpty(String str) {
-        return str == null || str.isEmpty() || str == "null";
+        return str == null || str.isEmpty() || str.equals("null");
     }
 
     public void AlertDialogBox(String Title, String Message, boolean YesNo) {
@@ -748,20 +757,6 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         return this.getResources().getString(Common_Msg);
     }
 
-    public boolean CheckisInternetPresent() {
-        try {
-            isInternetPresent = ConnectionFinder.isInternetOn(getBaseContext());
-        } catch (Exception ex) {
-            //AlertDialogBox("Internet Connection", ex.toString(), false);
-        }
-        if (!isInternetPresent) {
-            AlertDialogBox(CommonMessage(R.string.Internet_Conn), CommonMessage(R.string.Internet_ConnMsg), false);
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     // Method for SyncAPI
     public void InventoryTransferSyncALLDialog(String ErrorMessage) {
         if (SignoutAlert != null && SignoutAlert.isShowing()) {
@@ -770,12 +765,8 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         Signoutbuilder = new AlertDialog.Builder(this);
         Signoutbuilder.setMessage(ErrorMessage);
         Signoutbuilder.setCancelable(true);
-        Signoutbuilder.setPositiveButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+        Signoutbuilder.setPositiveButton(CommonMessage(R.string.action_cancel),
+                (dialog, id) -> dialog.cancel());
         Signoutbuilder.setNegativeButton("SyncAll",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -786,130 +777,20 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
 
         SignoutAlert = Signoutbuilder.create();
         SignoutAlert.show();
-
     }
 
     public void InventoryTransferSyncALL() {
         try {
-            if (!CheckisInternetPresent()) {
-                AlertDialogBox(CommonMessage(R.string.Internet_Conn), CommonMessage(R.string.Internet_ConnMsg), false);
-            } else {
+            if (checkConnection() == true) {
                 Common.InveTransferSyncALlIndex = 0;
-                new GetInventoryTransferSyncAllAsynkTask().execute();
+                getInventoryTransferAllSyncStatusApi();
             }
         } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
             AlertDialogBox(CommonMessage(R.string.FellingRegisterHead), ex.toString(), false);
         }
     }
 
-    class GetInventoryTransferSyncAllAsynkTask extends AsyncTask<String, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            ProgressBarLay.setVisibility(View.VISIBLE);
-            Common.SyncStatusList.clear();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                Common.VBB_Number = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getVBB_Number();
-                Common.SyncStartDateTime = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getStartDateTime();
-                Common.SyncEndDateTime = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getEndDateTime();
-                Common.TransferID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransferID();
-                Common.SyncBarCodeCount = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getCount();
-                Common.FromLocationID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getFromLocationID();
-                Common.ToLocaTransID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getToLocationID();
-                Common.TrucklicensePlateNo = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTruckPlateNumber();
-                Common.TransportTypeId = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransportTypeId();
-                Common.LoadedTypeID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getLoadedTypeID();
-                Common.TransferAgencyID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransferAgencyID();
-                Common.DriverID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getDriverID();
-                Common.TransferUniqueID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransUniqueID();
-
-                Common.InventoryTransferInputList.clear();
-                Common.InventoryTransferInputList = mDBInternalHelper.getTransferScannedResultInputWithVBBNo(Common.VBB_Number, Common.TransferID);
-
-                String MethodName = "InsertHHInventoryTransfer_v2";//"InsertHHInventoryTransfer/";
-                String SyncURL = ServiceURL.getServiceURL(ServiceURL.ControllorName, MethodName);
-                transferSyncModel = new InventoryTransferSyncModel();
-                transferSyncModel.setTransferID(Common.TransferID);
-                transferSyncModel.setVBBNumber(Common.VBB_Number);
-                transferSyncModel.setIMEINumber(Common.IMEI);
-                transferSyncModel.setStartTime(Common.SyncStartDateTime);
-                transferSyncModel.setEndTime(Common.SyncEndDateTime);
-                transferSyncModel.setTruckPlateNumber(Common.TrucklicensePlateNo);
-                transferSyncModel.setLocationID(Common.FromLocationID);
-                transferSyncModel.setTransferModeID(Common.TransportTypeId);
-                transferSyncModel.setTransferAgencyId(Common.TransferAgencyID);
-                transferSyncModel.setDriverId(Common.DriverID);
-                transferSyncModel.setTranferredCount(Common.SyncBarCodeCount);
-                transferSyncModel.setToLocationID(Common.ToLocaTransID);//ToLocaTransID
-                transferSyncModel.setUserID(Common.UserID);
-                transferSyncModel.setTransferUniqueID(Common.TransferUniqueID);
-                transferSyncModel.setLoadedTypeID(Common.LoadedTypeID);
-                transferSyncModel.setHHInventoryTransfer(Common.InventoryTransferInputList);
-
-                String SyncURLInfo = new Communicator().POST_Obect(SyncURL, transferSyncModel);
-                if (GwwException.GwwException(Common.HttpResponceCode) == true) {
-                    if (SyncURLInfo != null) {
-                        JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
-                        if (SyncResponceStr != null) {
-                            JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
-                            for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
-                                suncStaModel = new Gson().fromJson(SyncJsonAry.getString(Sync_Index), SyncStatusModel.class);
-                                Common.SyncStatusList.add(suncStaModel);
-                            }
-                        }
-                        Common.IsConnected = true;
-                    } else {
-                        Common.IsConnected = false;
-                        Common.InventoryErrorMsg = CommonMessage(R.string.NoValueFound);
-                    }
-                } else {
-                    JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                    Common.InventoryErrorMsg = jsonObj.getString("Message");
-                    Common.IsConnected = false;
-                    Common.AuthorizationFlag = true;
-                }
-            } catch (Exception e) {
-                Common.IsConnected = false;
-                Common.InventoryErrorMsg = CommonMessage(R.string.NoValueFound);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (Common.IsConnected == true) {
-                        if (Common.SyncStatusList.get(0).getStatus() == 1) {
-                            Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
-                            Common.SyncTime = Common.SyncStatusList.get(0).getSyncTime();
-                            boolean ListIdFlag = mDBInternalHelper.UpdateInventoryTransferSyncStatusTransID(Common.SyncTime, 1, Common.VBB_Number, Common.TransferID);
-                            if (Common.InveTransferSyncALlIndex == (Common.InventoryTransferList.size() - 1)) {
-                                GetInventoryTransferDateList();
-                                AlertDialogBox(CommonMessage(R.string.CountHead), Common.SyncStatusList.get(0).getMessage(), true);
-                            } else {
-                                Common.InveTransferSyncALlIndex++;
-                                new GetInventoryTransferSyncAllAsynkTask().execute();
-                            }
-                        } else {
-                            AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + String.valueOf(Common.TransferID) + "--" + Common.SyncStatusList.get(0).getMessage(), false);
-                            return;
-                        }
-                    } else {
-                        AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + String.valueOf(Common.TransferID) + "--" + "Not Synced", false);
-                    }
-                }
-            });
-            ProgressBarLay.setVisibility(View.GONE);
-        }
-
-    }
 
     public void TransferDeleteDatasIFUserID_ONE(String ErrorMessage) {
         if (SignoutAlert != null && SignoutAlert.isShowing()) {
@@ -918,18 +799,12 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
         Signoutbuilder = new AlertDialog.Builder(this);
         Signoutbuilder.setMessage(ErrorMessage);
         Signoutbuilder.setCancelable(true);
-        Signoutbuilder.setPositiveButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        Signoutbuilder.setNegativeButton("Delete",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        DeleteTransferListandTransferScannedList(Common.TransferID);
-                        dialog.cancel();
-                    }
+        Signoutbuilder.setPositiveButton(CommonMessage(R.string.action_cancel),
+                (dialog, id) -> dialog.cancel());
+        Signoutbuilder.setNegativeButton(CommonMessage(R.string.action_delete),
+                (dialog, id) -> {
+                    DeleteTransferListandTransferScannedList(Common.TransferID);
+                    dialog.cancel();
                 });
 
         SignoutAlert = Signoutbuilder.create();
@@ -937,103 +812,14 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
 
     }
 
-    class GetInventoryTransferSyncAsynkTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            ProgressBarLay.setVisibility(View.VISIBLE);
-            Common.SyncStatusList.clear();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String MethodName = "InsertHHInventoryTransfer_v2";//"InsertHHInventoryTransfer/";
-            String SyncURL = ServiceURL.getServiceURL(ServiceURL.ControllorName, MethodName);
-            transferSyncModel = new InventoryTransferSyncModel();
-            transferSyncModel.setTransferID(Common.TransferID);
-            transferSyncModel.setVBBNumber(Common.VBB_Number);
-            transferSyncModel.setIMEINumber(Common.IMEI);
-            transferSyncModel.setStartTime(Common.SyncStartDateTime);
-            transferSyncModel.setEndTime(Common.SyncEndDateTime);
-            transferSyncModel.setTruckPlateNumber(Common.TrucklicensePlateNo);
-            transferSyncModel.setLocationID(Common.FromLocationID);
-            transferSyncModel.setTransferModeID(Common.TransportTypeId);
-            transferSyncModel.setTransferAgencyId(Common.TransferAgencyID);
-            transferSyncModel.setDriverId(Common.DriverID);
-            transferSyncModel.setTranferredCount(Common.SyncBarCodeCount);
-            transferSyncModel.setToLocationID(Common.ToLocaTransID);//ToLocaTransID
-            transferSyncModel.setUserID(Common.UserID);
-            transferSyncModel.setTransferUniqueID(Common.TransferUniqueID);
-            transferSyncModel.setLoadedTypeID(Common.LoadedTypeID);
-            transferSyncModel.setHHInventoryTransfer(Common.InventoryTransferInputList);
-            try {
-                String SyncURLInfo = new Communicator().POST_Obect(SyncURL, transferSyncModel);
-                if (GwwException.GwwException(Common.HttpResponceCode) == true) {
-                    if (SyncURLInfo != null) {
-                        JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
-                        if (SyncResponceStr != null) {
-                            JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
-                            for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
-                                suncStaModel = new Gson().fromJson(SyncJsonAry.getString(Sync_Index), SyncStatusModel.class);
-                                Common.SyncStatusList.add(suncStaModel);
-                            }
-                        }
-                        Common.IsConnected = true;
-                    } else {
-                        Common.IsConnected = false;
-                        Common.InventoryErrorMsg = CommonMessage(R.string.NoValueFound);
-                    }
-                } else {
-                    JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                    Common.InventoryErrorMsg = jsonObj.getString("Message");
-                    Common.IsConnected = false;
-                    Common.AuthorizationFlag = true;
-                }
-            } catch (Exception e) {
-                Common.IsConnected = false;
-                Common.InventoryErrorMsg = CommonMessage(R.string.NoValueFound);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (Common.IsConnected == true) {
-                        if (Common.SyncStatusList.get(0).getStatus() == 1) {
-                            Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
-                            Common.SyncTime = Common.SyncStatusList.get(0).getSyncTime();
-                            boolean ListIdFlag = mDBInternalHelper.UpdateInventoryTransferSyncStatusTransID(Common.SyncTime, 1, Common.VBB_Number, Common.TransferID);
-                            if (ListIdFlag == true) {
-                                //Scanned Result Refresh
-                                GetInventoryTransferDateList();
-                                AlertDialogBox("InventoryTransfer", "#" + String.valueOf(Common.TransferID) + "--" + Common.SyncStatusList.get(0).getMessage(), false);
-                            }
-                        } else {
-                            AlertDialogBox("InventoryTransfer", "#" + String.valueOf(Common.TransferID) + "--" + Common.SyncStatusList.get(0).getMessage(), false);
-                            return;
-                        }
-                    } else {
-                        AlertDialogBox("InventoryTransfer", "#" + String.valueOf(Common.TransferID) + "--" + "Not Synced", false);
-                    }
-                }
-            });
-            ProgressBarLay.setVisibility(View.GONE);
-        }
-    }
 
     public void InventoryTransferSync(String VbbNumber, int TransferId) {
         Common.InventoryTransferInputList.clear();
         Common.InventoryTransferInputList = mDBInternalHelper.getTransferScannedResultInputWithVBBNo(VbbNumber, TransferId);
+        Common.Purchase.purchaseStatus = mDBInternalHelper.getTransferScannedPurchaseStatus(VbbNumber, TransferId);
         if (Common.InventoryTransferInputList.size() > 0) {
-            if (!CheckisInternetPresent()) {
-                AlertDialogBox(CommonMessage(R.string.Internet_Conn), CommonMessage(R.string.Internet_ConnMsg), false);
-            } else {
-                new GetInventoryTransferSyncAsynkTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            if (checkConnection()) {
+                getInventoryTransferSyncStatusApi();
             }
         } else {
             AlertDialogBox("InventoryTransfer Sync", "Values are empty", false);
@@ -1098,7 +884,10 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                 tsc.sendcommand(printSlip.TransferHeader());
                 //tsc.sendcommand(printSlip.TransferDetails());
                 tsc.sendcommand(printSlip.TransferDetails19_09_2019());
-                tsc.sendcommand(printSlip.TransferScannedItemsDetails());
+                //tsc.sendcommand(printSlip.TransferScannedItemsDetails());
+                //18-11-2019
+                tsc.sendcommand(printSlip.TransferListDimensions18_Nov_2019());
+                tsc.clearbuffer();
                 if (Common.InventorytransferScannedResultList.size() > (Common.VVBLimitation + 2)) {
                 } else {
                     tsc.sendcommand(printSlip.TransferFooter());
@@ -1119,7 +908,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                 }, TimerforPrint);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Log.e("Exception", ">>>>>>>>>>>" + ex.toString());
+                CrashAnalytics.CrashReport(ex);
             }
         }
     };
@@ -1143,6 +932,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                 }
             }
         } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
             AlertDialogBox("DeleteTransferListandTransferScannedList", ex.toString(), false);
         }
     }
@@ -1175,6 +965,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
             Common.TransferUniqueID = ScannedArryValue[0];
             submitOldTransEDT.setText(ScannedArryValue[0]);
             Common.VBB_Number = ScannedArryValue[1];
+            //Common.TrucklicensePlateNo = ScannedArryValue[2];
             Common.FromTransLocID = Integer.parseInt(ScannedArryValue[3]);
             Common.ToLocaTransID = Integer.parseInt(ScannedArryValue[4]);
             Common.TransferAgencyID = Integer.parseInt(ScannedArryValue[5]);
@@ -1198,7 +989,7 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
                 }
             }
             boolean ListIdFlag = mDBInternalHelper.insertInventoryTransferID(Common.VBB_Number, Common.IMEI, Common.ToLocaTransID, Common.StartDate, Common.EndDate,
-                    Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TrucklicensePlateNo, Common.UserID, Common.Count,
+                    Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TransportId, Common.UserID, Common.Count,
                     Common.SyncStatus, Common.SyncTime, Common.Volume, 1, Common.TransferUniqueID);
 
             if (ListIdFlag == true) {
@@ -1212,8 +1003,9 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
             Common.IsTransferEditListFlag = false;
             Common.IsEditorViewFlag = true;
             InventorTransferAcivityCall();
-        } catch (Exception ee) {
-            AlertDialogBox("ScanQR Details", ee.toString(), false);
+        } catch (Exception ex) {
+            CrashAnalytics.CrashReport(ex);
+            AlertDialogBox("ScanQR Details", ex.toString(), false);
         }
     }
 
@@ -1286,6 +1078,179 @@ public class InventoryTransferListActivity extends Activity implements SdlScanLi
     public void releaseWakeLock() {
         if (mWakeLock != null) {
             mWakeLock.release();
+        }
+    }
+
+    // 2-12-2019 Added InventoryTransferSyncStatusApi impl
+    private void getInventoryTransferSyncStatusApi() {
+        try {
+            ProgressBarLay.setVisibility(View.VISIBLE);
+            transferSyncModel = new InventoryTransferSyncModel();
+            transferSyncModel.setTransferID(Common.TransferID);
+            transferSyncModel.setVBBNumber(Common.VBB_Number);
+            transferSyncModel.setIMEINumber(Common.IMEI);
+            transferSyncModel.setStartTime(Common.SyncStartDateTime);
+            transferSyncModel.setEndTime(Common.SyncEndDateTime);
+            transferSyncModel.setTruckPlateNumber(Common.TrucklicensePlateNo);
+            transferSyncModel.setLocationID(Common.FromLocationID);
+            transferSyncModel.setTransferModeID(Common.TransportTypeId);
+            transferSyncModel.setTransferAgencyId(Common.TransferAgencyID);
+            transferSyncModel.setDriverId(Common.DriverID);
+            transferSyncModel.setTranferredCount(Common.SyncBarCodeCount);
+            transferSyncModel.setToLocationID(Common.ToLocaTransID);//ToLocaTransID
+            transferSyncModel.setUserID(Common.UserID);
+            transferSyncModel.setTransferUniqueID(Common.TransferUniqueID);
+            transferSyncModel.setLoadedTypeID(Common.LoadedTypeID);
+            transferSyncModel.setAgencyName(Common.AgencyName);
+            transferSyncModel.setDriverName(Common.DriverName);
+            transferSyncModel.setTruckId(Common.TransportId);
+            transferSyncModel.setPurchaseStatus(Common.Purchase.purchaseStatus);
+            transferSyncModel.setHHInventoryTransfer(Common.InventoryTransferInputList);
+
+            InvenTransAPI = ApiClient.getApiInterface();
+            InvenTransAPI.getInventoryTransferSync(transferSyncModel).enqueue(new Callback<InventoryTransferSyncModel>() {
+                @Override
+                public void onResponse(Call<InventoryTransferSyncModel> call, Response<InventoryTransferSyncModel> response) {
+                    try {
+                        ProgressBarLay.setVisibility(View.GONE);
+                        if (GwwException.GwwException(response.code())) {
+                            if (response.isSuccessful()) {
+                                Common.SyncStatusList.clear();
+                                Common.SyncStatusList.addAll(response.body().getStatus());
+                                if (Common.SyncStatusList.get(0).getStatus() == 1) {
+                                    Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+                                    Common.SyncTime = Common.SyncStatusList.get(0).getSyncTime();
+                                    boolean ListIdFlag = mDBInternalHelper.UpdateInventoryTransferSyncStatusTransID(Common.SyncTime, 1, Common.VBB_Number, Common.TransferID,
+                                            Common.SyncStatusList.get(0).getTransferAgencyId(), Common.SyncStatusList.get(0).getDriverId(), Common.SyncStatusList.get(0).getTruckId());
+                                    if (ListIdFlag) {
+                                        //Scanned Result Refresh
+                                        GetInventoryTransferDateList();
+                                        AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + Common.SyncStatusList.get(0).getMessage(), true);
+                                        if (Common.SyncStatusList.get(0).getTransferAgencyId() != 0 || Common.SyncStatusList.get(0).getDriverId() != 0 || Common.SyncStatusList.get(0).getTruckId() != 0) {
+                                            Common.IsExternalSyncFlag = true;
+                                            Common.IsProgressVisible = false;
+                                            Common.ExternalSyncFlag = false;
+                                            gwwMain.ExternalDataBaseSync();
+                                        }
+                                    }
+                                } else {
+                                    AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + Common.SyncStatusList.get(0).getMessage(), false);
+                                }
+                            } else {
+                                AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + "Not Synced", false);
+                            }
+                        } else {
+                            Common.AuthorizationFlag = true;
+                            AlertDialogBox(CommonMessage(R.string.TransferHead), response.message(), false);
+                        }
+
+                    } catch (Exception ex) {
+                        CrashAnalytics.CrashReport(ex);
+                        AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + ex.getMessage(), false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<InventoryTransferSyncModel> call, Throwable t) {
+                    ProgressBarLay.setVisibility(View.GONE);
+                    AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + t.getMessage(), false);
+                }
+            });
+        } catch (Exception ex) {
+            ProgressBarLay.setVisibility(View.GONE);
+            CrashAnalytics.CrashReport(ex);
+            AlertDialogBox(CommonMessage(R.string.TransferHead), ex.toString(), false);
+        }
+    }
+
+    // 2-12-2019 Added InventoryTransferAllSyncStatusApi impl
+    private void getInventoryTransferAllSyncStatusApi() {
+        try {
+            ProgressBarLay.setVisibility(View.VISIBLE);
+
+            Common.VBB_Number = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getVBB_Number();
+            Common.SyncStartDateTime = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getStartDateTime();
+            Common.SyncEndDateTime = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getEndDateTime();
+            Common.TransferID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransferID();
+            Common.SyncBarCodeCount = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getCount();
+            Common.FromLocationID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getFromLocationID();
+            Common.ToLocaTransID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getToLocationID();
+            Common.TrucklicensePlateNo = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTruckPlateNumber();
+            Common.TransportTypeId = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransportTypeId();
+            Common.LoadedTypeID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getLoadedTypeID();
+            Common.TransferAgencyID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransferAgencyID();
+            Common.DriverID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getDriverID();
+            Common.TransferUniqueID = Common.InventoryTransferList.get(Common.InveTransferSyncALlIndex).getTransUniqueID();
+
+            Common.InventoryTransferInputList.clear();
+            Common.InventoryTransferInputList = mDBInternalHelper.getTransferScannedResultInputWithVBBNo(Common.VBB_Number, Common.TransferID);
+
+            transferSyncModel = new InventoryTransferSyncModel();
+            transferSyncModel.setTransferID(Common.TransferID);
+            transferSyncModel.setVBBNumber(Common.VBB_Number);
+            transferSyncModel.setIMEINumber(Common.IMEI);
+            transferSyncModel.setStartTime(Common.SyncStartDateTime);
+            transferSyncModel.setEndTime(Common.SyncEndDateTime);
+            transferSyncModel.setTruckPlateNumber(Common.TrucklicensePlateNo);
+            transferSyncModel.setLocationID(Common.FromLocationID);
+            transferSyncModel.setTransferModeID(Common.TransportTypeId);
+            transferSyncModel.setTransferAgencyId(Common.TransferAgencyID);
+            transferSyncModel.setDriverId(Common.DriverID);
+            transferSyncModel.setTranferredCount(Common.SyncBarCodeCount);
+            transferSyncModel.setToLocationID(Common.ToLocaTransID);//ToLocaTransID
+            transferSyncModel.setUserID(Common.UserID);
+            transferSyncModel.setTransferUniqueID(Common.TransferUniqueID);
+            transferSyncModel.setLoadedTypeID(Common.LoadedTypeID);
+            transferSyncModel.setHHInventoryTransfer(Common.InventoryTransferInputList);
+
+            InvenTransAPI = ApiClient.getApiInterface();
+            InvenTransAPI.getInventoryTransferSync(transferSyncModel).enqueue(new Callback<InventoryTransferSyncModel>() {
+                @Override
+                public void onResponse(Call<InventoryTransferSyncModel> call, Response<InventoryTransferSyncModel> response) {
+                    try {
+                        ProgressBarLay.setVisibility(View.GONE);
+                        if (GwwException.GwwException(response.code()) == true) {
+                            if (response.isSuccessful()) {
+                                Common.SyncStatusList.clear();
+                                Common.SyncStatusList.addAll(response.body().getStatus());
+                                if (Common.SyncStatusList.get(0).getStatus() == 1) {
+                                    Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+                                    Common.SyncTime = Common.SyncStatusList.get(0).getSyncTime();
+                                    boolean ListIdFlag = mDBInternalHelper.UpdateInventoryTransferSyncStatusTransID(Common.SyncTime, 1, Common.VBB_Number, Common.TransferID, 0, 0, 0);
+                                    if (Common.InveTransferSyncALlIndex == (Common.InventoryTransferList.size() - 1)) {
+                                        GetInventoryTransferDateList();
+                                        AlertDialogBox(CommonMessage(R.string.CountHead), Common.SyncStatusList.get(0).getMessage(), true);
+                                    } else {
+                                        Common.InveTransferSyncALlIndex++;
+                                        getInventoryTransferAllSyncStatusApi();
+                                    }
+                                } else {
+                                    AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + Common.SyncStatusList.get(0).getMessage(), false);
+                                }
+                            } else {
+                                AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + "Not Synced", false);
+                            }
+                        } else {
+                            Common.AuthorizationFlag = true;
+                            AlertDialogBox(CommonMessage(R.string.TransferHead), response.message(), false);
+                        }
+
+                    } catch (Exception ex) {
+                        CrashAnalytics.CrashReport(ex);
+                        AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + ex.getMessage(), false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<InventoryTransferSyncModel> call, Throwable t) {
+                    ProgressBarLay.setVisibility(View.GONE);
+                    AlertDialogBox(CommonMessage(R.string.TransferHead), "#" + Common.TransferID + "--" + t.getMessage(), false);
+                }
+            });
+        } catch (Exception ex) {
+            ProgressBarLay.setVisibility(View.GONE);
+            CrashAnalytics.CrashReport(ex);
+            AlertDialogBox(CommonMessage(R.string.TransferHead), ex.toString(), false);
         }
     }
 }

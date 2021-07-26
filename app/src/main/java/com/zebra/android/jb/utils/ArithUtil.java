@@ -112,7 +112,7 @@ public class ArithUtil {
 	    public static Double div(Double v1,Double v2,int scale){
 	        if(scale<0){
 	            throw new IllegalArgumentException(
-	            "The slide_down must be a positive integer or zero");
+	            "The scale must be a positive integer or zero");
 	        }
 	        BigDecimal b1 = new BigDecimal(v1.toString());
 	        BigDecimal b2 = new BigDecimal(v2.toString());

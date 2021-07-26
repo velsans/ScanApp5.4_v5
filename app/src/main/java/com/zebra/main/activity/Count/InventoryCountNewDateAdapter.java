@@ -1,6 +1,6 @@
 package com.zebra.main.activity.Count;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +41,7 @@ public class InventoryCountNewDateAdapter extends RecyclerView.Adapter<Inventory
 
         public ViewHolder(View view) {
             super(view);
-            SubjectTextView = (TextView) view.findViewById(R.id.textview_dates);
+            SubjectTextView = view.findViewById(R.id.textview_dates);
         }
     }
 

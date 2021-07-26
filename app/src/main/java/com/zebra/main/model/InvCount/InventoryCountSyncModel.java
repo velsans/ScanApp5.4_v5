@@ -1,13 +1,15 @@
 package com.zebra.main.model.InvCount;
 
+import com.zebra.main.model.SyncStatusModel;
+
 import java.util.ArrayList;
 
 public class InventoryCountSyncModel {
-    String IMEI,StartedTime,EndDateTime;
-    int ListID,LocationID,UserId,BarCodeCount;
+    String IMEI, StartedTime, EndDateTime;
+    int ListID, LocationID, UserId, BarCodeCount;
 
-
-    ArrayList<InventoryCountInputListModel> HHScannedResult=new ArrayList<>();
+    ArrayList<InventoryCountInputListModel> HHScannedResult = new ArrayList<>();
+    ArrayList<SyncStatusModel> Status = new ArrayList<SyncStatusModel>();
 
     public String getIMEI() {
         return IMEI;
@@ -71,5 +73,13 @@ public class InventoryCountSyncModel {
 
     public void setBarCodeCount(int barCodeCount) {
         BarCodeCount = barCodeCount;
+    }
+
+    public ArrayList<SyncStatusModel> getStatus() {
+        return Status;
+    }
+
+    public void setStatus(ArrayList<SyncStatusModel> status) {
+        Status = status;
     }
 }

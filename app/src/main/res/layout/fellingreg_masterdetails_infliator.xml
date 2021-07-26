@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+        <LinearLayout
+            android:id="@+id/masterfellinglayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fellingReg_SbblabelTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.15"
+                android:gravity="center"
+                android:text="SBB Label "
+                android:textSize="@dimen/normalSize"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_TreePartTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="T Part "
+                android:textSize="@dimen/normalSize"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_TreeNoTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:textSize="@dimen/normalSize"
+                android:text="Tree No "
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_PlotNoTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="Plot No "
+                android:visibility="gone"
+                android:textSize="@dimen/normalSize"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_WSpiceTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:textSize="@dimen/normalSize"
+                android:text="W-Spice"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_QualityTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:textSize="@dimen/normalSize"
+                android:text="Quality "
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_DF1TxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:textSize="@dimen/normalSize"
+                android:text="F 1"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_DF2TxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:textSize="@dimen/normalSize"
+                android:text="F 2"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_DT1TxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:textSize="@dimen/normalSize"
+                android:gravity="center"
+                android:text="T 1"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_DT2TxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="T 2"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/normalSize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_LenghtTxT"
+                android:layout_width="match_parent"
+                android:textSize="@dimen/normalSize"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="Length"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_NoteFTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.22"
+                android:gravity="center"
+                android:text="NF"
+                android:textSize="@dimen/normalSize"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_NoteTTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.22"
+                android:textSize="@dimen/normalSize"
+                android:gravity="center"
+                android:text="NT"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_NoteLTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.22"
+                android:gravity="center"
+                android:textSize="@dimen/normalSize"
+                android:text="NL"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fellingReg_VolumeTXT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/normalSize"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="Volume"
+                android:textColor="@color/color_black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/fellingReg_UpdateList"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    app:srcCompat="@mipmap/update"
+                    android:textColor="@android:color/black"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

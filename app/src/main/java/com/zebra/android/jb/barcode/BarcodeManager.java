@@ -29,8 +29,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.Preference;
+import android.jb.utils.Tools;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
@@ -615,7 +615,7 @@ public class BarcodeManager {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e1) {
-
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		power("0");
@@ -669,7 +669,7 @@ public class BarcodeManager {
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			while (run) {
 				try {
 					if (is_SerialPortOpen) {
@@ -681,10 +681,11 @@ public class BarcodeManager {
 						}
 					}
 				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block\
 					try {
 						sleep(scan_time_limit);
 					} catch (InterruptedException e1) {
-
+						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					e.printStackTrace();
@@ -801,7 +802,7 @@ public class BarcodeManager {
 			} catch (XmlPullParserException e) {
 				e.printStackTrace();
 			} catch (Exception e1) {
-
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		} else {
@@ -1136,7 +1137,7 @@ public class BarcodeManager {
 //						Thread.sleep(10000);
 //						System.out.println("10秒");
 //					} catch (InterruptedException e) {
-//
+//						// TODO Auto-generated catch block
 //						e.printStackTrace();
 //					}
 				}
@@ -1151,7 +1152,7 @@ public class BarcodeManager {
 	private Runnable sendBuffer = new Runnable() {
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			long nowTime = System.currentTimeMillis();
 			Log.d(TAG, "sendBuffer() isCutData:" + isCutData + "nowTime - lastTime:" + (nowTime - lastTime));
 			if (!isCutData) {
@@ -1178,7 +1179,7 @@ public class BarcodeManager {
 				mSerialPort = null;
 			}
 		} catch (IOException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -1301,7 +1302,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1326,7 +1327,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1345,7 +1346,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1354,7 +1355,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1363,7 +1364,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1383,7 +1384,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1392,7 +1393,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1401,7 +1402,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1425,7 +1426,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1445,7 +1446,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1455,7 +1456,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1477,7 +1478,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1486,7 +1487,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1510,7 +1511,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1539,7 +1540,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1548,7 +1549,7 @@ public class BarcodeManager {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				setIsReceive(true);
@@ -1619,7 +1620,7 @@ public class BarcodeManager {
 
 			@Override
 			public void run() {
-
+				// TODO Auto-generated method stub
 				init(getScanPrefix());
 			}
 		}).start();
@@ -1642,14 +1643,14 @@ public class BarcodeManager {
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			com("1");// 转换串口到扫描模块
 			// System.out.println("initRunnable Barcode_Stop");
 			Barcode_Stop();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e1) {
-
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			power("1");// 给扫描头上电
@@ -2128,7 +2129,7 @@ public class BarcodeManager {
 			// try {
 			// data = new String(byteData, encoding);
 			// } catch (UnsupportedEncodingException e) {
-			//
+			// // TODO Auto-generated catch block
 			// e.printStackTrace();
 			// }
 
@@ -2425,7 +2426,7 @@ public class BarcodeManager {
 							codeId = val.substring(2, 5);
 							val = val.substring(5, val.length() - 2);
 						} catch (UnsupportedEncodingException e) {
-
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -2791,7 +2792,7 @@ public class BarcodeManager {
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			if (!is_SerialPortOpen) {
 				return;
 			}
@@ -2815,7 +2816,7 @@ public class BarcodeManager {
 								try {
 									Thread.sleep(100);
 								} catch (InterruptedException e) {
-
+									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								setIsReceive(true);
@@ -2831,7 +2832,7 @@ public class BarcodeManager {
 								try {
 									Thread.sleep(100);
 								} catch (InterruptedException e) {
-
+									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								setIsReceive(true);
@@ -2871,7 +2872,7 @@ public class BarcodeManager {
 								try {
 									Thread.sleep(100);
 								} catch (InterruptedException e) {
-
+									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								setIsReceive(true);
@@ -2887,7 +2888,7 @@ public class BarcodeManager {
 								try {
 									Thread.sleep(100);
 								} catch (InterruptedException e) {
-
+									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								setIsReceive(true);

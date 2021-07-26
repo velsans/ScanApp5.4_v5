@@ -1,4 +1,4 @@
-package com.zebra.android.jb.meter;
+package android.jb.meter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,9 +11,9 @@ import java.security.InvalidParameterException;
 
 import android.content.Context;
 import android.content.Intent;
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.utils.AddressUtils;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.Preference;
+import android.jb.utils.AddressUtils;
+import android.jb.utils.Tools;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -106,7 +106,7 @@ public class MeterController {
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (!is_SerialPortOpen) {
@@ -143,7 +143,7 @@ public class MeterController {
 			mInputStream = null;
 			mSerialPort = null;
 		} catch (IOException e) {
-
+			// TODO Auto-generated catch block
 			System.out.println("Meter_Close IOException");
 			e.printStackTrace();
 		}
@@ -204,41 +204,41 @@ public class MeterController {
 	}
 
 	private void power(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("power:" + openPower.getAbsolutePath() + " "
 				+ status);
 		writeFile(openPower, status);
 	}
 	
 	private void IO_OE(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("IO_OE:" + AddressUtils.SCAN_IR_GPS_RS232_SWITCH_OE + " "
 				+ status);
 		writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_SWITCH_OE), status);
 	}
 
 	private void IO_CS1(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("IO_CS1:" + AddressUtils.SCAN_IR_GPS_RS232_CS1 + " "
 				+ status);
 		writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_CS1), status);
 	}
 	
 	private void IO_CS0(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("IO_CS0:" + AddressUtils.SCAN_IR_GPS_RS232_CS0 + " "
 				+ status);
 		writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_CS0), status);
 	}
 
 	private void com(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("com:" + openCom.getAbsolutePath() + " " + status);
 		writeFile(openCom, status);
 	}
 	
 	private void IO_CS(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("IO_CS:" + AddressUtils.RS232_485_CS+ " "
 				+ status);
 		writeFile(new File(AddressUtils.RS232_485_CS), status);
@@ -287,7 +287,7 @@ public class MeterController {
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -405,7 +405,7 @@ public class MeterController {
 						}
 
 					} catch (InterruptedException e) {
-
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -455,7 +455,7 @@ public class MeterController {
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			power_up(T485);
 		}
 	};

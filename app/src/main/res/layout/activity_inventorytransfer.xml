@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="4.1"
-                android:src="@mipmap/next" />
+                app:srcCompat="@mipmap/next" />
 
             <ImageView
                 android:id="@+id/advancedsearchTXT"
@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="5"
-                android:src="@mipmap/advance_search" />
+                app:srcCompat="@mipmap/advance_search" />
 
             <ImageView
                 android:id="@+id/transfer_printTXT"
@@ -48,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:gravity="center"
-                android:src="@mipmap/printerlogo" />
+                app:srcCompat="@mipmap/printerlogo" />
 
             <ImageView
                 android:id="@+id/closeInventoryTransfer"
@@ -56,7 +56,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="5"
-                android:src="@mipmap/delete_cross" />
+                app:srcCompat="@mipmap/delete_cross" />
         </LinearLayout>
 
         <LinearLayout
@@ -152,7 +152,7 @@
                         android:layout_height="@dimen/textview_or_edittext_hight_large"
                         android:layout_margin="1dp"
                         android:backgroundTint="@color/color_white"
-                        android:hint="To Location"
+                        android:hint="@string/tolocation"
                         android:overlapAnchor="false"
                         android:popupBackground="@color/cyan"
                         android:textAlignment="center"
@@ -378,7 +378,7 @@
                         android:layout_height="@dimen/textview_or_edittext_hight_large"
                         android:orientation="horizontal">
 
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/tolocation_ATxT"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -392,7 +392,7 @@
                             android:textColorHint="@color/theme_border"
                             android:textStyle="bold" />
 
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/transagency_ATxT"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -406,7 +406,7 @@
                             android:textColorHint="@color/theme_border"
                             android:textStyle="bold" />
 
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/driver_ATxT"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -420,7 +420,7 @@
                             android:textColorHint="@color/theme_border"
                             android:textStyle="bold" />
 
-                        <android.support.v7.widget.AppCompatAutoCompleteTextView
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                             android:id="@+id/truckplateumber_ATxT"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -461,7 +461,7 @@
                         android:layout_weight="4"
                         android:background="@color/theme_background"
                         android:gravity="center"
-                        android:src="@mipmap/refresh"
+                        app:srcCompat="@mipmap/refresh"
                         android:visibility="gone" />
 
                     <EditText
@@ -488,7 +488,7 @@
                         android:layout_weight="4"
                         android:background="@color/colorAccent"
                         android:gravity="center"
-                        android:src="@mipmap/login"
+                        app:srcCompat="@mipmap/login"
                         android:visibility="visible" />
                 </LinearLayout>
 
@@ -522,7 +522,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_margin="5dp"
                                 android:gravity="center"
-                                android:src="@mipmap/ic_delete_forever_white_24dp"
+                                app:srcCompat="@mipmap/ic_delete_forever_white_24dp"
                                 android:textColor="@android:color/black"
                                 android:visibility="visible" />
                         </LinearLayout>
@@ -560,13 +560,13 @@
                         android:layout_height="match_parent"
                         android:background="@color/background">
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/inventorytransfer_lv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
                             app:reverseLayout="true"
-                            app:stackFromEnd="true"></android.support.v7.widget.RecyclerView>
+                            app:stackFromEnd="true"></androidx.recyclerview.widget.RecyclerView>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -643,7 +643,7 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/TransferScanBTN"
         android:layout_width="100dp"
         android:layout_height="100dp"

@@ -1,6 +1,5 @@
 package com.zebra.utilities;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
@@ -10,11 +9,13 @@ import com.zebra.R;
 
 import java.util.Set;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class BlutoothCommonClass {
-    static Activity activity;
+    static AppCompatActivity activity;
     static BluetoothAdapter bluetoothAdapter;
 
-    public BlutoothCommonClass(Activity activity2) {
+    public BlutoothCommonClass(AppCompatActivity activity2) {
         activity = activity2;
     }
 

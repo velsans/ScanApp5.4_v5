@@ -1,11 +1,18 @@
 package com.zebra.main.model.Export;
 
-import com.zebra.utilities.Common;
-
 public class ExportDetailsModel {
-    int ID, ExportID, ExportUniqueID, LocationID, WoodSpieceID, UserID, EntryMode, IsActive, IsValidPvNo, IsValidVolume, IsValidWSCode;
-    String PvNo, PvDate, AgeOfLog, QutWoodSpieceCode, WoodSpieceCode, SbbLabel, Footer_1, Footer_2, Top_1, Top_2, Length, DateTime, NoteT, NoteF, NoteL, OrderNo,ContainerNo, Diameter, QutDiameter;
+    int ID, ExportID, LocationID, WoodSpieceID, UserID, EntryMode, IsActive, IsValidDiameter,IsValidPvNo, IsValidVolume, IsValidWSCode;
+    String ExportUniqueID,PvNo, PvDate, AgeOfLog, QutWoodSpieceCode, WoodSpieceCode, SbbLabel,BarCode, Footer_1, Footer_2, Top_1, Top_2, Length,
+            DateTime, NoteT, NoteF,NoteL, OrderNo,Diameter,QutDiameter,ContainerNo;
     double Volume, QutTotalCBM;
+
+    public String getBarCode() {
+        return BarCode;
+    }
+
+    public void setBarCode(String barCode) {
+        BarCode = barCode;
+    }
 
     public String getOrderNo() {
         return OrderNo;
@@ -63,14 +70,6 @@ public class ExportDetailsModel {
         NoteL = noteL;
     }
 
-    public String getContainerNo() {
-        return ContainerNo;
-    }
-
-    public void setContainerNo(String ContainerNo) {
-        ContainerNo = ContainerNo;
-    }
-
     public int getID() {
         return ID;
     }
@@ -79,11 +78,11 @@ public class ExportDetailsModel {
         this.ID = ID;
     }
 
-    public int getExportUniqueID() {
+    public String getExportUniqueID() {
         return ExportUniqueID;
     }
 
-    public void setExportUniqueID(int exportUniqueID) {
+    public void setExportUniqueID(String exportUniqueID) {
         ExportUniqueID = exportUniqueID;
     }
 
@@ -261,5 +260,21 @@ public class ExportDetailsModel {
 
     public void setIsValidWSCode(int isValidWSCode) {
         IsValidWSCode = isValidWSCode;
+    }
+
+    public int getIsValidDiameter() {
+        return IsValidDiameter;
+    }
+
+    public void setIsValidDiameter(int isValidDiameter) {
+        IsValidDiameter = isValidDiameter;
+    }
+
+    public String getContainerNo() {
+        return ContainerNo;
+    }
+
+    public void setContainerNo(String containerNo) {
+        ContainerNo = containerNo;
     }
 }

@@ -1,10 +1,10 @@
-package com.zebra.android.jb.uhf;
+package android.jb.uhf;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zebra.android.jb.uhf.TransmittedPowerMsgBean.Antenna;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.uhf.TransmittedPowerMsgBean.Antenna;
+import android.jb.utils.Tools;
 import android.util.Log;
 
 /**
@@ -39,7 +39,7 @@ public class UHFCommand {
 	 * @return
 	 */
 	public static byte[] getCommand_TransmittedPower() {
-
+		// TODO Auto-generated method stub
 		return createCommand((byte) 0x12, null);
 	}
 
@@ -852,7 +852,7 @@ public class UHFCommand {
 	}
 
 	private static boolean checkHeadAndSuffix(byte[] reCommand) {
-
+		// TODO Auto-generated method stub
 		if (reCommand != null && reCommand.length >= 4
 				&& reCommand[0] == (byte) 0xA5 && reCommand[1] == (byte) 0x5A
 				&& reCommand[reCommand.length - 1] == (byte) 0x0A
@@ -897,7 +897,7 @@ public class UHFCommand {
 	}
 
 	private static void fillCheckSum(byte[] command) {
-
+		// TODO Auto-generated method stub
 		if (command != null && command.length >= 8) {
 			byte check = command[2];
 			for (int i = 3; i < command.length - 2; i++) {
@@ -908,7 +908,7 @@ public class UHFCommand {
 	}
 
 	private static void fillLengthByte(byte[] command) {
-
+		// TODO Auto-generated method stub
 		if (command != null) {
 			int length = command.length;
 			if (length > 0xFF) {
@@ -921,7 +921,7 @@ public class UHFCommand {
 	}
 
 	private static void fillHeadAndSuffix(byte[] command) {
-
+		// TODO Auto-generated method stub
 		if (command != null && command.length >= 4) {
 			command[0] = (byte) 0xA5;
 			command[1] = (byte) 0x5A;
@@ -931,7 +931,7 @@ public class UHFCommand {
 	}
 
 	private static boolean checkContineSuffix(byte[] command) {
-
+		// TODO Auto-generated method stub
 		// a55a0008838b0d0a
 		if (command != null && command.length >= 8 && command[0] == (byte) 0xA5
 				&& command[1] == (byte) 0x5A && command[2] == (byte) 0x00

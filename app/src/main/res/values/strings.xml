@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">GWW-5.7-V7</string>
-    <string name="ValidBarCodeMsg">Enter valid Barcode</string>
+    <string name="app_name">GWW_v6.4.4</string>
+    <!--<string name="app_name">GWW-DEMO-V6.0</string>-->
+    <string name="ValidBarCodeMsg">Barcode should be like(XX-1111111)</string>
     <string name="BarCodeLenghtMsg">SBB Label lenght should be 10</string>
+    <string name="BarCodeLenghtMsgVessel">SBB Label lenght should be 10 or 12</string>
+    <string name="ContainerLenghtMsg">Container Seal No lenght should be 13</string>
+    <string name="containerNOFormatMsg">Container Serial Nr should be (XXXX 111111-1) First 4 digits are characters, Others 7 digits are numbers</string>
     <string name="OldTransferHead">Old TransferID</string>
     <string name="OldTransferMsg">please enter Transfer ID</string>
     <string name="OldTransferIDLenghtMsg">Transfer ID lenght should be more then 9</string>
     <string name="NoValueFound">Please Contact Adminstrator</string>
-    <string name="Remove_Message">Are you sure you want to remove?</string>
+    <string name="Remove_Message">Are you sure want to remove?</string>
     <string name="action_Remove">Remove</string>
+    <string name="action_Sync">Sync</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
     <string name="Internet_Conn">Internet connection</string>
     <string name="Internet_ConnMsg">Please check your internet connection or try again later</string>
     <string name="AppUpdateTitle">Update Available</string>
@@ -27,7 +34,9 @@
     <string name="ReceivedHead">Inventory Received</string>
     <string name="FellingRegisterHead">Felling Registration</string>
     <string name="ExportHead">Export</string>
+    <string name="ContainerDetailsHead">Container Details</string>
     <string name="ExtenalDBHead">External DataBase Sync</string>
+    <string name="SBBValidationHead">SbbLabel Validation</string>
 
     <string name="LoginHD">Login</string>
     <string name="UserNameMsg">Please enter the UserName</string>
@@ -59,4 +68,36 @@
         (32 characters) long</string>
     <string name="info_copied_to_clipboard">Copied to clipboard</string>
     <string name="info_file_to_big">Error: File is too big (out of memory)</string>
+    <string name="title_dynamicfeature">Module Title</string>
+    <string name="QuotationHead">Quotation List Delete</string>
+    <string name="QuotationPermission">we don\'t have permission to delete this quotation, Because it was came from backend</string>
+
+    <string name="Vesselhead">Vessel Transportation</string>
+    <string name="title_activity_external_puchase">ExternalPuchaseActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_external_purchase">MainActivity</string>
+    <string name="title_agreement">Agreement</string>
+    <string name="title_home">Scanned Logs</string>
+    <string name="title_dashboard">Transfer</string>
+    <string name="title_notifications">Received</string>
+    <string name="title_activity_external_purchase_agreement">ExternalPurchaseAgreementActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    <string name="purchaseLogsHead">Purchase Logs</string>
+    <string name="pleaseselectoneitem">please select one item from List</string>
+    <string name="tolocation">To Location</string>
+
+    <string name="PurchaseTransferHead">Purchase Transfer</string>
+    <string name="purchaseReceivedHead">Purchase Received</string>
+
+
 </resources>

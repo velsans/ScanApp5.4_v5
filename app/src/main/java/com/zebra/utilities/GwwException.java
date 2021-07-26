@@ -73,11 +73,11 @@ public class GwwException extends Exception {
             Values = "149" + "-" + "17" + "-" + "40.9";
         } else if (Size == 4 || Size == 5) {
             Values = "131" + "-" + "4" + "-" + "42.2";
-        } else if (Size == 6 || Size == Common.SBBlenght) {
+        } else if (Size == 6 || Size == 7) {
             Values = "113" + "-" + "6" + "-" + "47.3";
         } else if (Size == 8 || Size == 9) {
             Values = "95" + "-" + "3" + "-" + "51";
-        } else if (Size == Common.ScannedValueLenght || Size == 11) {
+        } else if (Size == 10 || Size == 11) {
             Values = "77" + "-" + "11" + "-" + "57.3";
         } else if (Size == 12 || Size == 13 || Size == 14) {
             Values = "59" + "-" + "8" + "-" + "61.3";

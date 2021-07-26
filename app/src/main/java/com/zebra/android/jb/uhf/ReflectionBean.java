@@ -1,6 +1,6 @@
-package com.zebra.android.jb.uhf;
+package android.jb.uhf;
 
-import com.zebra.android.jb.utils.Tools;
+import android.jb.utils.Tools;
 
 public class ReflectionBean {
 	public byte errorCode;
@@ -85,13 +85,13 @@ public class ReflectionBean {
 	// }
 	//
 	// public void calculatePower() {
-	//
+	// // TODO Auto-generated method stub
 	// power = getPower(h, l) / 100f;
 	//
 	// }
 	//
 	// public int getPower(byte h, byte l) {
-	//
+	// // TODO Auto-generated method stub
 	// int re = 0;
 	// if (h > 0) {
 	// re = (byte) (l & 0x0F);

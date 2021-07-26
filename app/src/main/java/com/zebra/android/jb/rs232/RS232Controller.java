@@ -1,4 +1,4 @@
-package com.zebra.android.jb.rs232;
+package android.jb.rs232;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,9 +10,9 @@ import java.io.OutputStream;
 
 import android.content.Context;
 import android.content.Intent;
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.utils.AddressUtils;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.Preference;
+import android.jb.utils.AddressUtils;
+import android.jb.utils.Tools;
 import android.util.Log;
 import android_serialport_api.SerialPort;
 
@@ -126,7 +126,7 @@ public class RS232Controller {
 	}
 
 	private void com(String status) {
-
+		// TODO Auto-generated method stub
 		writeFile(infCom, status);
 		if(device_type == 3){
 			writeFile(openFun, "1");
@@ -188,7 +188,7 @@ public class RS232Controller {
 			run = true;
 			readThread.start();
 		} catch (Exception e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new RuntimeException("open port failed:" + e.getMessage());
 		}
@@ -199,7 +199,7 @@ public class RS232Controller {
 	 * 关闭串口
 	 */
 	public void Rs232_Close() {
-
+		// TODO Auto-generated method stub
 		//com("0");
 		power_down();
 		run = false;
@@ -246,7 +246,7 @@ public class RS232Controller {
 	private class ReadThread extends Thread {
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			while (run) {
 				try {
 					Thread.sleep(50);
@@ -301,14 +301,14 @@ public class RS232Controller {
 	}
 	
 	private void IO_CS1(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("IO_CS1:" + AddressUtils.SCAN_IR_GPS_RS232_CS1 + " "
 				+ status);
 		writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_CS1), status);
 	}
 	
 	private void IO_CS0(String status) {
-
+		// TODO Auto-generated method stub
 		System.out.println("IO_CS0:" + AddressUtils.SCAN_IR_GPS_RS232_CS0 + " "
 				+ status);
 		writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_CS0), status);

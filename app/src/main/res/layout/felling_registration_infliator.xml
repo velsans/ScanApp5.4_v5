@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -22,9 +23,9 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:gravity="center"
-                android:src="@mipmap/ic_delete_forever_white_24dp"
                 android:textColor="@android:color/black"
-                android:visibility="visible" />
+                android:visibility="visible"
+                app:srcCompat="@mipmap/ic_delete_forever_white_24dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -38,9 +39,9 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:gravity="center"
-                android:src="@mipmap/update"
                 android:textColor="@android:color/black"
-                android:visibility="visible" />
+                android:visibility="visible"
+                app:srcCompat="@mipmap/update" />
         </LinearLayout>
 
         <TextView
@@ -50,8 +51,8 @@
             android:layout_weight="1.15"
             android:gravity="center"
             android:text="SBB Label "
-            android:textSize="@dimen/normalSize"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -61,8 +62,8 @@
             android:layout_weight="1.2"
             android:gravity="center"
             android:text="T Part "
-            android:textSize="@dimen/normalSize"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -71,9 +72,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:gravity="center"
-            android:textSize="@dimen/normalSize"
             android:text="Tree No "
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -83,8 +84,8 @@
             android:layout_weight="1.2"
             android:gravity="center"
             android:text="Plot No "
-            android:textSize="@dimen/normalSize"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -93,9 +94,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:gravity="center"
-            android:textSize="@dimen/normalSize"
             android:text="W-Spice"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -104,9 +105,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:gravity="center"
-            android:textSize="@dimen/normalSize"
             android:text="Quality "
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -115,9 +116,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:gravity="center"
-            android:textSize="@dimen/normalSize"
             android:text="F 1"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -126,9 +127,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:gravity="center"
-            android:textSize="@dimen/normalSize"
             android:text="F 2"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -136,10 +137,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.2"
-            android:textSize="@dimen/normalSize"
             android:gravity="center"
             android:text="T 1"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -156,12 +157,12 @@
         <TextView
             android:id="@+id/fellingReg_LenghtTxT"
             android:layout_width="match_parent"
-            android:textSize="@dimen/normalSize"
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:gravity="center"
             android:text="Length"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -171,8 +172,8 @@
             android:layout_weight="1.22"
             android:gravity="center"
             android:text="NF"
-            android:textSize="@dimen/normalSize"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -180,10 +181,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.22"
-            android:textSize="@dimen/normalSize"
             android:gravity="center"
             android:text="NT"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
@@ -192,20 +193,31 @@
             android:layout_height="match_parent"
             android:layout_weight="1.22"
             android:gravity="center"
-            android:textSize="@dimen/normalSize"
             android:text="NL"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/fellingReg_VolumeTXT"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="@dimen/normalSize"
             android:layout_weight="1.2"
             android:gravity="center"
             android:text="Volume"
             android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingReg_HeartVolumeTXT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/normalSize"
             android:textStyle="bold" />
 
     </LinearLayout>

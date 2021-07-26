@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.zebra.main.activity.purchase.ExternalPurchaseAgreementViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".main.activity.purchase.ExternalPurchaseAgreementActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary_light"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="PURCHASE AGREEMENTS"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="@dimen/textview_or_edittext_hight_xlarge"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right|center"
+                    android:layout_margin="2dp"
+                    android:onClick="@{()->viewModel.RefreshAggrement()}"
+                    android:src="@mipmap/refresh" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                android:background="@color/TabColor"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="PurchaseID"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="PurchaseNo"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="WSC"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Diameter"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Valid"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Status"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/activity_main_swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/textview_or_edittext_hight_large">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/agreementRecylcerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/theme_background"></androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.progress}">
+
+            <include
+                layout="@layout/progressbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></include>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -2,8 +2,10 @@ package com.zebra.main.model.InvReceived;
 
 public class InventoryReceivedListModel {
 
-    int ReceivedID, TransferID, ToLocationID, FromLocationID, TransportTypeId, TransferAgencyID, DriverID, UserID, Count, SyncStatus,LoadedTypeID;
-    String VBB_Number, IMEI, StartDateTime, EndDateTime, TruckPlateNumber, SyncTime, TransferUniqueID,ReceivedUniqueID;
+    int ReceivedID, TransferID, ToLocationID, FromLocationID, TransportTypeId, TransferAgencyID, DriverID, UserID, Count,
+            SyncStatus,LoadedTypeID,TruckId;
+    String VBB_Number, IMEI, StartDateTime, EndDateTime, TruckPlateNumber, SyncTime, TransferUniqueID,ReceivedUniqueID,
+            DriverName,AgencyName;
     double Volume;
 
     public int getLoadedTypeID() {
@@ -164,5 +166,29 @@ public class InventoryReceivedListModel {
 
     public void setVolume(double totalVolume) {
         Volume = totalVolume;
+    }
+
+    public int getTruckId() {
+        return TruckId;
+    }
+
+    public void setTruckId(int truckId) {
+        TruckId = truckId;
+    }
+
+    public String getDriverName() {
+        return DriverName;
+    }
+
+    public void setDriverName(String driverName) {
+        DriverName = driverName;
+    }
+
+    public String getAgencyName() {
+        return AgencyName;
+    }
+
+    public void setAgencyName(String agencyName) {
+        AgencyName = agencyName;
     }
 }

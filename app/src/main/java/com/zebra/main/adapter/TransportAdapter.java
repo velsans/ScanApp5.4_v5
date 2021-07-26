@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.zebra.R;
-import com.zebra.main.model.ExternalDB.TransportModesModel;
+import com.zebra.main.model.externaldb.TransportModesModel;
 import com.zebra.utilities.Common;
 
 import java.util.ArrayList;

@@ -867,7 +867,7 @@ try{
 			return "default";
 
 		} catch (UnsupportedEncodingException e1) {
-
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return "UTF-8";
@@ -1002,7 +1002,7 @@ try{
 			line = new String(buffer);
 			line = matchNum(line);
 		} catch (FileNotFoundException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO: handle exception
@@ -1123,13 +1123,13 @@ try{
 				inputStreamReader.close();
 				in.close();
 			} catch (FileNotFoundException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
-
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

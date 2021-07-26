@@ -8,11 +8,13 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +43,7 @@ import com.zebra.utilities.Communicator;
 import com.zebra.utilities.ConnectionFinder;
 import com.zebra.utilities.GwwException;
 import com.zebra.utilities.PrintSlipsClass;
-import com.zebra.utilities.ServiceURL;
+import com.zebra.main.api.ServiceURL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,6 +51,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 
 public class InventoryTransferFragments extends Fragment {
     TransferReceiver transfer_receiver;
@@ -116,7 +119,7 @@ public class InventoryTransferFragments extends Fragment {
         Common.QulaityDefaultList.add("B");
         Common.QulaityDefaultList.add("C");
         Common.QulaityDefaultList.add("U");
-        getTransferLocationDetials();
+        getTransferLogsDetials();
         transfer_refreshLay.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -127,13 +130,13 @@ public class InventoryTransferFragments extends Fragment {
         return transfer_rootView;
     }
 
-    private void getTransferLocationDetials() {
+    private void getTransferLogsDetials() {
         try {
             Common.AllTransLogDetailsmap.clear();
             Common.AllTransLogDetailsmap = mDBExternalHelper.getAllTransferLogDetails();
             //GetScannedResultListWithIndex();
         } catch (Exception ex) {
-            Log.v("TransferLocationDetials", "Retrive Exception: " + ex.toString());
+            Log.v("", "TransferLocationDetials-Exception : %s" + ex.toString());
         }
     }
 
@@ -168,7 +171,7 @@ public class InventoryTransferFragments extends Fragment {
                     }
                 }
                 boolean ListIdFlag = mDBInternalHelper.insertInventoryTransferID(Common.VBB_Number, Common.IMEI, Common.ToLocaTransID, Common.StartDate, Common.EndDate,
-                        Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TrucklicensePlateNo, Common.UserID, Common.Count,
+                        Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TransportId, Common.UserID, Common.Count,
                         Common.SyncStatus, Common.SyncTime, Common.Volume, 1, Common.TransferUniqueID);
                 if (ListIdFlag == true) {
                     Common.InventoryTransferList = mDBInternalHelper.getInventoryTransferIdList(Common.Filter_InventoryTransDate.get(Common.InventTransDateSelectedIndex));
@@ -177,12 +180,12 @@ public class InventoryTransferFragments extends Fragment {
                         String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
                         String DeviceID = "";
                         if (String.valueOf(Common.LDeviceID).length() == 1) {
-                            DeviceID = "0" + String.valueOf(Common.LDeviceID);
+                            DeviceID = "0" + Common.LDeviceID;
                         } else {
                             DeviceID = String.valueOf(Common.LDeviceID);
                         }
-                        Common.TransferUniqueID = String.valueOf(DateUniqueFormat + DeviceID + Common.TransferID);
-                        Log.d("TransferID", ">>>>>>" + Common.TransferID + ">>" + Common.TransferUniqueID);
+                        Common.TransferUniqueID = DateUniqueFormat + DeviceID + Common.TransferID;
+                        Log.d("TransferID : %s", Common.TransferID + ">>" + Common.TransferUniqueID);
 
                         InventorTransferAcivityCall();
                     }
@@ -213,7 +216,7 @@ public class InventoryTransferFragments extends Fragment {
                 NoValueFoundTxT.setVisibility(View.VISIBLE);
             }
         } catch (Exception ex) {
-            Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
+            Log.d("Exception : %s", ex.toString());
         }
     }
 
@@ -344,7 +347,7 @@ public class InventoryTransferFragments extends Fragment {
                             DeleteTransferListandTransferScannedList(Common.TransferID);
                             return;
                         }
-                        AlertDialogBox("InventoryTransfer", "This is not Syncked yet", false);
+                        AlertDialogBox(CommonMessage(R.string.TransferHead), "This is not Syncked yet", false);
                     }
                 }
             });
@@ -451,7 +454,7 @@ public class InventoryTransferFragments extends Fragment {
                 if (GwwException.GwwException(Common.HttpResponceCode) == true) {
                     if (SyncURLInfo != null) {
                         JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
+                        String SyncResponceStr = jsonObj.getString("SyncStatusModel");
                         if (SyncResponceStr != null) {
                             JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
                             for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
@@ -486,17 +489,17 @@ public class InventoryTransferFragments extends Fragment {
                         if (Common.SyncStatusList.get(0).getStatus() == 1) {
                             Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
                             Common.SyncTime = Common.SyncStatusList.get(0).getSyncTime();
-                            boolean ListIdFlag = mDBInternalHelper.UpdateInventoryTransferSyncStatusTransID(Common.SyncTime, 1, Common.VBB_Number, Common.TransferID);
+                            boolean ListIdFlag = mDBInternalHelper.UpdateInventoryTransferSyncStatusTransID(Common.SyncTime, 1, Common.VBB_Number, Common.TransferID,0,0,0);
                             if (ListIdFlag == true) {
                                 //Scanned Result Refresh
                                 GetInventoryTransferList();
-                                AlertDialogBox("InventoryTransfer", Common.SyncStatusList.get(0).getMessage(), true);
+                                AlertDialogBox(CommonMessage(R.string.TransferHead), Common.SyncStatusList.get(0).getMessage(), true);
                             }
                         } else {
-                            AlertDialogBox("InventoryTransfer", Common.SyncStatusList.get(0).getMessage(), false);
+                            AlertDialogBox(CommonMessage(R.string.TransferHead), Common.SyncStatusList.get(0).getMessage(), false);
                         }
                     } else {
-                        AlertDialogBox("InventoryTransfer", "Not Synced", false);
+                        AlertDialogBox(CommonMessage(R.string.TransferHead), "Not Synced", false);
                     }
                 }
             });
@@ -573,7 +576,7 @@ public class InventoryTransferFragments extends Fragment {
                 }, TimerforPrint);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Log.e("Exception", ">>>>>>>>>>>" + ex.toString());
+                Log.e("Exception :%s", ex.toString());
             }
         }
     };

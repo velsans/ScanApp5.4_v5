@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="agreementdetails"
+            type="com.zebra.main.model.externaldb.PurchaseNoAgreementModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@{String.valueOf(agreementdetails.purchaseNo)}"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/xlargeTextsize"
+            android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

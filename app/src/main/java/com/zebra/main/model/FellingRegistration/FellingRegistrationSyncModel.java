@@ -1,5 +1,7 @@
 package com.zebra.main.model.FellingRegistration;
 
+import com.zebra.main.model.SyncStatusModel;
+
 import java.util.ArrayList;
 
 public class FellingRegistrationSyncModel {
@@ -115,4 +117,13 @@ public class FellingRegistrationSyncModel {
         FellingTreeDetails = fellingTreeDetails;
     }
 
+    ArrayList<SyncStatusModel> Status = new ArrayList<SyncStatusModel>();
+
+    public ArrayList<SyncStatusModel> getStatus() {
+        return Status;
+    }
+
+    public void setStatus(ArrayList<SyncStatusModel> status) {
+        Status = status;
+    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,9 +39,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="center"
-                    android:src="@mipmap/delete_cross"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/color_white" />
+                    android:textColor="@color/color_white"
+                    app:srcCompat="@mipmap/delete_cross" />
             </FrameLayout>
 
             <LinearLayout
@@ -64,7 +65,7 @@
                     android:textColorHint="@color/theme_border"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/NewWoodSpeiceCode"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -81,7 +82,7 @@
                     android:textColorHint="@color/theme_border"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/NewPlotNumber"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -163,6 +164,21 @@
                     android:textColorHint="@color/theme_border"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/updateTreeNum_AvgDia"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@color/theme_border"
+                    android:gravity="center"
+                    android:hint="Avg Dia"
+                    android:inputType="number"
+                    android:padding="5dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/edittextColor" />
+
                 <EditText
                     android:id="@+id/updateTreeNum_Length"
                     android:layout_width="match_parent"
@@ -195,4 +211,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </FrameLayout>

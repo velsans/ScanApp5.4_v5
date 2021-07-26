@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,9 +31,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="center"
-                    android:src="@mipmap/delete_cross"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/color_white" />
+                    android:textColor="@color/color_white"
+                    app:srcCompat="@mipmap/delete_cross" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -47,7 +48,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/textview_or_edittext_hight_large"
                 android:orientation="horizontal">
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/updateTreePartTxT"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -64,6 +66,7 @@
                     android:textColorHint="@color/theme_border"
                     android:textStyle="bold"
                     android:visibility="visible" />
+
                 <EditText
                     android:id="@+id/updatesbblable_F1"
                     android:layout_width="match_parent"
@@ -128,6 +131,21 @@
                     android:textColorHint="@color/theme_border"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/updatesbblable_avgdiameter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@color/theme_border"
+                    android:gravity="center"
+                    android:hint="Avg Dia"
+                    android:inputType="number"
+                    android:padding="5dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/edittextColor" />
+
                 <EditText
                     android:id="@+id/updatesbblable_Length"
                     android:layout_width="match_parent"
@@ -145,8 +163,6 @@
                     android:textStyle="bold" />
 
 
-
-
             </LinearLayout>
 
             <LinearLayout
@@ -154,6 +170,14 @@
                 android:layout_height="@dimen/textview_or_edittext_hight_large"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="2dp"
+                    android:text="Note: "
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/updatesbblable_NoteF"
@@ -203,6 +227,121 @@
                     android:textColor="@color/color_white"
                     android:textColorHint="@color/theme_border"
                     android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_LHUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="2dp"
+                    android:text="LH : "
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/updatesbblable_LHF1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_edittextstyle"
+                    android:gravity="center"
+                    android:hint="LHF1"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/theme_border"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/updatesbblable_LHF2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_edittextstyle"
+                    android:gravity="center"
+                    android:hint="LHF2"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/theme_border"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/updatesbblable_LHT1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_edittextstyle"
+                    android:gravity="center"
+                    android:hint="LHT1"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/theme_border"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/updatesbblable_LHT2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_edittextstyle"
+                    android:gravity="center"
+                    android:hint="LHT2"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/theme_border"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/updatesbblable_LHavgdiameter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@color/theme_border"
+                    android:gravity="center"
+                    android:hint="Avg Dia"
+                    android:inputType="number"
+                    android:padding="5dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/edittextColor" />
+
+                <EditText
+                    android:id="@+id/updatesbblable_LHVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_edittextstyle"
+                    android:gravity="center"
+                    android:hint="LHVolume"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/theme_border"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/updatesbblable_Save"

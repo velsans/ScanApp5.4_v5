@@ -1,10 +1,9 @@
 package com.zebra.main.model.FellingRegistration;
 
-import com.zebra.utilities.Common;
-
 public class FellingTreeDetailsModel {
     int FellingRegID, FellingSectionId, LocationID, PlotId, IsWoodSpieceCode, IsNewPlotNumber, WoodSpieceID;
-    String TreeNumber, FellingRegUniqueID, Footer_1, Footer_2, Top_1, Top_2, Length, WoodSpieceCode, IsNewTreeNumber, PlotNumber, OldWoodSpieceCode, OldPlotNo;
+    String TreeNumber, FellingRegUniqueID, Footer_1, Footer_2, Top_1, Top_2, Length, WoodSpieceCode, IsNewTreeNumber, PlotNumber, OldWoodSpieceCode, OldPlotNo,
+    LHT1,LHT2,LHF1,LHF2,LHVolume;
 
     public int getPlotId() {
         return PlotId;
@@ -156,5 +155,45 @@ public class FellingTreeDetailsModel {
 
     public String getLength() {
         return Length;
+    }
+
+    public String getLHT1() {
+        return LHT1;
+    }
+
+    public void setLHT1(String LHT1) {
+        this.LHT1 = LHT1;
+    }
+
+    public String getLHT2() {
+        return LHT2;
+    }
+
+    public void setLHT2(String LHT2) {
+        this.LHT2 = LHT2;
+    }
+
+    public String getLHF1() {
+        return LHF1;
+    }
+
+    public void setLHF1(String LHF1) {
+        this.LHF1 = LHF1;
+    }
+
+    public String getLHF2() {
+        return LHF2;
+    }
+
+    public void setLHF2(String LHF2) {
+        this.LHF2 = LHF2;
+    }
+
+    public String getLHVolume() {
+        return LHVolume;
+    }
+
+    public void setLHVolume(String LHVolume) {
+        this.LHVolume = LHVolume;
     }
 }

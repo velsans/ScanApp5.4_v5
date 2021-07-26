@@ -8,11 +8,12 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +28,10 @@ import com.zebra.R;
 import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
 import com.zebra.main.activity.Received.InventoryReceivedActivity;
+import com.zebra.main.firebase.CrashAnalytics;
 import com.zebra.main.model.InvReceived.InventoryReceivedListModel;
 import com.zebra.main.model.InvReceived.InventoryReceivedModel;
 import com.zebra.main.model.InvReceived.InventoryReceivedSyncModel;
-import com.zebra.main.model.InvTransfer.InventoryTransferSyncModel;
 import com.zebra.main.model.SyncStatusModel;
 import com.zebra.utilities.AlertDialogManager;
 import com.zebra.utilities.BlueTooth;
@@ -40,7 +41,7 @@ import com.zebra.utilities.Communicator;
 import com.zebra.utilities.ConnectionFinder;
 import com.zebra.utilities.GwwException;
 import com.zebra.utilities.PrintSlipsClass;
-import com.zebra.utilities.ServiceURL;
+import com.zebra.main.api.ServiceURL;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,6 +49,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 
 public class InventoryReceivedFragments extends Fragment {
     ReceivedReceiver received_receiver;
@@ -155,8 +157,7 @@ public class InventoryReceivedFragments extends Fragment {
                 InventoryReceivedList.setVisibility(View.GONE);
             }
         } catch (Exception ex) {
-            Log.d(">>>>>>>>", ">>>>>>" + ex.toString());
-        }
+            Log.d("Exception : %s", ex.toString());        }
     }
 
     View.OnClickListener mReceivedCreateScanListen = new View.OnClickListener() {
@@ -168,7 +169,7 @@ public class InventoryReceivedFragments extends Fragment {
                 Common.StartDate = Common.dateFormat.format(Calendar.getInstance().getTime());
                 Common.ToLocReceivedID = Common.ToLocationID;
                 boolean ListIdFlag = mDBInternalHelper.insertInventoryReceivedIDList(Common.VBB_Number, Common.IMEI, Common.ToLocReceivedID, Common.StartDate, Common.EndDate,
-                        Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TrucklicensePlateNo, Common.UserID, Common.Count,
+                        Common.FromLocationID, Common.TransportTypeId, Common.TransferAgencyID, Common.DriverID, Common.TransportId, Common.UserID, Common.Count,
                         Common.SyncStatus, Common.SyncTime, Common.Volume, 1, Common.ReceivedUniqueID);
                 if (ListIdFlag == true) {
                     Common.InventoryReceivedList = mDBInternalHelper.getInventoryReceivedIdList(Common.Filter_InventoryReceivedDate.get(Common.InventReceivedDateSelectedIndex));
@@ -177,11 +178,11 @@ public class InventoryReceivedFragments extends Fragment {
                         String DateUniqueFormat = Common.UniqueIDdateFormat.format(Calendar.getInstance().getTime());
                         String DeviceID = "";
                         if (String.valueOf(Common.LDeviceID).length() == 1) {
-                            DeviceID = "0" + String.valueOf(Common.LDeviceID);
+                            DeviceID = "0" + Common.LDeviceID;
                         } else {
                             DeviceID = String.valueOf(Common.LDeviceID);
                         }
-                        Common.ReceivedUniqueID = String.valueOf(DateUniqueFormat + DeviceID + Common.ReceivedID);
+                        Common.ReceivedUniqueID = DateUniqueFormat + DeviceID + Common.ReceivedID;
                     }
                     Common.TransferIDsList.clear();
                     Common.IsReceivedEditListFlag = true;
@@ -190,8 +191,8 @@ public class InventoryReceivedFragments extends Fragment {
                 } else {
                     AlertDialogBox("Add Inventory Received List", "Value not Inserted", false);
                 }
-            } catch (
-                    Exception ex) {
+            } catch (Exception ex) {
+                CrashAnalytics.CrashReport(ex);
                 ex.printStackTrace();
             }
         }
@@ -430,7 +431,7 @@ public class InventoryReceivedFragments extends Fragment {
                 if (GwwException.GwwException(Common.HttpResponceCode) == true) {
                     if (SyncURLInfo != null) {
                         JSONObject jsonObj = new JSONObject(SyncURLInfo);
-                        String SyncResponceStr = jsonObj.getString("Status");
+                        String SyncResponceStr = jsonObj.getString("SyncStatusModel");
                         if (SyncResponceStr != null) {
                             JSONArray SyncJsonAry = new JSONArray(SyncResponceStr);
                             for (int Sync_Index = 0; Sync_Index < SyncJsonAry.length(); Sync_Index++) {
@@ -469,13 +470,13 @@ public class InventoryReceivedFragments extends Fragment {
                             if (ListIdFlag == true) {
                                 //Scanned Result Refresh
                                 GetInventoryReceivedList();
-                                AlertDialogBox("InventoryTransfer", Common.SyncStatusList.get(0).getMessage(), true);
+                                AlertDialogBox(CommonMessage(R.string.TransferHead), Common.SyncStatusList.get(0).getMessage(), true);
                             }
                         } else {
-                            AlertDialogBox("InventoryTransfer", Common.SyncStatusList.get(0).getMessage(), false);
+                            AlertDialogBox(CommonMessage(R.string.TransferHead), Common.SyncStatusList.get(0).getMessage(), false);
                         }
                     } else {
-                        AlertDialogBox("InventoryTransfer", "Not Synced", false);
+                        AlertDialogBox(CommonMessage(R.string.TransferHead), "Not Synced", false);
                     }
                 }
             });

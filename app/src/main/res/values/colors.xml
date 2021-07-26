@@ -6,6 +6,10 @@
     <color name="colorAccent">#f44336</color>
     <color name="colorgGreenSmooth">#E5FFE5</color>
 
+    <!--Second Theme-->
+    <color name="sec_background">#292a2e</color>
+
+
     <color name="blacktransper">#BF000000</color>
 
     <color name="syncdetailsColor">#dbe1dd</color>
@@ -24,6 +28,10 @@
     <color name="theme_background">#333333</color>
     <color name="theme_border">#5E5959</color>
     <color name="transperantBlack">#80000000</color>
+    <color name="blue">#82B1FF</color>
+    <color name="headblue">#42A5F5</color>
+    <color name="Darkblue">#1976D2</color>
+
 
     <color name="cyan">#00b8d4</color>
     <color name="teal">#00bfa5</color>
@@ -33,5 +41,8 @@
     <color name="deeporange">#dd2c00</color>
     <color name="brown">#6d4c41</color>
     <color name="backgroud">#26272B</color>
+    <color name="highlightedColor">#ffff00</color>
+
+    <color name="highlightedyellowColor">#8CFF32</color>
 
 </resources>

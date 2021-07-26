@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/color_white"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/child_sbblabel_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.97"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:hint="SbbLabel"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_wsc_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.03"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="WSC"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_treeNo_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="TreeNo"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_ageoflog_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.95"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="AgeOfLog"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_diameter_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="Diameter"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+
+        <TextView
+            android:id="@+id/child_footer1_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="Footer1"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_footer2_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_white"
+            android:gravity="center"
+            android:hint="Footer2"
+            android:textColor="@color/color_black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/child_top1_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="Top1"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_top2_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="Top2"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_lenght_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="Length"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_volume_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/color_white"
+            android:hint="Volume"
+            android:textStyle="bold"
+            android:textColor="@color/color_black" />
+
+        <TextView
+            android:id="@+id/child_isValidLog_TxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.95"
+            android:gravity="center"
+            android:background="@color/colorPrimary_light"
+            android:text="Not Approved"
+            android:textStyle="bold"
+            android:textColor="@color/color_white" />
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:background="@color/color_white"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/child_Save_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="ADD"
+            android:textStyle="bold"
+            android:textColor="@color/color_white" />
+    </LinearLayout>
+
+</LinearLayout>

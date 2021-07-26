@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:clickable="true"
     android:background="@color/transperantBlack"
     android:layout_height="match_parent">
 
@@ -9,7 +11,6 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:background="@color/amber"
-        android:layout_marginTop="@dimen/textview_or_edittext_hight_xlarge"
         android:layout_height="wrap_content">
 
         <FrameLayout
@@ -19,6 +20,7 @@
             android:layout_height="@dimen/textview_or_edittext_hight_large">
 
             <TextView
+                android:id="@+id/sbblabel_detailsTXT"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -32,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center"
-                android:src="@mipmap/delete_cross" />
+                app:srcCompat="@mipmap/delete_cross" />
         </FrameLayout>
 
         <LinearLayout
@@ -45,6 +47,86 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/color_black"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="SbbLabel"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="WSC"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:text="TreeNo"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="AgeOfLog"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+
+                        android:text="NoteF"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="NoteT"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="NoteL"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,6 +163,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="1dp"
                         android:layout_weight="1"
+                        android:visibility="gone"
                         android:gravity="center"
                         android:background="@color/color_white"
                         android:hint="TreeNo"
@@ -135,6 +218,86 @@
                         android:hint="NoteL"
                         android:textStyle="bold"
                         android:textColor="@color/color_black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/color_black"
+                    android:layout_marginTop="1dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Diameter"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="F1"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="F2"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="T1"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="T2"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Length"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Volume"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_white" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -231,6 +394,35 @@
                 </LinearLayout>
 
             </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:background="@color/Darkblue"
+            android:text="Examination status"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:textColor="@color/color_white" />
+        <TextView
+            android:id="@+id/isValidLog_TxT"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:layout_margin="1dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:background="@color/colorPrimary_light"
+            android:text="Approved"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:textColor="@color/color_white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="@dimen/textview_or_edittext_hight_xlarge">
 
             <TextView
                 android:id="@+id/Save_check"
@@ -240,7 +432,20 @@
                 android:layout_weight="5"
                 android:gravity="center"
                 android:background="@color/colorPrimary_light"
-                android:text="SAVE"
+                android:text="ACCEPT"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/Reject_check"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:background="@color/red"
+                android:text="REJECT"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"
                 android:textColor="@color/color_white" />

@@ -1,4 +1,4 @@
-package com.zebra.android.jb.electrictorch;
+package android.jb.electrictorch;
 
 import java.io.File;
 import java.io.FileNotFoundException;

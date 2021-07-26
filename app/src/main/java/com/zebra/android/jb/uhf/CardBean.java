@@ -1,4 +1,4 @@
-package com.zebra.android.jb.uhf;
+package android.jb.uhf;
 
 public class CardBean {
 

@@ -1,4 +1,4 @@
-package com.zebra.android.jb.FingerprintController;
+package android.jb.FingerprintController;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -7,9 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
-import com.zebra.android.jb.identitycard.IdentityCardController;
-import com.zebra.android.jb.identitycard.IdentityCardController.Callback;
-import com.zebra.android.jb.utils.AddressUtils;
+import android.jb.identitycard.IdentityCardController;
+import android.jb.identitycard.IdentityCardController.Callback;
+import android.jb.utils.AddressUtils;
 import android_serialport_api.SerialPort;
 
 public class FingerprintCotroller {
@@ -118,7 +118,7 @@ public class FingerprintCotroller {
     }
 
     private static void IO_OE(String status) {
-
+        // TODO Auto-generated method stub
         writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_SWITCH_OE), status);
     }
 
@@ -133,36 +133,36 @@ public class FingerprintCotroller {
     }
 
     private static void IO_CS1(String status) {
-
+        // TODO Auto-generated method stub
         System.out.println("power:" + AddressUtils.SCAN_IR_GPS_RS232_CS1 + " " + status);
         writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_CS1), status);
     }
 
     private static void IO_CS0(String status) {
-
+        // TODO Auto-generated method stub
         System.out.println("power:" + AddressUtils.SCAN_IR_GPS_RS232_CS0 + " " + status);
         writeFile(new File(AddressUtils.SCAN_IR_GPS_RS232_CS0), status);
     }
 
     private static void BACK_CS0(String status) {
-
+        // TODO Auto-generated method stub
         System.out.println("BACK_CS0:" + AddressUtils.BACK_UART_CS0 + " " + status);
         writeFile(new File(AddressUtils.BACK_UART_CS0), status);
     }
     private static void BACK_CS1(String status) {
-
+        // TODO Auto-generated method stub
         System.out.println("BACK_CS1:" + AddressUtils.BACK_UART_CS1 + " " + status);
         writeFile(new File(AddressUtils.BACK_UART_CS1), status);
     }
 
     private static void BACK_OE(String status) {
-
+        // TODO Auto-generated method stub
         System.out.println("BACK_OE:" + AddressUtils.BACK_UART_OE + " " + status);
         writeFile(new File(AddressUtils.BACK_UART_OE), status);
     }
 
     private static void ufsEnable(String status) {
-
+        // TODO Auto-generated method stub
         System.out.println("ufsEnable:" + AddressUtils.RFID_ENABLE + " " + status);
         writeFile(new File(AddressUtils.RFID_ENABLE), status);
     }

@@ -10,7 +10,7 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import com.zebra.R;
-import com.zebra.main.model.ExternalDB.DriverDetailsModel;
+import com.zebra.main.model.externaldb.DriverDetailsModel;
 
 import java.util.ArrayList;
 import java.util.List;

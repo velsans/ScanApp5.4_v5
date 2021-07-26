@@ -4,20 +4,28 @@ import android.content.Context;
 import android.util.Log;
 
 import com.zebra.R;
+import com.zebra.database.ExternalDataBaseHelperClass;
 import com.zebra.database.InternalDataBaseHelperClass;
+import com.zebra.main.activity.FellingRegistration.DimensionCalculation;
+import com.zebra.main.activity.purchase.ui.logs.PurchaseLogsModels;
+import com.zebra.main.model.externaldb.TransferLogDetailsModel;
 import com.zebra.main.model.FellingRegistration.FellingTreeDetailsModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 
 public class PrintSlipsClass {
     private static Context context_ths;
     AlertDialogManager alert = new AlertDialogManager();
     private InternalDataBaseHelperClass mDBInternalHelper;
+    private ExternalDataBaseHelperClass mDBExternalHelper;
 
     public PrintSlipsClass(Context context) {
         context_ths = context;
         mDBInternalHelper = new InternalDataBaseHelperClass(context);
+        mDBExternalHelper = new ExternalDataBaseHelperClass(context);
     }
 
     public String TransferHeader() {
@@ -229,6 +237,158 @@ public class PrintSlipsClass {
         return GwwBottom;
     }
 
+    public String PurchaseTransferDetails12_02_2020() {
+        Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+        String FromLocaOrFellingSec = "", FromLocaOrFellingSecValue;
+        String GwwHeader = "";
+        if (Common.FromLocationID == 2 && Common.ToLocaTransID == 6) {
+            FromLocaOrFellingSecValue = "Felling Section:";
+            FromLocaOrFellingSec = mDBInternalHelper.GetFellingSecNumbersFromINTransfer(Common.TransferID);
+        } else {
+            FromLocaOrFellingSec = Common.FromLocationname;
+            FromLocaOrFellingSecValue = "From Location:";
+        }
+        try {
+            GwwHeader = "SIZE 69.9 mm, 63.6 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 143,11,\"0\",0,10,10,\"GREEN WOOD WORLD\"\n" +
+                    "BAR 143,36, 273, 1\n" +
+                    "TEXT 74,54,\"0\",0,10,10,\"PURCHASE TRANSPORT RECEIPT\"\n" +
+                    "BAR 74,79, 411, 1\n" +
+                    "TEXT 281,324,\"0\",0,9,9," + "\"" + Common.DriverName + "\"" + "\n" +
+                    "TEXT 282,399,\"0\",0,9,9," + "\"" + Common.TransportMode + "\"" + "\n" +
+                    "TEXT 11,172,\"0\",0,9,9,\"Date:\"\n" +
+                    "BAR 11,193, 54, 1\n" +
+                    "TEXT 281,211,\"0\",0,9,9," + "\"" + FromLocaOrFellingSec + "\"" + "\n" +
+                    "TEXT 281,250,\"0\",0,9,9," + "\"" + Common.ToLocationName + "\"" + "\n" +
+                    "TEXT 281,287,\"0\",0,9,9," + "\"" + Common.AgencyName + "\"" + "\n" +
+                    "TEXT 282,362,\"0\",0,9,9," + "\"" + Common.TrucklicensePlateNo + "\"" + "\n" +
+                    "TEXT 11,250,\"0\",0,9,9,\"To  Location:\"\n" +
+                    "BAR 11,271, 134, 1\n" +
+                    "TEXT 11,287,\"0\",0,9,9,\"Transport Agency:\"\n" +
+                    "BAR 11,308, 192, 1\n" +
+                    "TEXT 11,324,\"0\",0,9,9,\"Driver Details:\"\n" +
+                    "BAR 11,345, 161, 1\n" +
+                    "TEXT 11,362,\"0\",0,9,9,\"TransportPlateNo:\"\n" +
+                    "BAR 11,383, 189, 1\n" +
+                    "TEXT 11,399,\"0\",0,9,9,\"Transport Mode:\"\n" +
+                    "BAR 11,420, 170, 1\n" +
+                    "TEXT 281,172,\"0\",0,9,9," + "\"" + Common.EndDate + "\"" + "\n" +
+                    "TEXT 132,437,\"0\",0,9,9," + "\"" + Common.Count + "\"" + "\n" +
+                    "TEXT 11,437,\"0\",0,9,9,\"Count:\"\n" +
+                    "BAR 11,458, 69, 1\n" +
+                    "TEXT 403,437,\"0\",0,9,9," + "\"" + Common.decimalFormat.format(Common.VolumeSum) + "\"" + "\n" +
+                    "CODEPAGE 1253\n" +
+                    "TEXT 282,437,\"0\",0,8,9,\"Volume Ó:\"\n" +
+                    "BAR 282,458, 96, 1\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 11,133,\"0\",0,9,9,\"TransportID:\"\n" +
+                    "BAR 11,154, 130, 1\n" +
+                    "TEXT 281,132,\"0\",0,9,9," + "\"" + Common.TransferID + "\"" + "\n" +
+                    "TEXT 11,94,\"0\",0,9,9,\"Device Name:\"\n" +
+                    "BAR 11,115, 143, 1\n" +
+                    "TEXT 281,94,\"0\",0,9,9," + "\"" + Common.DeviceName + "\"" + "\n" +
+                    "TEXT 11,475,\"0\",0,9,9,\"LoadedBy:\"\n" +
+                    "BAR 11,496, 111, 1\n" +
+                    "TEXT 132,475,\"0\",0,9,9," + "\"" + Common.LoadedName + "\"" + "\n" +
+                    "TEXT 282,475,\"0\",0,9,9,\"User:\"\n" +
+                    "BAR 282,496, 56, 1\n" +
+                    "TEXT 403,475,\"0\",0,9,9," + "\"" + Common.Username + "\"" + "\n" +
+                    "TEXT 11,211,\"0\",0,9,9," + "\"" + FromLocaOrFellingSecValue + "\"" + "\n" +
+                    "BAR 11,232, 157, 1\n" +
+                    "PRINT 1,1\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("Transfer-Receipt", e.toString(), false);
+        }
+        return GwwHeader;
+    }
+
+    public String PurchaseTransferListDimensions12_02_2020() {
+        String BarcodeDetails = "";
+        try {
+            double ArraySizeAddingValue = 7, Gap = 12.4, HeadValueDiff = 78,
+                    MainBoxStatingBox = 42, MainBoxEndingBox = 122,
+                    SbbLabelStart = 52, TreeNumberStart = 90,
+                    FirstBar = 82;
+            String F1 = "", F2 = "", T1 = "", T2 = "", FsNumValue = "";
+
+            StringBuilder BarStgBildr = new StringBuilder();
+            for (int TransferIndex = 0; TransferIndex < Common.InventorytransferScannedResultList.size(); TransferIndex++) {
+                ArrayList<PurchaseLogsModels> SearchedTransLogDetils = new ArrayList<PurchaseLogsModels>();
+                SearchedTransLogDetils = mDBExternalHelper.getBarCodeExternalLogDetails(Common.InventorytransferScannedResultList.get(TransferIndex).getBarCode());
+                if (SearchedTransLogDetils.size() > 0) {
+                    F1 = String.valueOf(SearchedTransLogDetils.get(0).getF1());
+                    F2 = String.valueOf(SearchedTransLogDetils.get(0).getF2());
+                    T1 = String.valueOf(SearchedTransLogDetils.get(0).getT1());
+                    T2 = String.valueOf(SearchedTransLogDetils.get(0).getT2());
+                }
+                //remvoed for purchase
+                FsNumValue = "";
+                String ScannedResultStr =
+                        "BOX 13," + MainBoxStatingBox + ",143," + MainBoxEndingBox + ",3\n" +
+                                "BOX 141," + MainBoxStatingBox + ",244," + MainBoxEndingBox + ",3\n" +
+                                "BOX 243," + MainBoxStatingBox + ",346," + MainBoxEndingBox + ",3\n" +
+                                "BOX 344," + MainBoxStatingBox + ",447," + MainBoxEndingBox + ",3\n" +
+                                "BOX 446," + MainBoxStatingBox + ",545," + MainBoxEndingBox + ",3\n" +
+
+                                "BAR 14," + FirstBar + ",530,3\n" +
+
+                                "TEXT 17," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getBarCode() + "\"" + "\n" +
+                                "TEXT 148," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + F1 + "\"" + "\n" +
+                                "TEXT 249," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + F2 + "\"" + "\n" +
+                                "TEXT 351," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + T1 + "\"" + "\n" +
+                                "TEXT 452," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + T2 + "\"" + "\n" +
+
+                                "TEXT 36," + TreeNumberStart + ",\"0\",0,9,9," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getLength() + "\"" + "\n" +
+                                "TEXT 148," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + FsNumValue + "\"" + "\n" +
+                                "TEXT 271," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getWoodSpieceCode() + "\"" + "\n" +
+                                "TEXT 351," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + " " + "\"" + "\n" +//remvoed for purchase
+                                "TEXT 491," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getQualitiy() + "\"" + "\n";
+                BarStgBildr.append(ScannedResultStr);
+
+                MainBoxStatingBox = MainBoxStatingBox + HeadValueDiff;
+                MainBoxEndingBox = MainBoxEndingBox + HeadValueDiff;
+
+                SbbLabelStart = SbbLabelStart + HeadValueDiff;
+                TreeNumberStart = TreeNumberStart + HeadValueDiff;
+                FirstBar = FirstBar + HeadValueDiff;
+
+                ArraySizeAddingValue = ArraySizeAddingValue + Gap;
+            }
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "BOX 13,1,545,44,3\n" +
+                    "TEXT 55,10,\"0\",0,9,9,\"Label\"\n" +
+                    "TEXT 181,10,\"0\",0,9,9,\"F1\"\n" +
+                    "TEXT 283,10,\"0\",0,9,9,\"F2\"\n" +
+                    "TEXT 381,10,\"0\",0,9,9,\"T1\"\n" +
+                    "TEXT 483,10,\"0\",0,9,9,\"T2\"\n" +
+                    BarStgBildr +
+                    "PRINT 1,1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("FellingRegisterBarcode-Receipt", e.toString(), false);
+        }
+        return BarcodeDetails;
+    }
+
     public String TransferBarCodeDetails() {
         String BarcodeDetails = "";
         try {
@@ -265,7 +425,7 @@ public class PrintSlipsClass {
 
                 ArraySizeAddingValue = ArraySizeAddingValue + Gap;
             }
-            BarcodeDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeAddingValue) + " mm" + "\n" +
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -309,16 +469,16 @@ public class PrintSlipsClass {
             for (int TransferIndex = 0; TransferIndex < LoopSize; TransferIndex++) {
 
                 SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
-                Log.e("ColumnSize1", ">>>>>>" + ColumnIndex);
+                Log.d("ColumnSize1 : %s", String.valueOf(ColumnIndex));
                 SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getBarCode(), 13);
                 WoodSpecieCode = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getWoodSpieceCode(), 10);
-                FsNumValue = "FNo: " + String.valueOf(Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId());
+                FsNumValue = "FNo: " + Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId();
                 String Column1Str =
                         "BOX 13," + BigBoxStart + ",545," + BigBoxEnd + ",3\n" +
                                 "BOX 21, " + NumberBoxStart + ",59," + NumberBoxEnd + ",3\n" +
                                 "TEXT 25, " + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
                                 "TEXT 20, " + FsNumber + ",\"0\",0,8,8," + "\"" + FsNumValue + "\"" + "\n" +
-                                 //"TEXT 87," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                //"TEXT 87," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 69," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 122," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n" +
                                 "BAR 191," + BarEndStart + ",3, 75\n";
@@ -326,11 +486,11 @@ public class PrintSlipsClass {
 
                 ColumnIndex = ColumnIndex + 1;
                 if (ColumnIndex < Common.InventorytransferScannedResultList.size()) {
-                    Log.e("ColumnSize2", ">>>>>>" + ColumnIndex);
+                    Log.d("ColumnSize2 : %s", String.valueOf(ColumnIndex));
                     SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
                     SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getBarCode(), 13);
                     WoodSpecieCode = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getWoodSpieceCode(), 10);
-                    FsNumValue = "FNo: " + String.valueOf(Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId());
+                    FsNumValue = "FNo: " + Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId();
                 } else {
                     SerialNumber = "";
                     SbbLabel = "";
@@ -352,7 +512,7 @@ public class PrintSlipsClass {
                     SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
                     SbbLabel = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getBarCode(), 13);
                     WoodSpecieCode = ADDSpace(Common.InventorytransferScannedResultList.get(ColumnIndex).getWoodSpieceCode(), 10);
-                    FsNumValue = "FNo: " + String.valueOf(Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId());
+                    FsNumValue = "FNo: " + Common.InventorytransferScannedResultList.get(ColumnIndex).getFellingSectionId();
                 } else {
                     SerialNumber = "";
                     SbbLabel = "";
@@ -387,7 +547,7 @@ public class PrintSlipsClass {
                 ArraySizeVale = ArraySizeVale + Gap;
             }
 
-            ScannedItemDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeVale) + " mm" + "\n" +
+            ScannedItemDetails = "SIZE 69.9 mm," + ArraySizeVale + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -447,7 +607,7 @@ public class PrintSlipsClass {
                 // }
                 if (Remaining > 0) {
                     if (TransferIndex == (LoopSize - 1)) {
-                        Log.e("TransferIndex", ">>>>>>>>" + TransferIndex + ">>>>>" + (LoopSize - 1));
+                        Log.d("TransferIndex : %s", TransferIndex + ">>>>>" + (LoopSize - 1));
                         if (Remaining == 1) {
                             SerialNumber = "-------";
                             SbbLabel = "--------------";
@@ -473,7 +633,7 @@ public class PrintSlipsClass {
                 //}
                 if (Remaining > 0) {
                     if (TransferIndex == (LoopSize - 1)) {
-                        Log.e("TransferIndex", ">>>>>>>>" + TransferIndex + ">>>>>" + (LoopSize - 1));
+                        Log.d("TransferIndex : %s", TransferIndex + ">>>>>" + (LoopSize - 1));
                         if (Remaining == 1 || Remaining == 2) {
                             SerialNumber = "-------";
                             SbbLabel = "--------------";
@@ -505,7 +665,7 @@ public class PrintSlipsClass {
                 ArraySizeVale = ArraySizeVale + Gap;
             }
 
-            ScannedItemDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeVale) + " mm" + "\n" +
+            ScannedItemDetails = "SIZE 69.9 mm," + ArraySizeVale + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -540,6 +700,7 @@ public class PrintSlipsClass {
             String printSlipValue = GwwException.TransferSlipValues(Common.InventorytransferScannedResultList.size());
             String[] BarcodeSplite = printSlipValue.split("-");
             GwwBarcodeQRitems = "SIZE 69.9 mm," + BarcodeSplite[2] + " mm" + "\n" +
+                    "GAP 0 mm, 0 mm\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -551,6 +712,18 @@ public class PrintSlipsClass {
                     "QRCODE " + BarcodeSplite[0] + "," + BarcodeSplite[1] + ",L,9,A,0,M2,S7," + "\"" + FinalVAlue + "\"" + "\n" +
                     "CODEPAGE 1252\n" +
                     "PRINT 1,1";
+           /* GwwBarcodeQRitems="SIZE 69.9 mm, 38.2 mm\n" +
+                    "GAP 0 mm, 0 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "QRCODE 409,282,L,4,A,180,M2,S7,\"2019110720155--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--\"\n" +
+                    "PRINT 1,1\n";*/
         } catch (Exception e) {
             e.printStackTrace();
             AlertDialogBox("Transfer-Receipt", e.toString(), false);
@@ -758,7 +931,7 @@ public class PrintSlipsClass {
 
                 ArraySizeAddingValue = ArraySizeAddingValue + Gap;
             }
-            BarcodeDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeAddingValue) + " mm" + "\n" +
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -776,7 +949,7 @@ public class PrintSlipsClass {
                     "TEXT 186,12,\"0\",0,10,10,\"BarCode\"\n" +
                     BarStgBildr +
                     "PRINT 1,1\n";
-            Log.e("", "" + BarcodeDetails);
+            Log.d("", "ReceivedBarCodeSlips-BarcodeDetails : %s" + BarcodeDetails);
         } catch (Exception e) {
             e.printStackTrace();
             AlertDialogBox("Transfer-Receipt", e.toString(), false);
@@ -807,17 +980,17 @@ public class PrintSlipsClass {
             for (int TransferIndex = 0; TransferIndex < LoopSize; TransferIndex++) {
 
                 SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
-                Log.e("ColumnSize1", ">>>>>>" + ColumnIndex);
+                Log.d("", "ColumnSize1 : %s" + ColumnIndex);
                 SbbLabel = ADDSpace(Common.InventoryReceivedScannedResultList.get(ColumnIndex).getSbbLabel(), 13);
                 WoodSpecieCode = Common.InventoryReceivedScannedResultList.get(ColumnIndex).getWoodSpieceCode();
-
+                //old values for SBBlable 87,265,442
                 String Column1Str =
                         "BOX 13," + BigBoxStart + ",545," + BigBoxEnd + ",3\n" +
                                 "BOX 21, " + NumberBoxStart + ",59," + NumberBoxEnd + ",3\n" +
                                 "TEXT 25, " + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
                                 "TEXT 19," + ReceivedStr + ",\"0\",0,6,8,\"Received:\"" + "\n" +
                                 "BOX 100, " + CheckBoxStart + ",137," + CheckBoxEnd + ",3\n" +
-                                "TEXT 87," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 64," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 141," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n" +
                                 "BAR 191," + BarEndStart + ",3, 75\n";
                 TransfertgBildr.append(Column1Str);
@@ -832,7 +1005,7 @@ public class PrintSlipsClass {
 
                 ColumnIndex = ColumnIndex + 1;
                 if (ColumnIndex < Common.InventoryReceivedScannedResultList.size()) {
-                    Log.e("ColumnSize2", ">>>>>>" + ColumnIndex);
+                    Log.d("", "ColumnSize2 : %s" + ColumnIndex);
                     SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
                     SbbLabel = ADDSpace(Common.InventoryReceivedScannedResultList.get(ColumnIndex).getSbbLabel(), 13);
                     WoodSpecieCode = Common.InventoryReceivedScannedResultList.get(ColumnIndex).getWoodSpieceCode();
@@ -851,7 +1024,7 @@ public class PrintSlipsClass {
                 String Column2Str =
                         "BOX 199," + NumberBoxStart + ",237," + NumberBoxEnd + ",3\n" +
                                 "TEXT 203," + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
-                                "TEXT 265," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 242," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 199," + ReceivedStr + ",\"0\",0,6,8,\"Received:\"" + "\n" +
                                 "BOX 279, " + CheckBoxStart + ",317," + CheckBoxEnd + ",3\n" +
                                 "TEXT 322," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n" +
@@ -882,7 +1055,7 @@ public class PrintSlipsClass {
                                 "TEXT 381," + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
                                 "TEXT 377," + ReceivedStr + ",\"0\",0,6,8,\"Received:\"" + "\n" +
                                 "BOX 457," + CheckBoxStart + ",495," + CheckBoxEnd + ",3\n" +
-                                "TEXT 442," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 419," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
                                 "TEXT 502," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n";
 
                 TransfertgBildr.append(Column3Str);
@@ -915,7 +1088,159 @@ public class PrintSlipsClass {
                 ArraySizeVale = ArraySizeVale + Gap;
             }
 
-            ScannedItemDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeVale) + " mm" + "\n" +
+            ScannedItemDetails = "SIZE 69.9 mm," + ArraySizeVale + " mm" + "\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "BOX 13,5,545,48,3\n" +
+                    "TEXT 192,14,\"0\",0,10,10,\"Scanned Items\"\n" +
+                    TransfertgBildr +
+                    "PRINT 1,1\n";
+
+        } catch (Exception ex) {
+            AlertDialogBox("TransferDetails-Receipt", ex.toString(), false);
+        }
+        return ScannedItemDetails;
+    }
+
+    public String PurchaseReceivedScannedItemsDetails() {
+        String ScannedItemDetails = "", SerialNumber = "000", SbbLabel = "", WoodSpecieCode = "", ReceivedValues = "";
+        StringBuilder TransfertgBildr = new StringBuilder();
+        int LoopSize = Common.InventoryReceivedScannedResultList.size() / 3;//printing slip columns
+        int Remaining = Common.InventoryReceivedScannedResultList.size() % 3;//printing slip columns
+        try {
+            double ArraySizeVale = 5.2, Gap = 10.2,
+                    BigBoxStart = 46, BigBoxEnd = 122, BigBoxDiff = 74,
+                    NumberBoxStart = 52, NumberBoxEnd = 82, NumBoxDiff = 178,
+                    CheckBoxStart = 86, CheckBoxEnd = 116,
+                    BoxNumber = 58, SbbValue = 54, WooSpiCode = 89,
+                    ReceivedStr = 91, Diagnol1Start = 100, Diagnol1End = 108,
+                    Diagnol2Start = 113, Diagnol2End = 94,
+                    ReceivedStart = 95, ReceivedYESNO = 94,
+                    BarEndStart = 48, BarDiff = 74;
+            int ColumnIndex = 0;
+            if (Remaining == 0) {
+            } else if (Remaining == 1 || Remaining == 2) {
+                LoopSize = LoopSize + 1;
+            }
+            for (int TransferIndex = 0; TransferIndex < LoopSize; TransferIndex++) {
+
+                SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
+                Log.d("", "ColumnSize1 : %s" + ColumnIndex);
+                SbbLabel = ADDSpace(Common.InventoryReceivedScannedResultList.get(ColumnIndex).getBarCode(), 13);
+                WoodSpecieCode = Common.InventoryReceivedScannedResultList.get(ColumnIndex).getWoodSpieceCode();
+
+                String Column1Str =
+                        "BOX 13," + BigBoxStart + ",545," + BigBoxEnd + ",3\n" +
+                                "BOX 21, " + NumberBoxStart + ",59," + NumberBoxEnd + ",3\n" +
+                                "TEXT 25, " + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
+                                "TEXT 19," + ReceivedStr + ",\"0\",0,6,8,\"Received:\"" + "\n" +
+                                "BOX 100, " + CheckBoxStart + ",137," + CheckBoxEnd + ",3\n" +
+                                "TEXT 64," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 141," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n" +
+                                "BAR 191," + BarEndStart + ",3, 75\n";
+                TransfertgBildr.append(Column1Str);
+
+                ReceivedValues = (Common.InventoryReceivedScannedResultList.get(ColumnIndex).getIsReceived());
+                if (ReceivedValues.equals("YES")) {
+                    String Diagonal1 =
+                            "DIAGONAL 107," + Diagnol1Start + ",113," + Diagnol1End + ",2\n" +
+                                    "DIAGONAL 113," + Diagnol2Start + ",133," + Diagnol2End + ",2\n";
+                    TransfertgBildr.append(Diagonal1);
+                }
+
+                ColumnIndex = ColumnIndex + 1;
+                if (ColumnIndex < Common.InventoryReceivedScannedResultList.size()) {
+                    Log.d("", "ColumnSize2 : %s" + ColumnIndex);
+                    SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
+                    SbbLabel = ADDSpace(Common.InventoryReceivedScannedResultList.get(ColumnIndex).getBarCode(), 13);
+                    WoodSpecieCode = Common.InventoryReceivedScannedResultList.get(ColumnIndex).getWoodSpieceCode();
+                    ReceivedValues = (Common.InventoryReceivedScannedResultList.get(ColumnIndex).getIsReceived());
+                    if (ReceivedValues.equals("YES")) {
+                        String Diagonal2 =
+                                "DIAGONAL 286," + Diagnol1Start + ",291," + Diagnol1End + ",2\n" +
+                                        "DIAGONAL 291," + Diagnol2Start + ",312," + Diagnol2End + ",2\n";
+                        TransfertgBildr.append(Diagonal2);
+                    }
+                } else {
+                    SerialNumber = "";
+                    SbbLabel = "";
+                    WoodSpecieCode = "";
+                }
+                String Column2Str =
+                        "BOX 199," + NumberBoxStart + ",237," + NumberBoxEnd + ",3\n" +
+                                "TEXT 203," + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
+                                "TEXT 242," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 199," + ReceivedStr + ",\"0\",0,6,8,\"Received:\"" + "\n" +
+                                "BOX 279, " + CheckBoxStart + ",317," + CheckBoxEnd + ",3\n" +
+                                "TEXT 322," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n" +
+                                "BAR 368," + BarEndStart + ",3, 75\n";
+                TransfertgBildr.append(Column2Str);
+
+                ColumnIndex = ColumnIndex + 1;
+                if (ColumnIndex < Common.InventoryReceivedScannedResultList.size()) {
+                    SerialNumber = ADDValue(String.valueOf(ColumnIndex + 1));
+                    SbbLabel = ADDSpace(Common.InventoryReceivedScannedResultList.get(ColumnIndex).getBarCode(), 13);
+                    WoodSpecieCode = Common.InventoryReceivedScannedResultList.get(ColumnIndex).getWoodSpieceCode();
+
+                    ReceivedValues = (Common.InventoryReceivedScannedResultList.get(ColumnIndex).getIsReceived());
+                    if (ReceivedValues.equals("YES")) {
+                        String Diagonal2 =
+                                "DIAGONAL 463," + Diagnol1Start + ",469," + Diagnol1End + ",2\n" +
+                                        "DIAGONAL 469," + Diagnol2Start + ",489," + Diagnol2End + ",2\n";
+                        TransfertgBildr.append(Diagonal2);
+
+                    }
+                } else {
+                    SerialNumber = "";
+                    SbbLabel = "";
+                    WoodSpecieCode = "";
+                }
+                String Column3Str =
+                        "BOX 377," + NumberBoxStart + ",414," + NumberBoxEnd + ",3\n" +
+                                "TEXT 381," + BoxNumber + ",\"0\",0,7,7," + "\"" + SerialNumber + "\"" + "\n" +
+                                "TEXT 377," + ReceivedStr + ",\"0\",0,6,8,\"Received:\"" + "\n" +
+                                "BOX 457," + CheckBoxStart + ",495," + CheckBoxEnd + ",3\n" +
+                                "TEXT 419," + SbbValue + ",\"0\",0,8,10," + "\"" + SbbLabel + "\"" + "\n" +
+                                "TEXT 502," + WooSpiCode + ",\"0\",0,8,10," + "\"" + WoodSpecieCode + "\"" + "\n";
+
+                TransfertgBildr.append(Column3Str);
+
+                ColumnIndex = ColumnIndex + 1;
+
+                BigBoxStart = BigBoxStart + BigBoxDiff;
+                BigBoxEnd = BigBoxEnd + BigBoxDiff;
+
+                NumberBoxStart = NumberBoxStart + BarDiff;
+                NumberBoxEnd = NumberBoxEnd + BarDiff;
+
+                CheckBoxStart = CheckBoxStart + BarDiff;
+                CheckBoxEnd = CheckBoxEnd + BarDiff;
+
+                ReceivedStart = ReceivedStart + BarDiff;
+                ReceivedStr = ReceivedStr + BarDiff;
+
+                Diagnol1Start = Diagnol1Start + BarDiff;
+                Diagnol1End = Diagnol1End + BarDiff;
+                Diagnol2Start = Diagnol2Start + BarDiff;
+                Diagnol2End = Diagnol2End + BarDiff;
+
+                BoxNumber = BoxNumber + BarDiff;
+                SbbValue = SbbValue + BarDiff;
+                WooSpiCode = WooSpiCode + BarDiff;
+
+                BarEndStart = BarEndStart + BarDiff;
+
+                ArraySizeVale = ArraySizeVale + Gap;
+            }
+
+            ScannedItemDetails = "SIZE 69.9 mm," + ArraySizeVale + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -937,11 +1262,12 @@ public class PrintSlipsClass {
     }
 
     public String FellingRegisterHeader() {
-        Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
-        Common.VolumeSum = Double.valueOf(Common.decimalFormat.format(Common.VolumeSum));
-        String FRHead = "FELLING REGISTRATION";// + CommonMessage(R.string.app_name);
         String FellingRegHeader = "";
         try {
+            Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+            //String VolumeSums = formatDecimal(Common.VolumeSum);
+            String VolumeSums = String.valueOf(Common.decimalFormat.format(Common.VolumeSum));
+            String FRHead = "FELLING REGISTRATION";// + CommonMessage(R.string.app_name);
             FellingRegHeader =
                     "SIZE 69.9 mm, 43.3 mm\n" +
                             "DIRECTION 0,0\n" +
@@ -977,7 +1303,7 @@ public class PrintSlipsClass {
                             "TEXT 12,307,\"0\",0,9,9,\"Volume ∑:\"\n" +
                             "BAR 12,328, 105, 1\n" +
                             "CODEPAGE 1252\n" +
-                            "TEXT 250,310,\"0\",0,9,9," + "\"" + Common.VolumeSum + "\"" + "\n" +
+                            "TEXT 250,310,\"0\",0,9,9," + "\"" + VolumeSums + "\"" + "\n" +
                             "TEXT 12,225,\"0\",0,9,9,\"FSecID:\"\n" +
                             "BAR 12,246, 81, 1\n" +
                             "TEXT 100,225,\"0\",0,9,9," + "\"" + Common.FellingSectionNumber + "\"" + "\n" +
@@ -1036,7 +1362,7 @@ public class PrintSlipsClass {
 
                 ArraySizeAddingValue = ArraySizeAddingValue + Gap;
             }
-            BarcodeDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeAddingValue) + " mm" + "\n" +
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -1109,7 +1435,7 @@ public class PrintSlipsClass {
 
                 ArraySizeAddingValue = ArraySizeAddingValue + Gap;
             }
-            BarcodeDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeAddingValue) + " mm" + "\n" +
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -1136,17 +1462,50 @@ public class PrintSlipsClass {
         String BarcodeDetails = "";
         ArrayList<FellingTreeDetailsModel> treeNumberDetails = new ArrayList<>();
         try {
-            double ArraySizeAddingValue = 7, Gap = 23.5, HeadValueDiff = 186,
-                    MainBoxStatingBox = 46, MainBoxEndingBox = 234,
+            double ArraySizeAddingValue = 7, Gap = 38, HeadValueDiff = 305,
+                    MainBoxStatingBox = 46, MainBoxEndingBox = 351,
                     CheckBoxStatingBox = 159, CheckBoxEndingBox = 189,
                     SbbLabelStart = 51, TreeNumberStart = 87,
-                    WSpiceStatingValue = 124, FirstBar = 83,
-                    SecBar = 121, Thirdbar = 159, ForthBar = 195, SecHeading = 129,
-                    SecNoteValue = 164;
+                    WSpiceStatingValue = 124,
+                    FirstBar = 83, SecBar = 121, Thirdbar = 159, ForthBar = 195, FifthBar = 237, SixthBar = 277, SeventhBar = 314,
+                    NoteHeading = 129, NoteValue = 164,
+                    HeartHeading = 249, HeartValue = 285,
+                    ADValue = 205, AHDValue = 241, VPValue = 277, VHPValue = 312;
 
             StringBuilder BarStgBildr = new StringBuilder();
             for (int TransferIndex = 0; TransferIndex < Common.FellingRegisterLogsDetails.size(); TransferIndex++) {
                 treeNumberDetails = mDBInternalHelper.getFellingRegWithTreeDetails(Common.FellingRegisterLogsDetails.get(TransferIndex).getTreeNumber());
+
+                String LableDiameter = "AD:" + String.valueOf(DimensionCalculation.SBBLableDiameter(
+                        Common.FellingRegisterLogsDetails.get(TransferIndex).getFooter_1(),
+                        Common.FellingRegisterLogsDetails.get(TransferIndex).getFooter_2(),
+                        Common.FellingRegisterLogsDetails.get(TransferIndex).getTop_1(),
+                        Common.FellingRegisterLogsDetails.get(TransferIndex).getTop_2()));
+
+                if (Common.FellingRegisterLogsDetails.get(TransferIndex).getLength().length() > 0) {
+                    DimensionCalculation.SbbLableVolumePercentage = DimensionCalculation.VolumeCalculation(Common.FellingRegisterLogsDetails.get(TransferIndex).getFooter_1(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getFooter_2(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getTop_1(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getTop_2(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getLength(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteF(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteT(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteL());
+                }
+                String LableHeartDiameter = "AHD:" + String.valueOf(DimensionCalculation.SBBLableHeartDiameter(Common.FellingRegisterLogsDetails.get(TransferIndex).getLHF1(),
+                        Common.FellingRegisterLogsDetails.get(TransferIndex).getLHF2(),
+                        Common.FellingRegisterLogsDetails.get(TransferIndex).getLHT1(),
+                        Common.FellingRegisterLogsDetails.get(TransferIndex).getLHT2()));
+                if (Common.FellingRegisterLogsDetails.get(TransferIndex).getLength().length() > 0) {
+                    DimensionCalculation.SbbLableVolumeHeartPercentage = DimensionCalculation.VolumeCalculation(Common.FellingRegisterLogsDetails.get(TransferIndex).getLHF1(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getLHF2(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getLHT1(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getLHT2(),
+                            Common.FellingRegisterLogsDetails.get(TransferIndex).getLength(), "0", "0", "0");
+                }
+                String DiameterPer = "DP:" + DimensionCalculation.Heart_Diameter_Percentage() + "%";
+                String VolumePer = "VP:" + DimensionCalculation.Heart_Volume_Percentage() + "%";
+
                 String ScannedResultStr =
                         "BOX 13," + MainBoxStatingBox + ",545," + MainBoxEndingBox + ",3\n" +
 
@@ -1166,23 +1525,40 @@ public class PrintSlipsClass {
                                 "BAR 109," + SecBar + ",436,3\n" +
                                 "BAR 109," + Thirdbar + ",436,3\n" +
                                 "BAR 109," + ForthBar + ",436,3\n" +
-
+                                "BAR 109," + FifthBar + ",436,3\n" +
+                                "BAR 109," + SixthBar + ",436,3\n" +
+                                "BAR 109," + SeventhBar + ",436,3\n" +
                                 "TEXT 113," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getFooter_1() + "\"" + "\n" +
                                 "TEXT 225," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getFooter_2() + "\"" + "\n" +
                                 "TEXT 336," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getTop_1() + "\"" + "\n" +
                                 "TEXT 444," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getTop_2() + "\"" + "\n" +
 
-                                "TEXT 157," + SecHeading + ",\"0\",0,9,9,\"L\"\n" +
-                                "TEXT 260," + SecHeading + ",\"0\",0,9,9,\"NF\"\n" +
-                                "TEXT 370," + SecHeading + ",\"0\",0,9,9,\"NT\"\n" +
-                                "TEXT 479," + SecHeading + ",\"0\",0,9,9,\"NL\"\n" +
+                                "TEXT 157," + NoteHeading + ",\"0\",0,9,9,\"L\"\n" +
+                                "TEXT 260," + NoteHeading + ",\"0\",0,9,9,\"NF\"\n" +
+                                "TEXT 370," + NoteHeading + ",\"0\",0,9,9,\"NT\"\n" +
+                                "TEXT 479," + NoteHeading + ",\"0\",0,9,9,\"NL\"\n" +
 
-                                "TEXT 113," + SecNoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getLength() + "\"" + "\n" +
-                                "TEXT 225," + SecNoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteF() + "\"" + "\n" +
-                                "TEXT 336," + SecNoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteT() + "\"" + "\n" +
-                                "TEXT 444," + SecNoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteL() + "\"" + "\n";
+                                "TEXT 113," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getLength() + "\"" + "\n" +
+                                "TEXT 225," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteF() + "\"" + "\n" +
+                                "TEXT 336," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteT() + "\"" + "\n" +
+                                "TEXT 444," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getNoteL() + "\"" + "\n" +
+
+                                "TEXT 143," + HeartHeading + ",\"0\",0,9,9,\"HF1\"\n" +
+                                "TEXT 254," + HeartHeading + ",\"0\",0,9,9,\"HF2\"\n" +
+                                "TEXT 365," + HeartHeading + ",\"0\",0,9,9,\"HT1\"\n" +
+                                "TEXT 473," + HeartHeading + ",\"0\",0,9,9,\"HT2\"\n" +
+
+                                "TEXT 113," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getLHF1() + "\"" + "\n" +
+                                "TEXT 225," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getLHF2() + "\"" + "\n" +
+                                "TEXT 336," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getLHT1() + "\"" + "\n" +
+                                "TEXT 444," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.FellingRegisterLogsDetails.get(TransferIndex).getLHT2() + "\"" + "\n" +
+
+                                "TEXT 18," + ADValue + ",\"0\",0,9,9," + "\"" + LableDiameter + "\"" + "\n" +
+                                "TEXT 18," + AHDValue + ",\"0\",0,9,9," + "\"" + LableHeartDiameter + "\"" + "\n" +
+                                "TEXT 18," + VPValue + ",\"0\",0,9,9," + "\"" + DiameterPer + "\"" + "\n" +
+                                "TEXT 18," + VHPValue + ",\"0\",0,9,9," + "\"" + VolumePer + "\"" + "\n";
+
                 BarStgBildr.append(ScannedResultStr);
-
 
                 MainBoxStatingBox = MainBoxStatingBox + HeadValueDiff;
                 MainBoxEndingBox = MainBoxEndingBox + HeadValueDiff;
@@ -1198,13 +1574,24 @@ public class PrintSlipsClass {
                 SecBar = SecBar + HeadValueDiff;
                 Thirdbar = Thirdbar + HeadValueDiff;
                 ForthBar = ForthBar + HeadValueDiff;
+                FifthBar = FifthBar + HeadValueDiff;
+                SixthBar = SixthBar + HeadValueDiff;
+                SeventhBar = SeventhBar + HeadValueDiff;
 
-                SecHeading = SecHeading + HeadValueDiff;
-                SecNoteValue = SecNoteValue + HeadValueDiff;
+                NoteHeading = NoteHeading + HeadValueDiff;
+                NoteValue = NoteValue + HeadValueDiff;
+
+                HeartHeading = HeartHeading + HeadValueDiff;
+                HeartValue = HeartValue + HeadValueDiff;
+
+                ADValue = ADValue + HeadValueDiff;
+                AHDValue = AHDValue + HeadValueDiff;
+                VPValue = VPValue + HeadValueDiff;
+                VHPValue = VHPValue + HeadValueDiff;
 
                 ArraySizeAddingValue = ArraySizeAddingValue + Gap;
             }
-            BarcodeDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeAddingValue) + " mm" + "\n" +
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -1228,6 +1615,85 @@ public class PrintSlipsClass {
         }
         return BarcodeDetails;
     }
+
+// 18-11-2019
+
+    public String TransferListDimensions18_Nov_2019() {
+        String BarcodeDetails = "";
+        try {
+            double ArraySizeAddingValue = 7, Gap = 12.4, HeadValueDiff = 78,
+                    MainBoxStatingBox = 42, MainBoxEndingBox = 122,
+                    SbbLabelStart = 52, TreeNumberStart = 90,
+                    FirstBar = 82;
+            String F1 = "", F2 = "", T1 = "", T2 = "", FsNumValue = "";
+
+            StringBuilder BarStgBildr = new StringBuilder();
+            for (int TransferIndex = 0; TransferIndex < Common.InventorytransferScannedResultList.size(); TransferIndex++) {
+                ArrayList<TransferLogDetailsModel> SearchedTransLogDetils = new ArrayList<TransferLogDetailsModel>();
+                SearchedTransLogDetils = mDBExternalHelper.getBarCodeTransferLogDetails(Common.InventorytransferScannedResultList.get(TransferIndex).getBarCode());
+                if (SearchedTransLogDetils.size() > 0) {
+                    F1 = String.valueOf(SearchedTransLogDetils.get(0).getF1());
+                    F2 = String.valueOf(SearchedTransLogDetils.get(0).getF2());
+                    T1 = String.valueOf(SearchedTransLogDetils.get(0).getT1());
+                    T2 = String.valueOf(SearchedTransLogDetils.get(0).getT2());
+                }
+                FsNumValue = "FNo:" + Common.InventorytransferScannedResultList.get(TransferIndex).getFellingSectionId();
+                String ScannedResultStr =
+                        "BOX 13," + MainBoxStatingBox + ",143," + MainBoxEndingBox + ",3\n" +
+                                "BOX 141," + MainBoxStatingBox + ",244," + MainBoxEndingBox + ",3\n" +
+                                "BOX 243," + MainBoxStatingBox + ",346," + MainBoxEndingBox + ",3\n" +
+                                "BOX 344," + MainBoxStatingBox + ",447," + MainBoxEndingBox + ",3\n" +
+                                "BOX 446," + MainBoxStatingBox + ",545," + MainBoxEndingBox + ",3\n" +
+
+                                "BAR 14," + FirstBar + ",530,3\n" +
+
+                                "TEXT 17," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getBarCode() + "\"" + "\n" +
+                                "TEXT 148," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + F1 + "\"" + "\n" +
+                                "TEXT 249," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + F2 + "\"" + "\n" +
+                                "TEXT 351," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + T1 + "\"" + "\n" +
+                                "TEXT 452," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + T2 + "\"" + "\n" +
+
+                                "TEXT 36," + TreeNumberStart + ",\"0\",0,9,9," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getLength() + "\"" + "\n" +
+                                "TEXT 148," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + FsNumValue + "\"" + "\n" +
+                                "TEXT 271," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getWoodSpieceCode() + "\"" + "\n" +
+                                "TEXT 351," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getTreeNumber() + "\"" + "\n" +
+                                "TEXT 491," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.InventorytransferScannedResultList.get(TransferIndex).getQualitiy() + "\"" + "\n";
+                BarStgBildr.append(ScannedResultStr);
+
+                MainBoxStatingBox = MainBoxStatingBox + HeadValueDiff;
+                MainBoxEndingBox = MainBoxEndingBox + HeadValueDiff;
+
+                SbbLabelStart = SbbLabelStart + HeadValueDiff;
+                TreeNumberStart = TreeNumberStart + HeadValueDiff;
+                FirstBar = FirstBar + HeadValueDiff;
+
+                ArraySizeAddingValue = ArraySizeAddingValue + Gap;
+            }
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "BOX 13,1,545,44,3\n" +
+                    "TEXT 55,10,\"0\",0,9,9,\"Label\"\n" +
+                    "TEXT 181,10,\"0\",0,9,9,\"F1\"\n" +
+                    "TEXT 283,10,\"0\",0,9,9,\"F2\"\n" +
+                    "TEXT 381,10,\"0\",0,9,9,\"T1\"\n" +
+                    "TEXT 483,10,\"0\",0,9,9,\"T2\"\n" +
+                    BarStgBildr +
+                    "PRINT 1,1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("FellingRegisterBarcode-Receipt", e.toString(), false);
+        }
+        return BarcodeDetails;
+    }
+
 
     public String FellingRegisterDetails() {
         String BarcodeDetails = "";
@@ -1302,7 +1768,7 @@ public class PrintSlipsClass {
 
                 ArraySizeAddingValue = ArraySizeAddingValue + Gap;
             }
-            BarcodeDetails = "SIZE 69.9 mm," + String.valueOf(ArraySizeAddingValue) + " mm" + "\n" +
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
                     "DIRECTION 0,0\n" +
                     "REFERENCE 0,0\n" +
                     "OFFSET 0 mm\n" +
@@ -1424,6 +1890,605 @@ public class PrintSlipsClass {
 
     public String CommonMessage(int Common_Msg) {
         return context_ths.getResources().getString(Common_Msg);
+    }
+
+    public static String formatDecimal(Double value) {
+        DecimalFormat df = new DecimalFormat("#,###,##0.000");
+
+
+        System.out.println(df.format(value));
+        System.out.println(df.format(364565.1454));
+
+        return String.valueOf(df.format(value));
+    }
+
+    public String VesselHeader() {
+        String GWWHeaderDetails = "";
+        try {
+            StringBuilder transferDeatils = new StringBuilder();
+            transferDeatils.append(Common.TransferUniqueID + "--");
+            transferDeatils.append(Common.VBB_Number + "--");
+            transferDeatils.append(Common.EndDate + "--");
+            transferDeatils.append(Common.Export.Vessel_FromLocationID + "--");
+            transferDeatils.append(Common.Export.Vessel_ToLocationID + "--");
+            transferDeatils.append(Common.Export.Vessel_TransferAgencyID + "--");
+            transferDeatils.append(Common.Export.Vessel_DriverID + "--");
+            transferDeatils.append(Common.Export.Vessel_TransportID + "--");
+            transferDeatils.append(Common.Export.Vessel_TransportTypeId + "--");
+            transferDeatils.append(Common.FellingSectionId + "--");
+            transferDeatils.append(Common.Count + "--");
+            transferDeatils.append(Common.decimalFormat.format(Common.VolumeSum) + "--");
+            transferDeatils.append(Common.Export.Vessel_LoadedTypeID + "--");
+            transferDeatils.append(Common.Export.Vessel_FromLocationName + "--");
+            transferDeatils.append(Common.Export.Vessel_ToLocationName + "--");
+            transferDeatils.append(Common.Export.Vessel_AgencyName + "--");
+            transferDeatils.append(Common.Export.Vessel_DriverName + "--");
+            transferDeatils.append(Common.Export.Vessel_TrucklicensePlateNo + "--");
+            transferDeatils.append(Common.Export.Vessel_TransportMode + "--");
+            transferDeatils.append(Common.Export.Vessel_LoadedName + "--");
+            transferDeatils.append(Common.TransferID + "--");
+            GWWHeaderDetails = "SIZE 69.9 mm, 60 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "QRCODE 41,15,L,9,A,0,M2,S7," + "\"" + transferDeatils.toString() + "\"" + "\n" +
+                    "PRINT 1,1\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("Transfer-Receipt", e.toString(), false);
+        }
+        return GWWHeaderDetails;
+    }
+
+    public String VesselDetails() {
+        Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+        String FromLocaOrFellingSec = "", FromLocaOrFellingSecValue;
+        String GwwHeader = "";
+
+        FromLocaOrFellingSec = Common.Export.Vessel_FromLocationName;
+        FromLocaOrFellingSecValue = "From Location:";
+        try {
+            GwwHeader = "SIZE 69.9 mm, 63.6 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 143,11,\"0\",0,10,10,\"GREEN WOOD WORLD\"\n" +
+                    "BAR 143,36, 273, 1\n" +
+                    "TEXT 146,54,\"0\",0,10,10,\"VESSEL TRANSPORT\"\n" +
+                    "BAR 146,79, 266, 1\n" +
+                    "TEXT 281,324,\"0\",0,9,9," + "\"" + Common.Export.Vessel_DriverName + "\"" + "\n" +
+                    "TEXT 282,399,\"0\",0,9,9," + "\"" + Common.Export.Vessel_TransportMode + "\"" + "\n" +
+                    "TEXT 11,172,\"0\",0,9,9,\"Date:\"\n" +
+                    "BAR 11,193, 54, 1\n" +
+                    "TEXT 281,211,\"0\",0,9,9," + "\"" + FromLocaOrFellingSec + "\"" + "\n" +
+                    "TEXT 281,250,\"0\",0,9,9," + "\"" + Common.Export.Vessel_ToLocationName + "\"" + "\n" +
+                    "TEXT 281,287,\"0\",0,9,9," + "\"" + Common.Export.Vessel_AgencyName + "\"" + "\n" +
+                    "TEXT 282,362,\"0\",0,9,9," + "\"" + Common.Export.Vessel_TrucklicensePlateNo + "\"" + "\n" +
+                    "TEXT 11,250,\"0\",0,9,9,\"To  Location:\"\n" +
+                    "BAR 11,271, 134, 1\n" +
+                    "TEXT 11,287,\"0\",0,9,9,\"Transport Agency:\"\n" +
+                    "BAR 11,308, 192, 1\n" +
+                    "TEXT 11,324,\"0\",0,9,9,\"Driver Details:\"\n" +
+                    "BAR 11,345, 161, 1\n" +
+                    "TEXT 11,362,\"0\",0,9,9,\"TransportPlateNo:\"\n" +
+                    "BAR 11,383, 189, 1\n" +
+                    "TEXT 11,399,\"0\",0,9,9,\"Transport Mode:\"\n" +
+                    "BAR 11,420, 170, 1\n" +
+                    "TEXT 281,172,\"0\",0,9,9," + "\"" + Common.EndDate + "\"" + "\n" +
+                    "TEXT 132,437,\"0\",0,9,9," + "\"" + Common.Count + "\"" + "\n" +
+                    "TEXT 11,437,\"0\",0,9,9,\"Count:\"\n" +
+                    "BAR 11,458, 69, 1\n" +
+                    "TEXT 403,437,\"0\",0,9,9," + "\"" + Common.decimalFormat.format(Common.VolumeSum) + "\"" + "\n" +
+                    "CODEPAGE 1253\n" +
+                    "TEXT 282,437,\"0\",0,8,9,\"Volume Ó:\"\n" +
+                    "BAR 282,458, 96, 1\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 11,133,\"0\",0,9,9,\"TransportID:\"\n" +
+                    "BAR 11,154, 130, 1\n" +
+                    "TEXT 281,132,\"0\",0,9,9," + "\"" + Common.TransferID + "\"" + "\n" +
+                    "TEXT 11,94,\"0\",0,9,9,\"Device Name:\"\n" +
+                    "BAR 11,115, 143, 1\n" +
+                    "TEXT 281,94,\"0\",0,9,9," + "\"" + Common.DeviceName + "\"" + "\n" +
+                    "TEXT 11,475,\"0\",0,9,9,\"LoadedBy:\"\n" +
+                    "BAR 11,496, 111, 1\n" +
+                    "TEXT 132,475,\"0\",0,9,9," + "\"" + Common.Export.Vessel_LoadedName + "\"" + "\n" +
+                    "TEXT 282,475,\"0\",0,9,9,\"User:\"\n" +
+                    "BAR 282,496, 56, 1\n" +
+                    "TEXT 403,475,\"0\",0,9,9," + "\"" + Common.Username + "\"" + "\n" +
+                    "TEXT 11,211,\"0\",0,9,9," + "\"" + FromLocaOrFellingSecValue + "\"" + "\n" +
+                    "BAR 11,232, 157, 1\n" +
+                    "PRINT 1,1\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("Transfer-Receipt", e.toString(), false);
+        }
+        return GwwHeader;
+    }
+
+    public String VesselListDimensions() {
+        String BarcodeDetails = "";
+        try {
+            double ArraySizeAddingValue = 7, Gap = 12.4, HeadValueDiff = 78,
+                    MainBoxStatingBox = 42, MainBoxEndingBox = 122,
+                    SbbLabelStart = 52, TreeNumberStart = 90,
+                    FirstBar = 82;
+            String F1 = "", F2 = "", T1 = "", T2 = "", FsNumValue = "";
+
+            StringBuilder BarStgBildr = new StringBuilder();
+            for (int TransferIndex = 0; TransferIndex < Common.VesselLogsPrintOutList.size(); TransferIndex++) {
+                ArrayList<TransferLogDetailsModel> SearchedTransLogDetils;
+                SearchedTransLogDetils = mDBExternalHelper.getBarCodeTransferLogDetails(Common.VesselLogsPrintOutList.get(TransferIndex).getBarCode());
+                //if (SearchedTransLogDetils.size() > 0) {
+                //F1 = String.valueOf(SearchedTransLogDetils.get(0).getF1());
+                //F2 = String.valueOf(SearchedTransLogDetils.get(0).getF2());
+                //T1 = String.valueOf(SearchedTransLogDetils.get(0).getT1());
+                //T2 = String.valueOf(SearchedTransLogDetils.get(0).getT2());
+                F1 = Common.VesselLogsPrintOutList.get(TransferIndex).getF1();
+                F2 = Common.VesselLogsPrintOutList.get(TransferIndex).getF2();
+                T1 = Common.VesselLogsPrintOutList.get(TransferIndex).getT1();
+                T2 = Common.VesselLogsPrintOutList.get(TransferIndex).getT2();
+                //}
+                FsNumValue = "FNo:" + Common.VesselLogsPrintOutList.get(TransferIndex).getFellingSectionId();
+                String ScannedResultStr =
+                        "BOX 13," + MainBoxStatingBox + ",143," + MainBoxEndingBox + ",3\n" +
+                                "BOX 141," + MainBoxStatingBox + ",244," + MainBoxEndingBox + ",3\n" +
+                                "BOX 243," + MainBoxStatingBox + ",346," + MainBoxEndingBox + ",3\n" +
+                                "BOX 344," + MainBoxStatingBox + ",447," + MainBoxEndingBox + ",3\n" +
+                                "BOX 446," + MainBoxStatingBox + ",545," + MainBoxEndingBox + ",3\n" +
+
+                                "BAR 14," + FirstBar + ",530,3\n" +
+
+                                "TEXT 17," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.VesselLogsPrintOutList.get(TransferIndex).getBarCode() + "\"" + "\n" +
+                                "TEXT 148," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + F1 + "\"" + "\n" +
+                                "TEXT 249," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + F2 + "\"" + "\n" +
+                                "TEXT 351," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + T1 + "\"" + "\n" +
+                                "TEXT 452," + SbbLabelStart + ",\"0\",0,8,8," + "\"" + T2 + "\"" + "\n" +
+
+                                "TEXT 36," + TreeNumberStart + ",\"0\",0,9,9," + "\"" + Common.VesselLogsPrintOutList.get(TransferIndex).getLength() + "\"" + "\n" +
+                                "TEXT 148," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + FsNumValue + "\"" + "\n" +
+                                "TEXT 271," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.VesselLogsPrintOutList.get(TransferIndex).getWoodSpieceCode() + "\"" + "\n" +
+                                "TEXT 351," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.VesselLogsPrintOutList.get(TransferIndex).getTreeNumber() + "\"" + "\n" +
+                                "TEXT 491," + TreeNumberStart + ",\"0\",0,8,8," + "\"" + Common.VesselLogsPrintOutList.get(TransferIndex).getQuality() + "\"" + "\n";
+                BarStgBildr.append(ScannedResultStr);
+
+                MainBoxStatingBox = MainBoxStatingBox + HeadValueDiff;
+                MainBoxEndingBox = MainBoxEndingBox + HeadValueDiff;
+
+                SbbLabelStart = SbbLabelStart + HeadValueDiff;
+                TreeNumberStart = TreeNumberStart + HeadValueDiff;
+                FirstBar = FirstBar + HeadValueDiff;
+
+                ArraySizeAddingValue = ArraySizeAddingValue + Gap;
+            }
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "BOX 13,1,545,44,3\n" +
+                    "TEXT 55,10,\"0\",0,9,9,\"Label\"\n" +
+                    "TEXT 181,10,\"0\",0,9,9,\"F1\"\n" +
+                    "TEXT 283,10,\"0\",0,9,9,\"F2\"\n" +
+                    "TEXT 381,10,\"0\",0,9,9,\"T1\"\n" +
+                    "TEXT 483,10,\"0\",0,9,9,\"T2\"\n" +
+                    BarStgBildr +
+                    "PRINT 1,1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("FellingRegisterBarcode-Receipt", e.toString(), false);
+        }
+        return BarcodeDetails;
+    }
+
+    public String VesselFooter() {
+        String GwwBarcodeQRitems = "";
+        try {
+            StringBuilder transferBarcodeDeatils = new StringBuilder();
+            for (int TransferIndex = 0; TransferIndex < Common.VesselLogsPrintOutList.size(); TransferIndex++) {
+                transferBarcodeDeatils.append(Common.VesselLogsPrintOutList.get(TransferIndex).getQuality()
+                        + "-" + Common.VesselLogsPrintOutList.get(TransferIndex).getBarCode()
+                        + "-" + Common.VesselLogsPrintOutList.get(TransferIndex).getFellingSectionId()
+                        + "-" + Common.VesselLogsPrintOutList.get(TransferIndex).getTreeNumber() + "--");
+            }
+            String FinalVAlue = Common.TransferUniqueID + "--" + transferBarcodeDeatils.toString();
+            String printSlipValue = GwwException.TransferSlipValues(Common.VesselLogsPrintOutList.size());
+            String[] BarcodeSplite = printSlipValue.split("-");
+            GwwBarcodeQRitems = "SIZE 69.9 mm," + BarcodeSplite[2] + " mm" + "\n" +
+                    "GAP 0 mm, 0 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "QRCODE " + BarcodeSplite[0] + "," + BarcodeSplite[1] + ",L,9,A,0,M2,S7," + "\"" + FinalVAlue + "\"" + "\n" +
+                    "CODEPAGE 1252\n" +
+                    "PRINT 1,1";
+           /* GwwBarcodeQRitems="SIZE 69.9 mm, 38.2 mm\n" +
+                    "GAP 0 mm, 0 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "QRCODE 409,282,L,4,A,180,M2,S7,\"2019110720155--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--B-ML-0008047-100-1162--A-ML-0008061-100-1107--\"\n" +
+                    "PRINT 1,1\n";*/
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("Transfer-Receipt", e.toString(), false);
+        }
+        return GwwBarcodeQRitems;
+    }
+
+    // External Purchase
+
+    public String PurchaseLogsHeader() {
+        String FellingRegHeader = "";
+        try {
+            Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+            //String VolumeSums = formatDecimal(Common.VolumeSum);
+            String VolumeSums = String.valueOf(Common.decimalFormat.format(Common.VolumeSum));
+            String FRHead = "PURCHASE LOGS";// + CommonMessage(R.string.app_name);
+            FellingRegHeader = "SIZE 69.9 mm, 38.2 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 172,15,\"0\",0,10,10," + "\"" + FRHead + "\"" + "\n" +
+                    "BAR 172,40, 214, 1\n" +
+                    "TEXT 250,106,\"0\",0,9,9,\"Date:\"\n" +
+                    "BAR 250,127, 54, 1\n" +
+                    "TEXT 250,147,\"0\",0,9,9," + "\"" + Common.FromLocationname + "\"" + "\n" +
+                    "TEXT 250,187,\"0\",0,9,9," + "\"" + Common.FellingRegDate + "\"" + "\n" +
+                    "TEXT 12,147,\"0\",0,10,9,\"Location:\"\n" +
+                    "BAR 12,168, 111, 1\n" +
+                    "TEXT 12,187,\"0\",0,9,9,\"PurchaseDate:\"\n" +
+                    "BAR 12,208, 152, 1\n" +
+                    "TEXT 12,106,\"0\",0,9,9,\"PurNo:\"\n" +
+                    "BAR 12,127, 73, 1\n" +
+                    "TEXT 100,106,\"0\",0,9,9," + "\"" + Common.Purchase.SelectedPurchaseNo + "\"" + "\n" +
+                    "TEXT 319,106,\"0\",0,9,9," + "\"" + Common.EndDate + "\"" + "\n" +
+                    "TEXT 250,225,\"0\",0,9,9," + "\"" + Common.Count + "\"" + "\n" +
+                    "TEXT 12,222,\"0\",0,9,9,\"Count:\"\n" +
+                    "BAR 12,243, 69, 1\n" +
+                    "TEXT 130,59,\"0\",0,9,9,\"Purchase ID:\"\n" +
+                    "BAR 130,80, 133, 1\n" +
+                    "TEXT 272,59,\"0\",0,9,9," + "\"" + Common.Purchase.SelectedPurchaseId + "\"" + "\n" +
+                    "CODEPAGE 1253\n" +
+                    "TEXT 12,264,\"0\",0,9,9,\"Volume Ó:\"\n" +
+                    "BAR 12,285, 105, 1\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 250,266,\"0\",0,9,9," + "\"" + VolumeSums + "\"" + "\n" +
+                    "PRINT 1,1\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("PurchaseLogsHeader-Receipt", e.toString(), false);
+        }
+        return FellingRegHeader;
+    }
+
+    public String PurchaseLogsDimensions() {
+        String BarcodeDetails = "";
+        try {
+            double ArraySizeAddingValue = 7, Gap = 48, HeadValueDiff = 346,
+                    MainBoxStatingBox = 46, MainBoxEndingBox = 391,
+
+                    FirstMainBoxStatingBox = 46, FirstMainBoxEndingBox = 351,
+                    SecondMainBoxStatingBox = 46, SecondMainBoxEndingBox = 351,
+                    ThirdMainBoxStatingBox = 46, ThirdMainBoxEndingBox = 351,
+                    FourthMainBoxStatingBox = 46, FourthMainBoxEndingBox = 351,
+
+                    CheckBoxStatingBox = 201, CheckBoxEndingBox = 232,
+                    BarcodeSerialStart = 51, BarcodeSeconf = 87,SbbLabelStart = 57, TreeNumberStart = 124, WSpiceStatingValue = 160,
+
+                    FirstBar = 83, SecBar = 121, Thirdbar = 159, ForthBar = 195, FifthBar = 237, SixthBar = 277, SeventhBar = 314,
+                    NoteHeading = 129, NoteValue = 164,
+                    HeartHeading = 249, HeartValue = 285,
+                   remarkTxT = 358;
+            StringBuilder BarStgBildr = new StringBuilder();
+            for (int TransferIndex = 0; TransferIndex < Common.Purchase.PurchaseLogsDetailsInternal.size(); TransferIndex++) {
+                String[] BarCode = {"NA-", "0000000"};
+                String remarksPrint = "";
+                if (!isNullOrEmpty(Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getBarCode())) {
+                    BarCode = Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getBarCode().split("-");
+                }
+                if (Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getRemarksType().contains("@")) {
+                    String[] parts = Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getRemarksType().split("@");
+                    if (parts.length > 1) {
+                        String part1 = parts[1]; // 004
+                        remarksPrint = part1;
+                    }
+                }
+                String ScannedResultStr =
+                                "BOX 13," + MainBoxStatingBox + ",545," + MainBoxEndingBox + ",3\n" +
+
+                                "TEXT 41," + BarcodeSerialStart + ",\"0\",0,9,9," + "\"" + BarCode[0] + "\"" + "\n" +
+                                "TEXT 18," + BarcodeSeconf + ",\"0\",0,9,9," + "\"" + BarCode[1] + "\"" + "\n" +
+                                "TEXT 23," + TreeNumberStart + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getTreeNumber() + "\"" + "\n" +
+                                "TEXT 90," + TreeNumberStart + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getTreePartType() + "\"" + "\n" +
+                                "TEXT 36," + WSpiceStatingValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getWoodSpeciesCode() + "\"" + "\n" +
+
+                                "BOX 44," + CheckBoxStatingBox + ",76," + CheckBoxEndingBox + ",3\n" +
+
+                                "BOX 108," + FirstMainBoxStatingBox + ",218," + FirstMainBoxEndingBox + ",3\n" +
+                                "BOX 216," + SecondMainBoxStatingBox + ",331," + SecondMainBoxEndingBox + ",3\n" +
+                                "BOX 329," + ThirdMainBoxStatingBox + ",440," + ThirdMainBoxEndingBox + ",3\n" +
+                                "BOX 438," + FourthMainBoxStatingBox + ",545," + FourthMainBoxEndingBox + ",3\n" +
+
+                                "BAR 109," + FirstBar + ",436,3\n" +
+                                "BAR 109," + SecBar + ",436,3\n" +
+                                "BAR 109," + Thirdbar + ",436,3\n" +
+                                "BAR 109," + ForthBar + ",436,3\n" +
+                                "BAR 109," + FifthBar + ",436,3\n" +
+                                "BAR 109," + SixthBar + ",436,3\n" +
+                                "BAR 109," + SeventhBar + ",436,3\n" +
+
+                                "TEXT 113," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getF1() + "\"" + "\n" +
+                                "TEXT 225," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getF2() + "\"" + "\n" +
+                                "TEXT 336," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getT1() + "\"" + "\n" +
+                                "TEXT 444," + SbbLabelStart + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getT2() + "\"" + "\n" +
+
+                                "TEXT 157," + NoteHeading + ",\"0\",0,9,9,\"L\"\n" +
+                                "TEXT 260," + NoteHeading + ",\"0\",0,9,9,\"NF\"\n" +
+                                "TEXT 370," + NoteHeading + ",\"0\",0,9,9,\"NT\"\n" +
+                                "TEXT 479," + NoteHeading + ",\"0\",0,9,9,\"NL\"\n" +
+
+                                "TEXT 113," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getLength_dm() + "\"" + "\n" +
+                                "TEXT 225," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getNoteF() + "\"" + "\n" +
+                                "TEXT 336," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getNoteT() + "\"" + "\n" +
+                                "TEXT 444," + NoteValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getNoteL() + "\"" + "\n" +
+
+                                "TEXT 143," + HeartHeading + ",\"0\",0,9,9,\"HF1\"\n" +
+                                "TEXT 254," + HeartHeading + ",\"0\",0,9,9,\"HF2\"\n" +
+                                "TEXT 365," + HeartHeading + ",\"0\",0,9,9,\"HT1\"\n" +
+                                "TEXT 473," + HeartHeading + ",\"0\",0,9,9,\"HT2\"\n" +
+
+                                "TEXT 113," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getLHF1() + "\"" + "\n" +
+                                "TEXT 225," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getLHF2() + "\"" + "\n" +
+                                "TEXT 336," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getLHT1() + "\"" + "\n" +
+                                "TEXT 444," + HeartValue + ",\"0\",0,9,9," + "\"" + Common.Purchase.PurchaseLogsDetailsInternal.get(TransferIndex).getLHT2() + "\"" + "\n" +
+
+                                "TEXT 17," + remarkTxT + ",\"0\",0,9,9," + "\"" + remarksPrint + "\"" + "\n";
+
+                BarStgBildr.append(ScannedResultStr);
+
+                MainBoxStatingBox = MainBoxStatingBox + HeadValueDiff;
+                MainBoxEndingBox = MainBoxEndingBox + HeadValueDiff;
+
+
+                FirstMainBoxStatingBox = FirstMainBoxStatingBox + HeadValueDiff;
+                FirstMainBoxEndingBox  = FirstMainBoxEndingBox + HeadValueDiff;
+                SecondMainBoxStatingBox = SecondMainBoxStatingBox + HeadValueDiff;
+                SecondMainBoxEndingBox  = SecondMainBoxEndingBox + HeadValueDiff;
+                ThirdMainBoxStatingBox = ThirdMainBoxStatingBox + HeadValueDiff;
+                ThirdMainBoxEndingBox  = ThirdMainBoxEndingBox + HeadValueDiff;
+                FourthMainBoxStatingBox = FourthMainBoxStatingBox + HeadValueDiff;
+                FourthMainBoxEndingBox  = FourthMainBoxEndingBox + HeadValueDiff;
+
+
+
+                CheckBoxStatingBox = CheckBoxStatingBox + HeadValueDiff;
+                CheckBoxEndingBox = CheckBoxEndingBox + HeadValueDiff;
+
+                BarcodeSerialStart = BarcodeSerialStart + HeadValueDiff;
+                SbbLabelStart = SbbLabelStart + HeadValueDiff;
+                BarcodeSeconf= BarcodeSeconf + HeadValueDiff;
+                TreeNumberStart = TreeNumberStart + HeadValueDiff;
+                WSpiceStatingValue = WSpiceStatingValue + HeadValueDiff;
+
+                FirstBar = FirstBar + HeadValueDiff;
+                SecBar = SecBar + HeadValueDiff;
+                Thirdbar = Thirdbar + HeadValueDiff;
+                ForthBar = ForthBar + HeadValueDiff;
+                FifthBar = FifthBar + HeadValueDiff;
+                SixthBar = SixthBar + HeadValueDiff;
+                SeventhBar = SeventhBar + HeadValueDiff;
+
+                NoteHeading = NoteHeading + HeadValueDiff;
+                NoteValue = NoteValue + HeadValueDiff;
+
+                HeartHeading = HeartHeading + HeadValueDiff;
+                HeartValue = HeartValue + HeadValueDiff;
+
+                remarkTxT = remarkTxT + HeadValueDiff;
+
+                ArraySizeAddingValue = ArraySizeAddingValue + Gap;
+            }
+            BarcodeDetails = "SIZE 69.9 mm," + ArraySizeAddingValue + " mm" + "\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "BOX 13,5,545,48,3\n" +
+                    "TEXT 36,14,\"0\",0,9,9,\"Label\"\n" +
+                    "TEXT 151,14,\"0\",0,9,9,\"F1\"\n" +
+                    "TEXT 262,14,\"0\",0,9,9,\"F2\"\n" +
+                    "TEXT 373,14,\"0\",0,9,9,\"T1\"\n" +
+                    "TEXT 481,14,\"0\",0,9,9,\"T2\"\n" +
+                    BarStgBildr +
+                    "PRINT 1,1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("PurchaseLogsDimensions-Receipt", e.toString(), false);
+        }
+        return BarcodeDetails;
+    }
+
+    public String PurchaseTransferHeader() {
+        String GWWHeaderDetails = "";
+        try {
+            StringBuilder transferDeatils = new StringBuilder();
+            transferDeatils.append(Common.TransferUniqueID + "--");
+            transferDeatils.append(Common.VBB_Number + "--");
+            transferDeatils.append(Common.EndDate + "--");
+            transferDeatils.append(Common.FromLocationID + "--");
+            transferDeatils.append(Common.ToLocaTransID + "--");
+            transferDeatils.append(Common.TransferAgencyID + "--");
+            transferDeatils.append(Common.DriverID + "--");
+            transferDeatils.append(Common.TransportId + "--");
+            transferDeatils.append(Common.TransportTypeId + "--");
+            transferDeatils.append(Common.LoadedTypeID + "--");
+            transferDeatils.append(Common.TransferID + "--");
+            GWWHeaderDetails = "SIZE 69.9 mm, 60 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "QRCODE 41,15,L,9,A,0,M2,S7," + "\"" + transferDeatils.toString() + "\"" + "\n" +
+                    "PRINT 1,1\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("Transfer-Receipt", e.toString(), false);
+        }
+        return GWWHeaderDetails;
+    }
+
+    public String PurchaseTransferFooter() {
+        String GwwBarcodeQRitems = "";
+        try {
+            StringBuilder transferBarcodeDeatils = new StringBuilder();
+            for (int TransferIndex = 0; TransferIndex < Common.InventorytransferScannedResultList.size(); TransferIndex++) {
+                transferBarcodeDeatils.append(Common.InventorytransferScannedResultList.get(TransferIndex).getBarCode());
+            }
+            String FinalVAlue = Common.TransferUniqueID + "--" + transferBarcodeDeatils.toString();
+            String printSlipValue = GwwException.TransferSlipValues(Common.InventorytransferScannedResultList.size());
+            String[] BarcodeSplite = printSlipValue.split("-");
+            GwwBarcodeQRitems = "SIZE 69.9 mm," + BarcodeSplite[2] + " mm" + "\n" +
+                    "GAP 0 mm, 0 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "QRCODE " + BarcodeSplite[0] + "," + BarcodeSplite[1] + ",L,9,A,0,M2,S7," + "\"" + FinalVAlue + "\"" + "\n" +
+                    "CODEPAGE 1252\n" +
+                    "PRINT 1,1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("Transfer-Receipt", e.toString(), false);
+        }
+        return GwwBarcodeQRitems;
+    }
+
+    public String PurchaseReceivedHeader12_03_2020() {
+        Common.EndDate = Common.dateFormat.format(Calendar.getInstance().getTime());
+        String GwwHeader = "";
+        String FromLocaOrFellingSec = "", FromLocaOrFellingSecValue;
+
+        if (Common.RecFromLocationID == 2) {
+            FromLocaOrFellingSecValue = "Felling Section:";
+            FromLocaOrFellingSec = mDBInternalHelper.GetFellingSecNumbersFromINReceived(Common.ReceivedID);
+        } else {
+            FromLocaOrFellingSec = Common.RecFromLocationname;
+            FromLocaOrFellingSecValue = "From Location:";
+        }
+        try {
+            GwwHeader = "SIZE 69.9 mm, 63.6 mm\n" +
+                    "DIRECTION 0,0\n" +
+                    "REFERENCE 0,0\n" +
+                    "OFFSET 0 mm\n" +
+                    "SET PEEL OFF\n" +
+                    "SET CUTTER OFF\n" +
+                    "SET PARTIAL_CUTTER OFF\n" +
+                    "SET TEAR ON\n" +
+                    "CLS\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 157,10,\"0\",0,9,9,\"GREEN WOOD WORLD\"\n" +
+                    "BAR 157,31, 245, 1\n" +
+                    "TEXT 100,49,\"0\",0,9,9,\"PURCHASE RECEIVED RECEIPT\"\n" +
+                    "BAR 100,70, 359, 1\n" +
+                    "TEXT 292,321,\"0\",0,9,9," + "\"" + Common.DriverName + "\"" + "\n" +
+                    "TEXT 292,396,\"0\",0,9,9," + "\"" + Common.TransportMode + "\"" + "\n" +
+                    "TEXT 9,168,\"0\",0,9,9,\"Vbb#\"\n" +
+                    "BAR 9,189, 59, 1\n" +
+                    "TEXT 292,207,\"0\",0,9,9," + "\"" + FromLocaOrFellingSec + "\"" + "\n" +
+                    "TEXT 291,246,\"0\",0,9,9," + "\"" + Common.ToLocationName + "\"" + "\n" +
+                    "TEXT 291,284,\"0\",0,9,9," + "\"" + Common.AgencyName + "\"" + "\n" +
+                    "TEXT 292,358,\"0\",0,9,9," + "\"" + Common.TrucklicensePlateNo + "\"" + "\n" +
+                    "TEXT 9,246,\"0\",0,9,9,\"To Location:\"\n" +
+                    "BAR 9,267, 128, 1\n" +
+                    "TEXT 9,284,\"0\",0,9,9,\"Transport Agency:\"\n" +
+                    "BAR 9,305, 192, 1\n" +
+                    "TEXT 9,321,\"0\",0,9,9,\"Driver Details:\"\n" +
+                    "BAR 9,342, 161, 1\n" +
+                    "TEXT 9,358,\"0\",0,9,9,\"TransportPlateNo:\"\n" +
+                    "BAR 9,379, 189, 1\n" +
+                    "TEXT 9,396,\"0\",0,9,9,\"Transport Mode:\"\n" +
+                    "BAR 9,417, 170, 1\n" +
+                    "TEXT 78,168,\"0\",0,9,9," + "\"" + Common.VBB_Number + "\"" + "\n" +
+                    "TEXT 130,433,\"0\",0,9,9," + "\"" + Common.Count + "\"" + "\n" +
+                    "TEXT 9,433,\"0\",0,9,9,\"Count:\"\n" +
+                    "BAR 9,454, 69, 1\n" +
+                    "TEXT 391,433,\"0\",0,9,9," + "\"" + Common.VolumeSum + "\"" + "\n" +
+                    "CODEPAGE 1253\n" +
+                    "TEXT 292,433,\"0\",0,8,9,\"Volume Ó:\"\n" +
+                    "BAR 292,454, 96, 1\n" +
+                    "CODEPAGE 1252\n" +
+                    "TEXT 9,129,\"0\",0,9,9,\"TransportID:\"\n" +
+                    "BAR 9,150, 130, 1\n" +
+                    "TEXT 292,129,\"0\",0,9,9," + "\"" + Common.ReceivedTransferID + "\"" + "\n" +
+                    "TEXT 9,90,\"0\",0,9,9,\"Device Name:\"\n" +
+                    "BAR 9,111, 143, 1\n" +
+                    "TEXT 292,90,\"0\",0,9,9," + "\"" + Common.DeviceName + "\"" + "\n" +
+                    "TEXT 9,471,\"0\",0,9,9,\"LoadedBy:\"\n" +
+                    "BAR 9,492, 111, 1\n" +
+                    "TEXT 130,471,\"0\",0,9,9," + "\"" + Common.ReceivedLoadedTypeName + "\"" + "\n" +
+                    "TEXT 292,471,\"0\",0,9,9,\"CheckedBy:\"\n" +
+                    "BAR 292,492, 125, 1\n" +
+                    "TEXT 421,471,\"0\",0,9,9," + "\"" + Common.Username + "\"" + "\n" +
+                    "TEXT 9,207,\"0\",0,9,9," + "\"" + FromLocaOrFellingSecValue + "\"" + "\n" +
+                    "BAR 9,228, 157, 1\n" +
+                    "TEXT 353,168,\"0\",0,9,9," + "\"" + Common.EndDate + "\"" + "\n" +
+                    "TEXT 292,168,\"0\",0,9,9,\"Date:\"\n" +
+                    "BAR 292,189, 54, 1\n" +
+                    "PRINT 1,1\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertDialogBox("Transfer-Receipt", e.toString(), false);
+        }
+        return GwwHeader;
+    }
+
+    public static boolean isNullOrEmpty(String str) {
+        return str == null || str.isEmpty() || str.equals("null");
     }
 
 }

@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +38,7 @@ public class Utils {
         cacheFile.createNewFile();
 
         FileOutputStream fos = new FileOutputStream(cacheFile);
-        OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF8");
+        OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         PrintWriter pw = new PrintWriter(osw);
 
         pw.println(content);

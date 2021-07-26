@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -148,7 +149,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.1"
                 android:gravity="center"
-                android:src="@mipmap/refresh"
+                app:srcCompat="@mipmap/refresh"
                 android:visibility="invisible" />
 
             <ImageView
@@ -156,7 +157,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.1"
                 android:gravity="center"
-                android:src="@mipmap/refresh"
+                app:srcCompat="@mipmap/refresh"
                 android:visibility="invisible" />
 
             <ImageView
@@ -164,23 +165,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.1"
                 android:gravity="center"
-                android:src="@mipmap/refresh"
+                app:srcCompat="@mipmap/refresh"
                 android:visibility="invisible" />
 
 
         </LinearLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/transferSwipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/inventoryTransListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
-        </android.support.v4.widget.SwipeRefreshLayout>
+                android:background="@color/color_white"></androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
     <LinearLayout

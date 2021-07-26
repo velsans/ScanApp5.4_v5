@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="4.1"
-                android:src="@mipmap/next" />
+                app:srcCompat="@mipmap/next" />
 
             <ImageView
                 android:id="@+id/advancedsearchTXT"
@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="5"
-                android:src="@mipmap/advance_search" />
+                app:srcCompat="@mipmap/advance_search" />
 
             <ImageView
                 android:id="@+id/Received_Print"
@@ -46,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="5"
-                android:src="@mipmap/printerlogo" />
+                app:srcCompat="@mipmap/printerlogo" />
 
             <ImageView
                 android:id="@+id/Received_close"
@@ -54,7 +54,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="5"
-                android:src="@mipmap/delete_cross" />
+                app:srcCompat="@mipmap/delete_cross" />
         </LinearLayout>
 
         <FrameLayout
@@ -98,7 +98,7 @@
                             android:layout_height="@dimen/textview_or_edittext_hight_large"
                             android:layout_margin="1dp"
                             android:gravity="center"
-                            android:hint="To Location"
+                            android:hint="@string/tolocation"
                             android:overlapAnchor="false"
                             android:textColor="@color/color_white"
                             android:textColorHint="@color/theme_border"
@@ -122,7 +122,7 @@
                                 android:textColorHint="@color/theme_border"
                                 android:textSize="10sp" />
 
-                            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/transferIDAutoTXT"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -167,8 +167,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="1dp"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <TextView
                                 android:id="@+id/fellingSpinnerTxT"
@@ -199,8 +199,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="1dp"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -219,7 +219,7 @@
                                 android:layout_height="@dimen/textview_or_edittext_hight_large"
                                 android:layout_weight="1"
                                 android:backgroundTint="@color/color_white"
-                                android:hint="to Location"
+                                android:hint="@string/tolocation"
                                 android:overlapAnchor="false"
                                 android:popupBackground="@color/cyan"
                                 android:textAlignment="center"
@@ -242,8 +242,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="1dp"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -274,8 +274,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="1dp"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -305,8 +305,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="1dp"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -332,7 +332,6 @@
                                 android:textStyle="bold" />
 
                         </LinearLayout>
-
 
 
                         <LinearLayout
@@ -406,6 +405,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textview_or_edittext_hight_large">
@@ -415,7 +415,7 @@
                             android:layout_height="@dimen/textview_or_edittext_hight_large"
                             android:orientation="horizontal">
 
-                            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/fromlocation_ATxT"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -429,7 +429,7 @@
                                 android:textColorHint="@color/theme_border"
                                 android:textStyle="bold" />
 
-                            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/transagency_ATxT"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -443,7 +443,7 @@
                                 android:textColorHint="@color/theme_border"
                                 android:textStyle="bold" />
 
-                            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/driver_ATxT"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -457,7 +457,7 @@
                                 android:textColorHint="@color/theme_border"
                                 android:textStyle="bold" />
 
-                            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                                 android:id="@+id/truckplateumber_ATxT"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -485,6 +485,7 @@
                             android:orientation="vertical"
                             android:visibility="gone"></LinearLayout>
                     </FrameLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/textview_or_edittext_hight_large"
@@ -514,8 +515,8 @@
                             android:layout_weight="4"
                             android:background="@color/colorAccent"
                             android:gravity="center"
-                            android:src="@mipmap/login"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            app:srcCompat="@mipmap/login" />
 
                         <ImageView
                             android:id="@+id/Received_scanQRBarCode"
@@ -524,8 +525,18 @@
                             android:layout_weight="4"
                             android:background="@color/colorAccent"
                             android:gravity="center"
-                            android:src="@mipmap/scanner"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                            app:srcCompat="@mipmap/scanner" />
+
+                        <ImageView
+                            android:id="@+id/receivedDetails_open"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:background="@color/colorAccent"
+                            android:gravity="center"
+                            android:visibility="visible"
+                            app:srcCompat="@mipmap/view" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -555,9 +566,9 @@
                                     android:layout_margin="5dp"
                                     android:layout_weight="1"
                                     android:gravity="center"
-                                    android:src="@mipmap/ic_delete_forever_white_24dp"
                                     android:textColor="@android:color/black"
-                                    android:visibility="visible" />
+                                    android:visibility="visible"
+                                    app:srcCompat="@mipmap/ic_delete_forever_white_24dp" />
 
                             </LinearLayout>
 
@@ -602,13 +613,13 @@
                             android:layout_height="match_parent"
                             android:background="@color/background">
 
-                            <android.support.v7.widget.RecyclerView
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/Received_ListView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
                                 app:reverseLayout="true"
-                                app:stackFromEnd="true"></android.support.v7.widget.RecyclerView>
+                                app:stackFromEnd="true"></androidx.recyclerview.widget.RecyclerView>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -712,14 +723,17 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/Received_ScanBTN"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/scanbuttonSize"
+        android:layout_height="@dimen/scanbuttonSize"
         android:layout_gravity="right|bottom"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="5dp"
         android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
-        android:src="@mipmap/scanner" />
+        android:scaleType="center"
+        android:src="@mipmap/scanner"
+        app:fabCustomSize="100dp"
+        app:fabSize="auto" />
 
     <LinearLayout
         android:id="@+id/advancesearchLAY"
@@ -731,6 +745,23 @@
             layout="@layout/advance_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/receivedDetails_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/received_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
     </LinearLayout>
 
     <LinearLayout

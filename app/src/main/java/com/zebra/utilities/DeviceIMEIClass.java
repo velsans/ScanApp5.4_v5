@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 
 public class DeviceIMEIClass {
@@ -35,13 +35,14 @@ public class DeviceIMEIClass {
     }
 
     public String GetDeviceIMEI() {
+        String IMEI = "";
         TelephonyManager telephonyManager = (TelephonyManager) context_ths.getSystemService(Context.TELEPHONY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Common.IMEI = telephonyManager.getImei();
+            IMEI= telephonyManager.getImei();
         } else {
-            Common.IMEI = telephonyManager.getDeviceId();
+            IMEI = telephonyManager.getDeviceId();
         }
-        return Common.IMEI;
+        return IMEI;
     }
 
 }

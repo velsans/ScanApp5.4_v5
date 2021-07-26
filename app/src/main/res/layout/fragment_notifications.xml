@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
+
+    <LinearLayout
+        android:id="@+id/prl_snack_barListLAY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_normal"
+            android:background="@color/theme_background"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:backgroundTint="@color/color_white"
+                android:hint="@string/tolocation"
+                android:overlapAnchor="false"
+                android:popupBackground="@color/cyan"
+                android:textAlignment="center"
+                android:textColor="@color/color_black"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="PURCHASE RECEIVED"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/receivedSyncAll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:background="@color/colorPrimary"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/refresh" />
+
+            <ImageView
+                android:id="@+id/prl_receivedCreateScanListTxT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:background="@color/colorPrimary"
+                app:srcCompat="@mipmap/addbutton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/theme_border"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_normal"
+                    android:background="@color/backgroud"
+                    android:gravity="center"
+                    android:text="Date"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/prl_ReceivedListViewDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/theme_border"></androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_normal"
+                    android:background="@color/colorPrimary_light"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.01"
+                        android:gravity="center"
+                        android:text="RecID"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:text="Trans ID"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="IMEI"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:text="VVB"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="StartTime"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="EndTime"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:text="Count"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:text="Vol"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:text="Status"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="SyncTime"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:text="Print"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Sync"
+                            android:textColor="@color/color_white"
+                            android:textStyle="bold" />
+
+                        <CheckBox
+                            android:id="@+id/SyncAllReceived_checkBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textColor="@color/color_white"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:gravity="center"
+                        android:text="Del"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/prl_ReceivedListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/textview_or_edittext_hight_normal"
+                    android:layout_marginBottom="@dimen/textview_or_edittext_hight_normal"
+                    android:layout_weight="1"
+                    android:background="@color/color_white"></androidx.recyclerview.widget.RecyclerView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_normal"
+                    android:layout_gravity="bottom"
+                    android:background="@color/colorPrimary_light"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:background="@color/deeporange"
+                        android:gravity="right|center"
+                        android:paddingLeft="5dp"
+                        android:text="Total Count : "
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/prl_TotalFilteredCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/deeporange"
+                        android:gravity="center|right"
+                        android:paddingLeft="5dp"
+                        android:text="Total Volume : "
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/prl_TotalFilteredVolume"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:paddingLeft="5dp"
+                        android:text="0"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/prd_scannedDetailsLAY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transperantBlack"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/textview_or_edittext_hight_normal"
+            android:layout_marginRight="@dimen/textview_or_edittext_hight_normal"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/theme_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/theme_background"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/prd_Received_scanQRDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:background="@color/colorAccent"
+                        android:gravity="center"
+                        android:src="@mipmap/scanner"
+                        android:text="Scan QR Code"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/prd_toLocationTXT"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:gravity="center"
+                        android:hint="@string/tolocation"
+                        android:overlapAnchor="false"
+                        android:textColor="@color/color_white"
+                        android:textColorHint="@color/theme_border"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:layout_margin="1dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:overlapAnchor="false"
+                            android:paddingLeft="2dp"
+                            android:text="TransportID: "
+                            android:textColor="@color/color_white"
+                            android:textColorHint="@color/theme_border"
+                            android:textSize="10sp" />
+
+                        <EditText
+                            android:id="@+id/prd_transferIDAutoTXT"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:hint="Enter Transfer ID "
+                            android:inputType="number"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_white"
+                            android:textColorHint="@color/theme_border"
+                            android:visibility="visible" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/colorPrimary"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Transport Modes"
+                            android:textColor="@color/color_black"
+                            android:textStyle="bold" />
+
+                        <ListView
+                            android:id="@+id/prd_ReceivedMode_LV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/color_white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/prd_received_editLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/blacktransper"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical"
+                    android:visibility="gone"></LinearLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_large">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:background="@color/Darkblue"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/prd_fromlocation_ATxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/teal"
+                            android:hint="Select FromLocation"
+                            android:popupBackground="@color/teal"
+                            android:textAlignment="center"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_black"
+                            android:textColorHint="@color/theme_border"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/prd_transagency_ATxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/amber"
+                            android:hint="Select AgencyDetails"
+                            android:popupBackground="@color/amber"
+                            android:textAlignment="center"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_black"
+                            android:textColorHint="@color/theme_border"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/prd_driver_ATxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/lime"
+                            android:hint="Select DriverName"
+                            android:popupBackground="@color/lime"
+                            android:textAlignment="center"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_black"
+                            android:textColorHint="@color/theme_border"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/prd_truckplateumber_ATxT"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/orange"
+                            android:hint="Select TruckDetails"
+                            android:popupBackground="@color/orange"
+                            android:textAlignment="center"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/color_black"
+                            android:textColorHint="@color/theme_border"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/prd_receivedDetailsClose"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.2"
+                            app:srcCompat="@mipmap/delete_cross" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/prd_transfer_editLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="15dp"
+                        android:layout_weight="3"
+                        android:background="@color/blacktransper"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical"
+                        android:visibility="gone"></LinearLayout>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/textview_or_edittext_hight_large"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/prd_Received_scanValueEDTXT"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/black_edittextstyle"
+                        android:gravity="center"
+                        android:hint="Scan/Enter Barcode Manually"
+                        android:inputType="textCapCharacters"
+                        android:maxLength="10"
+                        android:padding="5dp"
+                        android:textColor="@color/color_white"
+                        android:textColorHint="@color/edittextColor">
+
+                        <requestFocus />
+                    </EditText>
+
+                    <ImageView
+                        android:id="@+id/prd_Received_EnterIMG"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:background="@color/colorAccent"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        app:srcCompat="@mipmap/login" />
+
+                    <ImageView
+                        android:id="@+id/prd_Received_scanQRBarCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:background="@color/colorAccent"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        app:srcCompat="@mipmap/scanner" />
+
+                    <ImageView
+                        android:id="@+id/prd_receivedDetails_open"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:background="@color/colorAccent"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        app:srcCompat="@mipmap/view" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/prd_resultlayoutBackground"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/textview_or_edittext_hight_large"
+                        android:background="@color/colorPrimary_light"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/prd_removeBarCode_invenReceied"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2.2"
+                            android:background="@color/red"
+                            android:visibility="invisible">
+
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textColor="@android:color/black"
+                                android:visibility="visible"
+                                app:srcCompat="@mipmap/ic_delete_forever_white_24dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.7"
+                            android:gravity="center"
+                            android:text="SBB Label"
+                            android:textColor="@color/color_white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.7"
+                            android:gravity="center"
+                            android:text="WoodSpecie Code"
+                            android:textColor="@color/color_white" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="Quality"
+                            android:textColor="@color/color_white" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="CHECKED"
+                            android:textColor="@color/color_white" />
+
+                    </LinearLayout>
+
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/background">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/prd_Received_ListView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
+                            app:reverseLayout="true"
+                            app:stackFromEnd="true"></androidx.recyclerview.widget.RecyclerView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/textview_or_edittext_hight_large"
+                            android:layout_gravity="bottom"
+                            android:background="@color/colorPrimary_light"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/deeporange"
+                                android:gravity="center|right"
+                                android:paddingLeft="5dp"
+                                android:text="Total Volume : "
+                                android:textColor="@color/color_white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/prd_TotalVolumeReceived"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                                android:layout_weight="1"
+                                android:gravity="left|center"
+                                android:paddingLeft="5dp"
+                                android:text="0"
+                                android:textColor="@color/color_white"
+                                android:textSize="@dimen/largeTextsize"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/deeporange"
+                                android:gravity="center|right"
+                                android:paddingLeft="5dp"
+                                android:text="Total Count : "
+                                android:textColor="@color/color_white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/prd_Received_TotalScannedCount"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                                android:layout_weight="1"
+                                android:gravity="left|center"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/color_white"
+                                android:textSize="@dimen/largeTextsize"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="1"
+                                android:background="@color/deeporange"
+                                android:gravity="left|center"
+                                android:paddingLeft="5dp"
+                                android:text="Total Checked : "
+                                android:textColor="@color/color_white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/prd_Received_TotalCheckedCount"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                                android:layout_weight="1"
+                                android:gravity="left|center"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/color_white"
+                                android:textSize="@dimen/largeTextsize"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/receivedDetails_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/received_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/progressbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></include>
+    </LinearLayout>
+
+
+</FrameLayout>

@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.zebra.R;
-import com.zebra.main.model.ExternalDB.LocationsModel;
+import com.zebra.main.model.externaldb.LocationsModel;
 
 import java.util.ArrayList;
 

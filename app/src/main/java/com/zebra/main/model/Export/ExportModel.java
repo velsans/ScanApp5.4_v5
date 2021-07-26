@@ -1,26 +1,9 @@
 package com.zebra.main.model.Export;
 
 public class ExportModel {
-    int ExportID,TotalCount,LocationID,UserID,IsActive,SyncStatus;
+    int ExportID, QuotationEntryFlag, ContainerCount, UserID, TotalCount, SyncStatus, IsActive, LocationID;
+    String ExportUniqueID, OrderNo, QuotationNo, IMEI, StartDateTime, EndDateTime, SyncTime, BookingNo, ShippingCompany, StuffingDateTime, CuttingDateTime;
     double Volume;
-    String ExportUniqueID,IMEI,StartDateTime,EndDateTime,OrderNo,SyncDate;
-
-    public int getSyncStatus() {
-        return SyncStatus;
-    }
-
-    public void setSyncStatus(int syncStatus) {
-        SyncStatus = syncStatus;
-    }
-
-    public String getSyncDate() {
-        return SyncDate;
-    }
-
-    public void setSyncDate(String syncDate) {
-        SyncDate = syncDate;
-    }
-
 
     public int getExportID() {
         return ExportID;
@@ -30,28 +13,20 @@ public class ExportModel {
         ExportID = exportID;
     }
 
-    public String getExportUniqueID() {
-        return ExportUniqueID;
+    public int getQuotationEntryFlag() {
+        return QuotationEntryFlag;
     }
 
-    public void setExportUniqueID(String exportUniqueID) {
-        ExportUniqueID = exportUniqueID;
+    public void setQuotationEntryFlag(int quotationEntryFlag) {
+        QuotationEntryFlag = quotationEntryFlag;
     }
 
-    public int getTotalCount() {
-        return TotalCount;
+    public int getContainerCount() {
+        return ContainerCount;
     }
 
-    public void setTotalCount(int totalCount) {
-        TotalCount = totalCount;
-    }
-
-    public int getLocationID() {
-        return LocationID;
-    }
-
-    public void setLocationID(int locationID) {
-        LocationID = locationID;
+    public void setContainerCount(int containerCount) {
+        ContainerCount = containerCount;
     }
 
     public int getUserID() {
@@ -62,6 +37,22 @@ public class ExportModel {
         UserID = userID;
     }
 
+    public int getTotalCount() {
+        return TotalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        TotalCount = totalCount;
+    }
+
+    public int getSyncStatus() {
+        return SyncStatus;
+    }
+
+    public void setSyncStatus(int syncStatus) {
+        SyncStatus = syncStatus;
+    }
+
     public int getIsActive() {
         return IsActive;
     }
@@ -70,12 +61,36 @@ public class ExportModel {
         IsActive = isActive;
     }
 
-    public double getVolume() {
-        return Volume;
+    public int getLocationID() {
+        return LocationID;
     }
 
-    public void setVolume(double volume) {
-        Volume = volume;
+    public void setLocationID(int locationID) {
+        LocationID = locationID;
+    }
+
+    public String getExportUniqueID() {
+        return ExportUniqueID;
+    }
+
+    public void setExportUniqueID(String exportUniqueID) {
+        ExportUniqueID = exportUniqueID;
+    }
+
+    public String getOrderNo() {
+        return OrderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        OrderNo = orderNo;
+    }
+
+    public String getQuotationNo() {
+        return QuotationNo;
+    }
+
+    public void setQuotationNo(String quotationNo) {
+        QuotationNo = quotationNo;
     }
 
     public String getIMEI() {
@@ -102,11 +117,51 @@ public class ExportModel {
         EndDateTime = endDateTime;
     }
 
-    public String getOrderNo() {
-        return OrderNo;
+    public String getSyncTime() {
+        return SyncTime;
     }
 
-    public void setOrderNo(String orderNo) {
-        OrderNo = orderNo;
+    public void setSyncTime(String syncTime) {
+        SyncTime = syncTime;
+    }
+
+    public double getVolume() {
+        return Volume;
+    }
+
+    public void setVolume(double volume) {
+        Volume = volume;
+    }
+
+    public String getBookingNo() {
+        return BookingNo;
+    }
+
+    public void setBookingNo(String bookingNo) {
+        BookingNo = bookingNo;
+    }
+
+    public String getShippingCompany() {
+        return ShippingCompany;
+    }
+
+    public void setShippingCompany(String shippingCompany) {
+        ShippingCompany = shippingCompany;
+    }
+
+    public String getStuffingDateTime() {
+        return StuffingDateTime;
+    }
+
+    public void setStuffingDateTime(String stuffingDateTime) {
+        StuffingDateTime = stuffingDateTime;
+    }
+
+    public String getCuttingDateTime() {
+        return CuttingDateTime;
+    }
+
+    public void setCuttingDateTime(String cuttingDateTime) {
+        CuttingDateTime = cuttingDateTime;
     }
 }

@@ -9,7 +9,7 @@ public class CodeType {
 	 * @return
 	 */
 	public static String getCodeTypeByAimId_3070(String AimId, int lenght) {
-
+		// TODO Auto-generated method stub
 		if ("]E0".equals(AimId)) {
 			if (lenght == 13) {
 				return "EAN-13";
@@ -90,7 +90,7 @@ public class CodeType {
 	 * @return
 	 */
 	public static String getNewLandCodeType_3095(byte newLandCodeType2) {
-
+		// TODO Auto-generated method stub
 		switch (newLandCodeType2) {
 		case 1:
 
@@ -167,7 +167,7 @@ public class CodeType {
 	 * @return
 	 */
 	public static String getCodeTypeByAimId_4313(String AimId) {
-
+		// TODO Auto-generated method stub
 		if ("]E0".equals(AimId) || "]E3".equals(AimId)) {
 			return "EAN-13/UPC-E/UPC-A";
 		} else if ("]E4".equals(AimId)) {
@@ -242,7 +242,7 @@ public class CodeType {
 	 * @return
 	 */
 	public static String getNewLandCodeType_3070(String newLandCodeType2) {
-
+		// TODO Auto-generated method stub
 		if ("j".equals(newLandCodeType2)) {
 			return "Code 128";
 		} else if ("f".equals(newLandCodeType2)) {

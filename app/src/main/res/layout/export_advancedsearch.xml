@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transperantBlack"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_large"
+            android:background="@color/colorPrimaryDark"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Advance Search"
+                android:textColor="@color/color_white"
+                android:textStyle="bold" />
+
+
+            <ImageView
+                android:id="@+id/as_closeActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="10"
+                app:srcCompat="@mipmap/delete_cross" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textview_or_edittext_hight_large"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:text="Tree No : "
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/as_treenoEDT"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_edittextstyle"
+                    android:gravity="center"
+                    android:hint="Enter Tree No"
+                    android:inputType="number"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/edittextColor">
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:text="Felling No: "
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/as_fellingEDT"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_edittextstyle"
+                    android:gravity="center"
+                    android:hint="Enter Felling ID"
+                    android:inputType="number"
+                    android:textColor="@color/color_white"
+                    android:textColorHint="@color/edittextColor">
+
+
+                </EditText>
+
+                <ImageView
+                    android:id="@+id/as_scannerList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.1"
+                    android:background="@color/colorAccent"
+                    android:gravity="center"
+                    app:srcCompat="@mipmap/login"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_white" />
+
+            <LinearLayout
+                android:id="@+id/scannerListlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_black"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="SBB Label"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.09"
+                        android:gravity="center"
+                        android:text="WSC"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.05"
+                        android:gravity="center"
+                        android:text="F1"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.05"
+                        android:gravity="center"
+                        android:text="F2"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.05"
+                        android:gravity="center"
+                        android:text="T1"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.05"
+                        android:gravity="center"
+                        android:text="T2"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.05"
+                        android:gravity="center"
+                        android:text="Diameter"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.05"
+                        android:gravity="center"
+                        android:text="Length"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.05"
+                        android:gravity="center"
+                        android:text="Volume"
+                        android:textColor="@color/color_white"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.1"
+                        android:background="@color/colorAccent"
+                        android:gravity="center"
+                        android:text="Select"
+                        android:textColor="@color/color_black"
+                        android:textStyle="bold"
+                        android:visibility="invisible" />
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/background">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/as_scan_lv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:reverseLayout="true"
+                        app:stackFromEnd="true"></androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/as_NovalueFound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="No Record Found"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

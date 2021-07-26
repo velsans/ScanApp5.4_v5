@@ -9,8 +9,10 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import android.content.Context;
-import com.zebra.android.jb.utils.AddressUtils;
 import android.util.Log;
+
+import com.zebra.android.jb.utils.AddressUtils;
+
 import android_serialport_api.SerialPort;
 
 public class IcCardControl {
@@ -175,7 +177,7 @@ public class IcCardControl {
 			CmdProcessThread cmdProcessThread = new CmdProcessThread();
 			cmdProcessThread.start();
 		} catch (Exception e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new RuntimeException("open port failed:" + e.getMessage());
 		}
@@ -190,7 +192,7 @@ public class IcCardControl {
 	 * 关闭串口
 	 */
 	public void IcCard_Close() {
-
+		// TODO Auto-generated method stub
 		power_down();
 
 		if (readThread != null) {
@@ -247,7 +249,7 @@ public class IcCardControl {
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			while (isThreadRun) {
 				try {
 					SerialAnalyze();
@@ -499,7 +501,7 @@ public class IcCardControl {
 
 		@Override
 		public void run() {
-
+			// TODO Auto-generated method stub
 			while (isThreadRun) {
 				try {
 

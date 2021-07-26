@@ -9,7 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
 
@@ -35,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="10"
-                android:src="@mipmap/delete_cross" />
+                app:srcCompat="@mipmap/delete_cross" />
         </LinearLayout>
 
         <View
@@ -99,7 +101,7 @@
                     android:layout_weight="1.1"
                     android:gravity="center"
                     android:paddingLeft="5dp"
-                    android:text="Felling ID : "
+                    android:text="Felling No: "
                     android:textColor="@color/color_white"
                     android:textStyle="bold" />
 
@@ -126,7 +128,7 @@
                     android:layout_weight="1.1"
                     android:background="@color/colorAccent"
                     android:gravity="center"
-                    android:src="@mipmap/login"
+                    app:srcCompat="@mipmap/login"
                     android:visibility="visible" />
             </LinearLayout>
 
@@ -239,12 +241,12 @@
                     android:layout_height="match_parent"
                     android:background="@color/background">
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/as_scan_lv"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         app:reverseLayout="true"
-                        app:stackFromEnd="true"></android.support.v7.widget.RecyclerView>
+                        app:stackFromEnd="true"></androidx.recyclerview.widget.RecyclerView>
 
 
                     <ImageView
@@ -254,7 +256,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:src="@mipmap/addbutton"
+                        app:srcCompat="@mipmap/addbutton"
                         android:visibility="gone" />
                 </FrameLayout>
 

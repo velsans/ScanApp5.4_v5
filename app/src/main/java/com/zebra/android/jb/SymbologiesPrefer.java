@@ -2,7 +2,7 @@ package com.zebra.android.jb;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.zebra.android.jb.barcode.ResourceUtil;
+import android.jb.barcode.ResourceUtil;
 import android.util.Log;
 
 public class SymbologiesPrefer {

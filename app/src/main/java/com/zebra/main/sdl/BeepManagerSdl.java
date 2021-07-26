@@ -3,8 +3,8 @@ package com.zebra.main.sdl;
 
 
 import android.content.Context;
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.barcode.ResourceUtil;
+import android.jb.Preference;
+import android.jb.barcode.ResourceUtil;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -14,11 +14,15 @@ import android.util.Log;
 public class BeepManagerSdl {
 
 	private static final String TAG = "BeepManagerSdl";
+	// 常量
 	private final float BEEP_VOLUME = 0.3f;
 	private final long VIBRATE_DURATION = 200L;
+
+	// 变量
 	private boolean playBeep = false;
 	private boolean vibrate = false;
 
+	// 控制器
 	private Context mContext;
 	private MediaPlayer mMediaPlayer;
 	private int loadId1;
@@ -57,7 +61,7 @@ public class BeepManagerSdl {
 	}
 
 	private void initial() {
-
+		// TODO Auto-generated method stub
 
 		// initialMediaPlayer
 		// 判断mMediaPlayer是否已生成，有则先释放，再创建

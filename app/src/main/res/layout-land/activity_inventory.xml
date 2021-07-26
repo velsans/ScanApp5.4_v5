@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -67,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.1"
                 android:gravity="center"
-                android:src="@mipmap/refresh"
+                app:srcCompat="@mipmap/refresh"
                 android:visibility="gone" />
 
             <TextView
@@ -130,7 +131,7 @@
                         android:layout_weight="1.2"
                         android:background="@color/colorAccent"
                         android:gravity="center"
-                        android:src="@mipmap/scanner"
+                        app:srcCompat="@mipmap/scanner"
                         android:visibility="visible" />
 
                     <EditText
@@ -326,12 +327,12 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/inventoryTransListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
-                    android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
+                    android:background="@color/color_white"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
             <LinearLayout
@@ -352,7 +353,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.5"
                         android:backgroundTint="@color/color_white"
-                        android:hint="to Location"
+                        android:hint="@string/tolocation"
                         android:overlapAnchor="false"
                         android:popupBackground="@color/cyan"
                         android:textAlignment="center"
@@ -376,7 +377,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="6"
                         android:background="@color/colorPrimary"
-                        android:src="@mipmap/addbutton" />
+                        app:srcCompat="@mipmap/addbutton" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -509,12 +510,12 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/inventoryCountListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
-                    android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
+                    android:background="@color/color_white"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
             <LinearLayout
@@ -535,7 +536,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.5"
                         android:backgroundTint="@color/color_white"
-                        android:hint="to Location"
+                        android:hint="@string/tolocation"
                         android:overlapAnchor="false"
                         android:popupBackground="@color/cyan"
                         android:textAlignment="center"
@@ -559,7 +560,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="6"
                         android:background="@color/colorPrimary"
-                        android:src="@mipmap/addbutton" />
+                        app:srcCompat="@mipmap/addbutton" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -706,12 +707,12 @@
                 </LinearLayout>
 
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/inventoryReceivedListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
-                    android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
+                    android:background="@color/color_white"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
             <LinearLayout
@@ -728,7 +729,7 @@
                     android:background="@color/theme_background"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatAutoCompleteTextView
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/fellingFilter_ATxT"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -760,7 +761,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/colorPrimary"
-                        android:src="@mipmap/addbutton" />
+                        app:srcCompat="@mipmap/addbutton" />
 
                 </LinearLayout>
 
@@ -885,13 +886,13 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/fellingReg_RecyclerListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/textview_or_edittext_hight_large"
                     android:layout_weight="1"
-                    android:background="@color/color_white"></android.support.v7.widget.RecyclerView>
+                    android:background="@color/color_white"></androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
 
@@ -983,7 +984,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1.2"
             android:background="@color/deeporange"
-            android:src="@mipmap/excel" />
+            app:srcCompat="@mipmap/excel" />
 
 
     </LinearLayout>

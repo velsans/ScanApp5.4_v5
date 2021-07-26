@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_or_edittext_hight_normal"
+        android:background="@color/theme_background"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:layout_height="match_parent"
+            android:text="Felling Registration Details"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
+        <ImageView
+            android:id="@+id/masterdataCloseIMG"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:background="@color/colorPrimary"
+            app:srcCompat="@mipmap/delete_cross" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/masterdata_editTextSearch"
+        android:layout_width="match_parent"
+        android:background="@drawable/black_edittextstyle"
+        android:paddingLeft="5dp"
+        android:textColor="@color/color_white"
+        android:textColorHint="@color/theme_border"
+        android:layout_height="@dimen/textview_or_edittext_hight_large"
+        android:hint="Enter search"
+        android:layout_margin="2dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.15"
+            android:gravity="center"
+            android:text="SBB Label"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fellingReg_TreePartTxT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="T Part "
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="T No"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="P No"
+            android:visibility="gone"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="WSC"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="Quality"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="F 1"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="F 2"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="T 1"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="T 2"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="Length"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.22"
+            android:gravity="center"
+            android:text="NF"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.22"
+            android:gravity="center"
+            android:text="NT"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.22"
+            android:gravity="center"
+            android:text="NL"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="Vol"
+            android:textColor="@color/color_white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/masterdata_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</LinearLayout>

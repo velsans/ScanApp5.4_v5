@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+
 /**
  * ContentProvider that provides access to files in this application's cache.
  *
@@ -44,8 +45,7 @@ public class CachedFileProvider extends ContentProvider {
 
         String LOG_TAG = CLASS_NAME + "-openFile";
 
-        Log.v(LOG_TAG,
-                "Called with uri: '" + uri + "'." + uri.getLastPathSegment());
+        Log.v("","Called with uri: '" + uri + "'." + uri.getLastPathSegment());
 
         // Check incoming Uri against the matcher
         switch (uriMatcher.match(uri)) {
@@ -70,7 +70,7 @@ public class CachedFileProvider extends ContentProvider {
 
             // Otherwise unrecognised Uri
             default:
-                Log.v(LOG_TAG, "Unsupported uri: '" + uri + "'.");
+                Log.v("","Unsupported uri: '" + uri + "'.");
                 throw new FileNotFoundException("Unsupported uri: "
                         + uri.toString());
         }

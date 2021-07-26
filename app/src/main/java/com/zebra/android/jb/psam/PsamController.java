@@ -1,4 +1,4 @@
-package com.zebra.android.jb.psam;
+package android.jb.psam;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,9 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.utils.AddressUtils;
-import com.zebra.android.jb.utils.Tools;
+import android.jb.Preference;
+import android.jb.utils.AddressUtils;
+import android.jb.utils.Tools;
 import android.util.Log;
 import android_serialport_api.SerialPort;
 
@@ -81,7 +81,7 @@ public class PsamController {
 	 * 开启设备
 	 */
 	public void Psam_Open(Context context) throws IOException, SecurityException {
-
+		// TODO Auto-generated method stub
 		mContext = context;
 		
 		power = new File(AddressUtils.P_ESAM_ENM_EN);
@@ -92,7 +92,7 @@ public class PsamController {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		// begin = true;
@@ -133,7 +133,7 @@ public class PsamController {
 	 * 关闭设备
 	 */
 	public void Psam_Close() throws IOException {
-
+		// TODO Auto-generated method stub
 		if (mInputStream != null)
 			mInputStream.close();
 		if (mOutputStream != null)
@@ -159,7 +159,7 @@ public class PsamController {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

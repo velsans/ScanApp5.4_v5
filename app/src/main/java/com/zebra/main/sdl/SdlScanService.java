@@ -19,21 +19,21 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-
-import com.zebra.android.jb.Preference;
-import com.zebra.android.jb.SymbologiesPrefer;
-import com.zebra.android.jb.barcode.BarcodeManager;
-import com.zebra.android.jb.barcode.BarcodeUntil;
-import com.zebra.android.jb.utils.Tools;
-import com.zebra.android.jb.utils.WakeLockUtil;
-
+import android.jb.Preference;
+import android.jb.barcode.BarcodeManager;
+import android.jb.barcode.BarcodeUntil;
+import android.jb.barcode.BarcodeManager.Callback;
+import android.jb.utils.Tools;
+import android.jb.utils.WakeLockUtil;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Binder;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -106,13 +106,10 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-
+            // TODO Auto-generated method stub
             switch (msg.what) {
                 case 3001:
-                    Toast.makeText(
-                            SdlScanService.this,
-                            getResources().getString(
-                                    R.string.scan_init_failure_info), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SdlScanService.this, getResources().getString(R.string.scan_init_failure_info), Toast.LENGTH_SHORT).show();
                     break;
 
                 case 1:
@@ -176,7 +173,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -189,7 +186,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
     @Override
     @Deprecated
     public void onStart(Intent intent, int startId) {
-
+        // TODO Auto-generated method stub
         super.onStart(intent, startId);
         Log.v(TAG, "SDLService onStart isActivityUp:" + isActivityUp);
         //state = STATE_IDLE;
@@ -212,27 +209,28 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 
     public synchronized void openBcr() {
         try {
+            Log.v(TAG, "SDLService openBcr bcr: " + bcr + "camera numbers: " + getNumberOfCameras());
             if (bcr == null && getNumberOfCameras() > 1) {
                 if (android.os.Build.VERSION.SDK_INT >= 18) {
                     bcr = BarCodeReader.open(1, this); // Android 4.3 and above
-                } else {
+                    Log.v(TAG, "SDLService onStart bcr no: " + bcr);
+                } else
                     bcr = BarCodeReader.open(1); // Android 2.3
-                }
             } else if (bcr == null && getNumberOfCameras() == 1) {
                 if (android.os.Build.VERSION.SDK_INT >= 18) {
                     bcr = BarCodeReader.open(0, this); // Android 4.3 and above
-                } else {
+                    Log.v(TAG, "SDLService onStart bcr no: " + bcr);
+                } else
                     bcr = BarCodeReader.open(0); // Android 2.3
-                }
             }
-
             if (bcr == null) {
                 if (mScanListener != null)
                     mScanListener.ScannedStatus("ERROR open failed");
+                Log.v(TAG, "sdl open failed" + " mScanListener: " + mScanListener);
                 return;
             }
-
             bcr.setDecodeCallback(this);
+            Log.v(TAG, "readFile: " + BarCodeReader.readFile(ss));
             bcr.setErrorCallback(this);
 
             // Set parameter - Uncomment for QC/MTK platforms
@@ -265,61 +263,20 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
             bcr.setParameter(22, 0);
             bcr.setParameter(23, 0);
             bcr.setParameter(11, 1);   //ENAbleMSI
-
-            //Preference.getScanPower(this, 10);
             //bcr.setParameter(764, 2);//reduce power
-//			bcr.setParameter(764, Preference.getScanPower(this, 10));
-//			Log.e("jiebao", "getScanPower" + Preference.getScanPower(this, 10));
-
             bcr.setParameter(765, 0);
             bcr.setParameter(687, 4); // 4 - omnidirectional
             bcr.setParameter(137, 0);//scan the same code
             bcr.setParameter(586, 2);//Inverse 1D
-            bcr.setParameter(716, 1);//support phone mode
-            bcr.setParameter(55, 1);
-            bcr.setParameter(402, 2);
+//			bcr.setParameter(716, 1);//support phone mode
             // Sets OCR lines to decide
             //bcr.setParameter(691, 2); // 2 - OCR 2 lines
+
             // End of OCR Parameter Sample
-
-            //init enable code type
-            int value = 1;
-            value = SymbologiesPrefer.getCodeAztec(this, 1);
-            bcr.setParameter(7, value);
-            value = SymbologiesPrefer.getCodabar(this, 1);
-            bcr.setParameter(7, value);
-
-            value = SymbologiesPrefer.getCode32(this, 1);
-            if (value == 1) {
-                bcr.setParameter(0, 1);
-                bcr.setParameter(86, 1);
-            } else {
-                bcr.setParameter(0, 0);
-            }
-
-            value = SymbologiesPrefer.getCode39(this, 1);
-            bcr.setParameter(0, value);
-
-            value = SymbologiesPrefer.getCode93(this, 1);
-            bcr.setParameter(9, value);
-
-            value = SymbologiesPrefer.getCodeEan13(this, 1);
-            bcr.setParameter(3, value);
-
-            value = SymbologiesPrefer.getCodeGs1_databar(this, 1);
-            bcr.setParameter(338, value);
-
-            value = SymbologiesPrefer.getCodeInterleaved_2_of_5(this, 1);
-            bcr.setParameter(6, value);
-
-            value = SymbologiesPrefer.getCodeMatrix_2_of_5(this, 1);
-            bcr.setParameter(618, value);
-
-            bcr.setParameter(17, 1);
         } catch (Exception e) {
-            if (mScanListener != null) {
+            if (mScanListener != null)
                 mScanListener.ScannedStatus("open excp:" + e);
-            }
+            Log.v(TAG, "open excp:" + e + " mScanListener: " + mScanListener);
         }
     }
 
@@ -332,6 +289,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
     }
 
     private synchronized static void writeFile(File file, String value) {
+
         try {
             FileOutputStream outputStream = new FileOutputStream(file);
             outputStream.write(value.getBytes());
@@ -347,7 +305,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        // TODO Auto-generated method stub
         Log.v(TAG, "SDLService onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
@@ -399,16 +357,16 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
         public void onReceive(Context context, Intent intent) {
             // Bundle bundle = intent.getExtras();
             if (intent.hasExtra("F4key")) {
-
+                // TODO Auto-generated method stub
                 if (getScanShortcutSupport() && intent.getStringExtra("F4key").equals("down")) {
-                    Log.v(TAG, "F4key readFile: " + BarCodeReader.readFile(ss_isCameraOpen) + "isActivityUp: " + isActivityUp + "bcr: " + bcr);
+                    Log.v(TAG, "F4key readFile: " + BarCodeReader.readFile(ss_isCameraOpen) + "isActivityUp: " + isActivityUp);
                     if (bcr == null && (BarCodeReader.readFile(ss_isCameraOpen).equals("30")) && !islockScreen) {
                         //Toast.makeText(SdlScanService.this, "Can't open scan in Camera", Toast.LENGTH_SHORT).show();
                         if (!isActivityUp) {
                             try {
                                 Thread.sleep(500);
                             } catch (InterruptedException e) {
-
+                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                         }
@@ -447,7 +405,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 
         @Override
         public void run() {
-
+            // TODO Auto-generated method stub
             while (run) {
                 openCamera = BarCodeReader.readFile(ss);
 //				if(openCamera.equals("31")&& bcr==null){
@@ -455,7 +413,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 //					try {
 //						Thread.sleep(2000);
 //					} catch (InterruptedException e) {
-//
+//						// TODO Auto-generated catch block
 //						e.printStackTrace();
 //					}
 //					Log.v(TAG,"readFileThread402 bcr: "+bcr);
@@ -621,7 +579,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 //						try {
 //							Thread.sleep(500);
 //						} catch (InterruptedException e) {
-//
+//							// TODO Auto-generated catch block
 //							e.printStackTrace();
 //						}
 //						// }
@@ -667,7 +625,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
             try {
                 inputStream.close();
             } catch (IOException e) {
-
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             inputStream = null;
@@ -682,15 +640,15 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 
     public synchronized void release() {
         //writeFile(ss,"0");
-        Log.e(TAG, "destory sdl decode bcr: " + bcr);
+        Log.v(TAG, "destory sdl decode bcr: " + bcr);
         if (bcr != null) {
             setIdle();
             bcr.stopDecode();
-            Log.e(TAG, "destory sdl decode635");
+            Log.v(TAG, "destory sdl decode635");
             bcr.release();
-            Log.e(TAG, "destory sdl decode637");
+            Log.v(TAG, "destory sdl decode637");
             bcr = null;
-            Log.e(TAG, "destory sdl decode");
+            Log.v(TAG, "destory sdl decode");
         }
     }
 
@@ -723,7 +681,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
     }
 
     public void sendScanBroadcast(String codeid, String dataStr) {
-        //scanDataIntent = new Intent("com.jb.action.GET_SCANDATA");
+        // TODO Auto-generated method stub
         scanDataIntent.putExtra("data", dataStr);
         scanDataIntent.putExtra("codetype", codeid);
         this.sendBroadcast(scanDataIntent);
@@ -744,9 +702,15 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
             webAddressintent.setData(content_url);
             this.startActivity(webAddressintent);
         } catch (Exception e) {
+            // TODO: handle exception
         }
     }
 
+    /**
+     * 扫描内容保存至TXT
+     *
+     * @param data
+     */
     public void saveInTxt(String data) {
         Log.v("SdlScanService", "saveInTxt data: " + data);
         byte[] bytes = data.getBytes();
@@ -759,12 +723,50 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
         }
     }
 
+    //1:快速扫描 2：模拟键盘模式 3、广播模式
+    public void houtai_result(String codeid, String data) {
+        if (data != null && !data.trim().equals("")) {
+            int out_mode = getScanOutMode();
+            Log.v(TAG, "houtai_result: out_mode: " + out_mode + " getScanNetSupport: " + getScanNetSupport());
+            switch (out_mode) {
+                case 3:
+                    sendScanBroadcast(codeid, data);
+                    break;
+
+                case 2:
+                    //simulatekey(data);
+                    //addScanDataSuffix();
+                    break;
+
+                case 1:
+                    //sendEditTextBroadcast(data);
+                    //addScanDataSuffix();
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (getScanNetSupport()) {
+                webAddressHandler(data);
+            }
+        }
+    }
+
     public boolean getScanShortcutSupport() {
         return Preference.getScanShortcutSupport(this, true);
     }
 
     public boolean getScanNetSupport() {
         return Preference.getNetPageSupport(this, false);
+    }
+
+    public boolean getScanSaveTxt() {
+        return Preference.getScanSaveTxt(this, true);
+    }
+
+    public String getScanShortCutMode() {
+        return Preference.getScanShortcutMode(this, "2");
     }
 
     public int getScanOutMode() {
@@ -784,45 +786,40 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 
     @Override
     public void onDecodeComplete(int symbology, int length, byte[] data, BarCodeReader reader) {
-        Log.e("jiebao", "symbology " + symbology + " length " + length);
 
-        if (state == STATE_DECODE) {
+        if (state == STATE_DECODE)
             state = STATE_IDLE;
-        }
 
         // Get the decode count
-        if (length == BarCodeReader.DECODE_STATUS_MULTI_DEC_COUNT) {
+        if (length == BarCodeReader.DECODE_STATUS_MULTI_DEC_COUNT)
             decCount = symbology;
-        }
-
+        Log.v(TAG, "onDecodeComplete length: " + length);
         if (length > 0) {
 
             if (mBeepManagersdl.isPlayBeep() || mBeepManagersdl.isVibrate()) {
+                Log.v(TAG, "beep");
                 beep();
             }
-
             bs = new byte[length];
-            if (isHandsFree() == false && isAutoAim() == false) {
+            if (isHandsFree() == false && isAutoAim() == false)
                 bcr.stopDecode();
-            }
 
             ++decodes;
-            if (symbology == 0x69) {
+
+            if (symbology == 0x69)    // signature capture
+            {
                 if (sigcapImage) {
                     Bitmap bmSig = null;
                     int scHdr = 6;
-                    if (length > scHdr) {
+                    if (length > scHdr)
                         bmSig = BitmapFactory.decodeByteArray(data, scHdr, length - scHdr);
-                    }
 
                     if (bmSig != null) {
                         //snapScreen(bmSig);
                     } else {
                         //Log.v(TAG,"OnDecodeComplete: SigCap no bitmap");
                     }
-
                 }
-
 //				System.arraycopy(data, 0, bs, 0, length);
 //				decodeStatString += new String("[" + decodes + "] type: " + symbology + " len: " + length);
 //				decodeDataString += new String(bs);
@@ -841,12 +838,13 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 //					saveInTxt(scanUtil.getScanResult() + "\n"
 //								+ "Scan time" + ": " + scanUtil.getScanDate() + "\n");
 //				}
-
                 decodeStatString += new String("[" + decodes + "] type: " + symbology + " len: " + length);
                 decodeDataString += new String(data);
-
             } else {
-                if (symbology == 0x99) {
+
+
+                if (symbology == 0x99)    //type 99?
+                {
                     symbology = data[0];
                     int n = data[1];
                     int s = 2;
@@ -863,10 +861,9 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
                     d99[d] = 0;
                     data = d99;
                 }
-
                 System.arraycopy(data, 0, bs, 0, length);
                 String codeType = Tools.returnType(bs);
-
+                Log.v(TAG, "codeType: " + codeType);
                 String val = null;
                 if (codeType.equals("default")) {
                     val = new String(bs);
@@ -874,30 +871,17 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
                     try {
                         val = new String(bs, codeType);
                     } catch (UnsupportedEncodingException e) {
-
+                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
 
                 decodeStatString += new String("[" + decodes + "] type: " + symbology + " len: " + length);
                 decodeDataString += val;
-
-                String prefix = Preference.getCustomPrefix(SdlScanService.this);
-                String suffix = Preference.getCustomSuffix(SdlScanService.this);
-
-                if (!TextUtils.isEmpty(prefix)) {
-                    decodeDataString = prefix + decodeDataString;
-                }
-
-                if (!TextUtils.isEmpty(suffix)) {
-                    decodeDataString = decodeDataString + suffix;
-                }
-
-                Log.d("jiebao", "onDecodeComplete decodeDataString: " + decodeDataString + " length:" + length + " bs: " + bs.length);
+                //Log.v(TAG,"onDecodeComplete decodeDataString: "+decodeDataString+" length:"+length+" bs: "+bs.length);
                 if (!isActivityUp) {
-                    //houtai_result("",decodeDataString);
+                    houtai_result("", decodeDataString);
                 }
-
                 if (mScanListener != null) {
                     mScanListener.ScannedStatus(decodeStatString);
                     mScanListener.ScannedResult(decodeDataString);
@@ -910,14 +894,13 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 //			    msg2.obj    = decodeStatString;
 //			    mHandler.sendMessage(msg2);
                 }
-
-               /* if (sdCard && getScanSaveTxt()) {
+                if (sdCard && getScanSaveTxt()) {
                     scanUtil = new BarcodeUntil();
                     scanUtil.setScanDate(Tools.getNowTimeString());
                     scanUtil.setScanResult(decodeDataString);
-                    saveInTxt(scanUtil.getScanResult() + "\n" + "Scan time" + ": " + scanUtil.getScanDate() + "\n");
+                    saveInTxt(scanUtil.getScanResult() + "\n"
+                            + "Scan time" + ": " + scanUtil.getScanDate() + "\n");
                 }
-*/
                 if (decCount > 1) // Add the next line only if multiple decode
                 {
                     decodeStatString += new String(" ; ");
@@ -926,8 +909,8 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
                     decodeDataString = new String("");
                     decodeStatString = new String("");
                 }
-
             }
+
 
             notifyScanReader();
         } else    // no-decode
@@ -999,7 +982,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 
         @Override
         public void run() {
-
+            // TODO Auto-generated method stub
             while (run) {
                 try {
                     if (bcr != null) {
@@ -1008,10 +991,11 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
                         sleep(3000);
                     }
                 } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block\
                     try {
                         sleep(scan_time_limit);
                     } catch (InterruptedException e1) {
-
+                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                     e.printStackTrace();
@@ -1146,6 +1130,7 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
     }
 
     public void setPlayBeep(boolean beep) {
+        Log.v("yaqin", "onClick beep: " + beep);
         Preference.setScanSound(this, beep);
         if (mBeepManagersdl != null)
             mBeepManagersdl.setPlayBeep(beep);
@@ -1208,14 +1193,14 @@ public class SdlScanService extends Service implements DecodeCallback, ErrorCall
 
     @Override
     public void onError(int error, BarCodeReader reader) {
-
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onVideoFrame(int format, int width, int height, byte[] data,
                              BarCodeReader reader) {
-
+        // TODO Auto-generated method stub
 
     }
 }

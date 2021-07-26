@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/transperantBlack"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="500dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/colorAccent"
+            android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+            >
+
+            <TextView
+                android:id="@+id/NovalueFound"
+                android:layout_width="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="match_parent"
+                android:gravity="left|center"
+                android:paddingLeft="@dimen/textview_or_edittext_hight_large"
+                android:text="Create New Container"
+                android:textColor="@color/color_white"
+                android:textStyle="bold"
+                />
+
+            <ImageView
+                android:id="@+id/create_containerNo_close"
+                android:layout_width="@dimen/textview_or_edittext_hight_large"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                app:srcCompat="@mipmap/delete_cross"
+                android:textColor="@android:color/black"
+                android:visibility="visible" />
+        </FrameLayout>
+
+        <EditText
+            android:id="@+id/createContainerNoEDT"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:hint="container no"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textAllCaps="true"
+            android:textColor="@color/color_black"
+            android:textColorHint="@color/theme_border" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="@dimen/textview_or_edittext_hight_xlarge"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="match_parent"
+                android:gravity="left|center"
+                android:layout_weight="1.3"
+                android:paddingLeft="@dimen/textview_or_edittext_hight_large"
+                android:text="YES"
+                android:visibility="invisible"
+                android:textColor="@color/color_white"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/NoOptionTxT"
+                android:layout_width="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@drawable/black_border"
+                android:layout_weight="1"
+                android:text="AUTO GENERATE"
+                android:textColor="@color/theme_border"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/YesOptionTxT"
+                android:layout_width="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:background="@color/colorAccent"
+                android:text="YES"
+                android:textColor="@color/color_white"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

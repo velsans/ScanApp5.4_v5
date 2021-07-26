@@ -1,4 +1,4 @@
-package com.zebra.android.jb.uhf;
+package android.jb.uhf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class TransmittedPowerMsgBean {
 		public float readPower;
 
 		public void calculatePower() {
-
+			// TODO Auto-generated method stub
 			writePower = getPower(rH, rL)/100f;
 			readPower = getPower(wH, wL)/100f;
 
@@ -38,7 +38,7 @@ public class TransmittedPowerMsgBean {
 	public List<Antenna> antennaList = new ArrayList<TransmittedPowerMsgBean.Antenna>();
 
 	public int getPower(byte h, byte l) {
-
+		// TODO Auto-generated method stub
 		int re = 0;
 		if (h > 0) {
 			re = (byte) (l & 0x0F);

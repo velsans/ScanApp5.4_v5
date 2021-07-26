@@ -1,15 +1,23 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <!-- Default screen margins, per the Android Design guidelines. -->
-
+    <dimen name="IconimageSize">25dp</dimen>
     <dimen name="textview_or_edittext_hight_normal">30dp</dimen>
     <dimen name="textview_or_edittext_hight_large">40dp</dimen>
     <dimen name="textview_or_edittext_hight_xlarge">50dp</dimen>
+    <dimen name="external_db_size">70dp</dimen>
     <dimen name="scanbuttonSize">100dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="containerSize">12sp</dimen>
     <dimen name="normalSize">13.5sp</dimen>
     <dimen name="largeTextsize">15sp</dimen>
     <dimen name="xlargeTextsize">20sp</dimen>
-
+    <dimen name="design_fab_image_size" tools:override="true">80dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="appbar_padding">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 </resources>
